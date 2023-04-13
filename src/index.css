@@ -1,0 +1,96 @@
+:root {
+/* 
+  --text-color-100: #FFFFFF;
+  --text-color-200: #F2F2F2;
+  --text-color-300: #CCCCCC;
+  --text-color-400: #999999;
+  --text-color-500: #666666;
+  --text-color-600: #000000;
+
+  --main-color-100: #F3F9FF;
+  --main-color-200: #D0E7FF;
+  --main-color-300: #AED5FF;
+  --main-color-400: #8CC3FF;
+  --main-color-500: #5A9CFF;
+  --main-color-600: #3274FF;
+
+  --secondary-color-100: #829FB5;
+  --secondary-color-200: #5A8797;
+  --secondary-color-300: #386569;
+  --secondary-color-400: #2F4656;
+  --secondary-color-500: #253544;
+  --secondary-color-600: #1C2731;
+
+  --tertiary-color-600: #E0FFFF; 
+  --tertiary-color-500: #AFEEEE;
+  --tertiary-color-400: #00CED1;
+  --tertiary-color-300: #008B8B;
+  --tertiary-color-200: #006666;
+  --tertiary-color-100: #003333; 
+
+  --background-color-100: #243143;
+  --background-color-200: #1C2639;
+  --background-color-300: #141D2C;
+  --background-color-400: #101926;
+  --background-color-500: #0D1521;
+  --background-color-600: #0A111B;   
+  */
+
+  /* DARK : */
+  --background-color-400: #010102;
+  --background-color-300: #0D0D14;
+  --background-color-200: #282838;
+  --background-color-100: #46465C;
+  --secondary-color-400: #634629;
+  --secondary-color-300: #E26723;
+  --secondary-color-200: #EF9E21;
+  --secondary-color-100: #F4D285;
+  --main-color-100: #ffffff;
+  --main-color-200: #808080;
+  --main-color-300: #EF7500;
+  --main-color-400: #000000;
+
+
+  
+  /* LIGHT : */
+  
+  /* --background-color-400:#11131D;
+  --background-color-300:#191B2A;
+  --background-color-200:#26293B;
+  --background-color-100:#F4F4F3;  
+  --secondary-color-400:#B18C5A;
+  --secondary-color-300:#E26723;
+  --secondary-color-200: #191B2A;
+  --secondary-color-200: #DF9B1C;   
+  --main-color-100: #000000;
+  --main-color-200: #808080;
+  --main-color-300: #EF7500;  */
+ 
+}
+
+*:visited,
+*:link,
+*:focus {
+  text-decoration: inherit;
+  color: inherit
+}
+*{
+  list-style-type: none;
+}
+ul {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color-400);
+  display: flex;
+  justify-content: center;
+  font-family: 'Oxygen Mono', monospace;
+  color: var(--main-color-100);
+}
