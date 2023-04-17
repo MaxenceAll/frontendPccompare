@@ -133,10 +133,10 @@ export default Header2;
 
 const fadeIn = keyframes`
   from {
-    opacity: 0;
+    height: 0px;
   }
   to {
-    opacity: 1;
+    height: auto;
   }
 `;
 

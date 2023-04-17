@@ -17,7 +17,7 @@ import { STYLEDInput } from "../../components/styles/genericInput";
 
 import axios from "axios";
 import config from "../../../config";
-import fetcher from "../../components/helper/fetcher";
+import fetcher from "../../helper/fetcher";
 
 {
   /* TODO: MAKE THIS IN 1 FORM ONLY */
@@ -91,9 +91,26 @@ function Login() {
   const onSubmitRegister = async (data) => {
     data.email = data.email.toLowerCase();
     console.log(data);
-    if (data.pincode !== data.pincode2) {
+    if (data.password !== data.password2) {
       alert(`Oooooops les mots de passe ne correspondent pas !`);
       return;
+    }
+    try {
+      setIsLoading(true);
+      const response = await fetcher.post("/account/register", data);
+      console.log(response);
+      console.log(`Request took ${response.duration}ms`);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+
+    if (error) {
+      return <div>Error: {error.message}</div>;
     }
   };
 
@@ -205,8 +222,8 @@ function Login() {
                   placeholder="Saisir votre mot de passe"
                   autoComplete="current-password"
                   type="password"
-                  name="pincode"
-                  {...register("pincode", {
+                  name="password"
+                  {...register("password", {
                     required: true,
                     validate: {
                       checkLength: (value) => value.length >= 4,
@@ -218,7 +235,7 @@ function Login() {
                   })}
                 />
                 {/* TODO: FIX THIS */}
-                {errors.pincode ? <HiBan /> : <HiCheck />}
+                {errors.password ? <HiBan /> : <HiCheck />}
               </div>
 
               <STYLEDhr />
@@ -230,18 +247,18 @@ function Login() {
               {errors.email && (
                 <STYLEDErrorMessage>{errors.email.message}</STYLEDErrorMessage>
               )}
-              {/* {errors.pincode?.type === "matchPattern" && (
+              {/* {errors.password?.type === "matchPattern" && (
               <STYLEDErrorMessage>
                 Doit contenir au moins une Majuscule,
                 une minuscule, une chiffre et un caractère spécial..
               </STYLEDErrorMessage>
             )} */}
-              {errors.pincode?.type === "required" && (
+              {errors.password?.type === "required" && (
                 <STYLEDErrorMessage>
                   Il faut saisir un mot de passe voyons !
                 </STYLEDErrorMessage>
               )}
-              {errors.pincode?.type === "checkLength" && (
+              {errors.password?.type === "checkLength" && (
                 <STYLEDErrorMessage>
                   Le mot de passe doit être de 4 signes minimum, bah wé.
                 </STYLEDErrorMessage>
@@ -257,6 +274,42 @@ function Login() {
             <STYLEDLoginContainerBoxForm
               onSubmit={handleSubmit(onSubmitRegister)}
             >
+
+              <div>
+                <label htmlFor="firstname">Votre prénom :</label>
+                <STYLEDInput
+                  id="firstname"
+                  placeholder="Saisir votre prénom"
+                  type="text"
+                  name="firstname"
+                  {...register("firstname", {
+                    required: true,
+                    validate: {
+                      onlyLetters: /^[a-zA-Z]+$/,
+                    },
+                  })}
+                />
+                {errors.firstname ? <HiBan /> : <HiCheck />}
+              </div>
+
+              <div>
+                <label htmlFor="lastname">Votre nom de famille :</label>
+                <STYLEDInput
+                  id="lastname"
+                  placeholder="Saisir votre nom de famille"
+                  type="text"
+                  name="lastname"
+                  {...register("lastname", {
+                    required: true,
+                    validate: {
+                      onlyLetters: /^[a-zA-Z]+$/,
+                    },
+                  })}
+                />
+                {errors.lastname ? <HiBan /> : <HiCheck />}
+              </div>
+
+
               <div>
                 <label htmlFor="pseudo">Votre pseudo :</label>
                 <STYLEDInput
@@ -294,14 +347,14 @@ function Login() {
                 {errors.email ? <HiBan /> : <HiCheck />}
               </div>
               <div>
-                <label htmlFor="pincode1">Mot de passe :</label>
+                <label htmlFor="password1">Mot de passe :</label>
                 <STYLEDInput
-                  id="pincode1"
+                  id="password1"
                   placeholder="Saisir votre mot de passe"
                   autoComplete="current-password"
                   type="password"
-                  name="pincode"
-                  {...register("pincode", {
+                  name="password"
+                  {...register("password", {
                     required: true,
                     validate: {
                       checkLength: (value) => value.length >= 4,
@@ -312,18 +365,18 @@ function Login() {
                     },
                   })}
                 />
-                {errors.pincode ? <HiBan /> : <HiCheck />}
+                {errors.password ? <HiBan /> : <HiCheck />}
               </div>
 
               <div>
-                <label htmlFor="pincode2">------------ :</label>
+                <label htmlFor="password2">------------ :</label>
                 <STYLEDInput
-                  id="pincode2"
+                  id="password2"
                   placeholder="Valider votre mot de passe"
                   autoComplete="current-password"
                   type="password"
-                  name="pincode2"
-                  {...register("pincode2", {
+                  name="password2"
+                  {...register("password2", {
                     required: true,
                     validate: {
                       checkLength: (value) => value.length >= 4,
@@ -335,7 +388,7 @@ function Login() {
                   })}
                 />
                 {/* TODO: FIX THIS */}
-                {errors.pincode2 ? <HiBan /> : <HiCheck />}
+                {errors.password2 ? <HiBan /> : <HiCheck />}
               </div>
 
               <STYLEDhr />
@@ -344,37 +397,48 @@ function Login() {
                 S'enregistrer
               </STYLEDButton>
 
+              {errors.firstname?.type === "onlyLetters" && (
+                <STYLEDErrorMessage>
+                  Que des lettres pour le prénom voyons !
+                </STYLEDErrorMessage>
+              )}
+              {errors.lastname?.type === "onlyLetters" && (
+                <STYLEDErrorMessage>
+                  Que des lettres pour le prénom voyons !
+                </STYLEDErrorMessage>
+              )}
+
               {errors.email && (
                 <STYLEDErrorMessage>{errors.email.message}</STYLEDErrorMessage>
               )}
-              {/* {errors.pincode2?.type === "matchPattern" && (
+              {/* {errors.password2?.type === "matchPattern" && (
               <STYLEDErrorMessage>
                 Doit contenir au moins une Majuscule,
                 une minuscule, une chiffre et un caractère spécial..
               </STYLEDErrorMessage>
             )} */}
-              {errors.pincode2?.type === "required" && (
+              {errors.password2?.type === "required" && (
                 <STYLEDErrorMessage>
                   Il faut saisir un mot de passe voyons !
                 </STYLEDErrorMessage>
               )}
-              {errors.pincode2?.type === "checkLength" && (
+              {errors.password2?.type === "checkLength" && (
                 <STYLEDErrorMessage>
                   Le mot de passe doit être de 4 signes minimum, bah wé.
                 </STYLEDErrorMessage>
               )}
-              {/* {errors.pincode2?.type === "matchPattern" && (
+              {/* {errors.password2?.type === "matchPattern" && (
               <STYLEDErrorMessage>
                 Doit contenir au moins une Majuscule,
                 une minuscule, une chiffre et un caractère spécial..
               </STYLEDErrorMessage>
             )} */}
-              {errors.pincode2?.type === "required" && (
+              {errors.password2?.type === "required" && (
                 <STYLEDErrorMessage>
                   Il faut saisir un mot de passe voyons !
                 </STYLEDErrorMessage>
               )}
-              {errors.pincode2?.type === "checkLength" && (
+              {errors.password2?.type === "checkLength" && (
                 <STYLEDErrorMessage>
                   Le mot de passe doit être de 4 signes minimum, bah wé.
                 </STYLEDErrorMessage>
