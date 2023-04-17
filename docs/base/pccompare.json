@@ -1,0 +1,26 @@
+[
+  {
+    "type": "header",
+    "version": "5.2.0",
+    "comment": "Export to JSON plugin for PHPMyAdmin"
+  },
+  { "type": "database", "name": "pccompare" },
+  {
+    "type": "table",
+    "name": "users",
+    "database": "pccompare",
+    "data": [
+      {
+        "id": "1",
+        "email": "maxence.allart@gmail.com",
+        "pseudo": "Max",
+        "is_deleted": "0",
+        "role": "admin",
+        "is_verified": "1",
+        "emailVerificationToken": "",
+        "createdAt": "2023-04-13",
+        "password": null
+      }
+    ]
+  }
+]

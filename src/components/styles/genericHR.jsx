@@ -5,8 +5,8 @@ export const STYLEDhr = styled.hr`
   height: ${(props) => props.height || ""};
   
   color: var(--main-color);
-  background-color: var(--background-color);
+  background-color: var(--background-color-100);
 
-  border: 1px solid var(--main-color);
+  border: 1px solid var(--main-color-100);
 
 `;

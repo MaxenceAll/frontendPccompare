@@ -17,6 +17,7 @@ import { STYLEDInput } from "../../components/styles/genericInput";
 
 import axios from "axios";
 import config from "../../../config";
+import fetcher from "../../components/helper/fetcher";
 
 {
   /* TODO: MAKE THIS IN 1 FORM ONLY */
@@ -51,22 +52,49 @@ function Login() {
     reset,
   } = useForm();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const onSubmitLogin = async (data) => {
+    data.email = data.email.toLowerCase();
     console.log(data);
-    const url = config.api.url + "users";
-    const headers = { authorization: `Bearer ${config.api.authorization}` };
-    console.log(url);
+    // const url = config.api.url + "users";
+    // const headers = { authorization: `Bearer ${config.api.authorization}` };
+    // console.log(url);
+    // try {
+    //   const response = await axios.get(url, { headers });
+    //   console.log(response);
+    //   // console.log(response.data);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
     try {
-      const response = await axios.get(url, { headers });
+      setIsLoading(true);
+      const response = await fetcher.get("/users");
       console.log(response);
-      // console.log(response.data);
+      console.log(`Request took ${response.duration}ms`);
     } catch (error) {
-      console.error(error);
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+
+    if (error) {
+      return <div>Error: {error.message}</div>;
     }
   };
 
   const onSubmitRegister = async (data) => {
+    data.email = data.email.toLowerCase();
     console.log(data);
+    if (data.pincode !== data.pincode2) {
+      alert(`Oooooops les mots de passe ne correspondent pas !`);
+      return;
+    }
   };
 
   return (
@@ -147,6 +175,7 @@ function Login() {
           </STYLEDButton>
         </GenericModal>
 
+        {/* FORM POUR LOGIN : */}
         <>
           {display === "login" && (
             <STYLEDLoginContainerBoxForm onSubmit={handleSubmit(onSubmitLogin)}>
@@ -223,13 +252,32 @@ function Login() {
             </STYLEDLoginContainerBoxForm>
           )}
 
+          {/* FORM POUR REGISTER : */}
           {display === "register" && (
             <STYLEDLoginContainerBoxForm
               onSubmit={handleSubmit(onSubmitRegister)}
             >
               <div>
-                <label>Adresse mail :</label>
+                <label htmlFor="pseudo">Votre pseudo :</label>
                 <STYLEDInput
+                  id="pseudo"
+                  placeholder="Saisir votre pseudo"
+                  type="text"
+                  name="pseudo"
+                  {...register("pseudo", {
+                    required: true,
+                    validate: {
+                      checkLength: (value) => value.length >= 4,
+                    },
+                  })}
+                />
+                {errors.pseudo ? <HiBan /> : <HiCheck />}
+              </div>
+
+              <div>
+                <label htmlFor="email">Adresse mail :</label>
+                <STYLEDInput
+                  id="email"
                   ref={emailInputRef}
                   autoComplete="username"
                   placeholder="Saisir votre adresse mail"
@@ -246,8 +294,9 @@ function Login() {
                 {errors.email ? <HiBan /> : <HiCheck />}
               </div>
               <div>
-                <label>Mot de passe :</label>
+                <label htmlFor="pincode1">Mot de passe :</label>
                 <STYLEDInput
+                  id="pincode1"
                   placeholder="Saisir votre mot de passe"
                   autoComplete="current-password"
                   type="password"
@@ -267,8 +316,9 @@ function Login() {
               </div>
 
               <div>
-                <label>------------ :</label>
+                <label htmlFor="pincode2">------------ :</label>
                 <STYLEDInput
+                  id="pincode2"
                   placeholder="Valider votre mot de passe"
                   autoComplete="current-password"
                   type="password"
@@ -329,6 +379,17 @@ function Login() {
                   Le mot de passe doit être de 4 signes minimum, bah wé.
                 </STYLEDErrorMessage>
               )}
+              {errors.pseudo?.type === "checkLength" && (
+                <STYLEDErrorMessage>
+                  Le pseudo doit être de 4 signes minimum, bah wé.
+                </STYLEDErrorMessage>
+              )}
+              {errors.pseudo?.type === "required" && (
+                <STYLEDErrorMessage>
+                  Il faut choisir un pseudo.
+                </STYLEDErrorMessage>
+              )}
+
               <STYLEDButton width="50%" onClick={openForgottenPasswordModal}>
                 Mot de passe oublié ?
               </STYLEDButton>
@@ -393,7 +454,7 @@ const STYLEDLoginContainerBoxForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-height: 250px;
+  /* max-height: 250px; */
   padding: 25px;
 `;
 

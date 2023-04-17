@@ -1,5 +1,14 @@
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
+import { STYLEDInput } from "../styles/genericInput";
+import {
+  STYLEDContainer,
+  STYLEDContainerBox,
+} from "../styles/genericContainer";
+import { STYLEDButton } from "../styles/genericButton";
+import { STYLEDForm } from "../styles/genericForm";
+import { STYLEDhr } from "../styles/genericHR";
+import { STYLEDErrorMessage } from "../styles/genericParagraphError";
 
 const ContactForm = () => {
   const {
@@ -12,21 +21,21 @@ const ContactForm = () => {
   const onSubmit = async (data) => {
     const { name, email, subject, message } = data;
     //TODO envoyer le mail en prenant ces données.
-    // console.log("Nom: ", name);
-    // console.log("Mail: ", email);
-    // console.log("Sujet: ", subject);
-    // console.log("Message: ", message);
+    console.log("Nom: ", name);
+    console.log("Mail: ", email);
+    console.log("Sujet: ", subject);
+    console.log("Message: ", message);
     alert("pas encore fonctionnel !");
     reset();
   };
 
   return (
-    <div>
-      <div>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <STYLEDContainer>
+      <STYLEDContainerBox>
+        <STYLEDForm onSubmit={handleSubmit(onSubmit)} noValidate>
           Pour me contacter depuis le site, utilisez ce petit formulaire !
-          <hr />
-          <input
+          <STYLEDhr />
+          <STYLEDInput
             type="text"
             name="name"
             {...register("name", {
@@ -40,8 +49,8 @@ const ContactForm = () => {
               },
             })}
             placeholder="Votre nom ?"
-          ></input>
-          <input
+          ></STYLEDInput>
+          <STYLEDInput
             type="email"
             name="email"
             {...register("email", {
@@ -50,8 +59,8 @@ const ContactForm = () => {
                 /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
             })}
             placeholder="Votre adresse mail ici"
-          ></input>
-          <input
+          ></STYLEDInput>
+          <STYLEDInput
             type="text"
             name="subject"
             {...register("subject", {
@@ -65,8 +74,8 @@ const ContactForm = () => {
               },
             })}
             placeholder="Le sujet ?"
-          ></input>
-          <input
+          ></STYLEDInput>
+          <STYLEDInput
             height="60px"
             rows={3}
             name="message"
@@ -74,28 +83,34 @@ const ContactForm = () => {
               required: true,
             })}
             placeholder="Votre message ici"
-          ></input>
-          <hr />
-          <button width="80%" height="35px" type="submit">
+          ></STYLEDInput>
+          <STYLEDhr />
+          <STYLEDButton width="80%" height="35px" type="submit">
             Envoyer votre message
-          </button>
+          </STYLEDButton>
           <div>
             {errors.name && (
-              <p className="errorMessage">{errors.name.message}</p>
+              <STYLEDErrorMessage >
+                {errors.name.message}
+              </STYLEDErrorMessage>
             )}
             {errors.email && (
-              <p className="errorMessage">
+              <STYLEDErrorMessage >
                 Merci de saisir une adresse mail valide.
-              </p>
+              </STYLEDErrorMessage>
             )}
-            {errors.subject && <p>{errors.subject.message}</p>}
+            {errors.subject && (
+              <STYLEDErrorMessage>{errors.subject.message}</STYLEDErrorMessage>
+            )}
             {errors.message && (
-              <p>Il faut saisir un message sinon ça sert à rien !</p>
+              <STYLEDErrorMessage>
+                Il faut saisir un message sinon ça sert à rien !
+              </STYLEDErrorMessage>
             )}
           </div>
-        </form>
-      </div>
-    </div>
+        </STYLEDForm>
+      </STYLEDContainerBox>
+    </STYLEDContainer>
   );
 };
 
