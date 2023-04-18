@@ -99,6 +99,7 @@ function Login() {
       setIsLoading(true);
       const response = await fetcher.post("/account/register", data);
       console.log(response);
+      //TODO fix this: (voir les interceptors)
       console.log(`Request took ${response.duration}ms`);
     } catch (error) {
       setError(error);
@@ -269,12 +270,29 @@ function Login() {
             </STYLEDLoginContainerBoxForm>
           )}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           {/* FORM POUR REGISTER : */}
           {display === "register" && (
             <STYLEDLoginContainerBoxForm
               onSubmit={handleSubmit(onSubmitRegister)}
             >
-
+              Formulaire d'inscription :
+              <STYLEDhr />
               <div>
                 <label htmlFor="firstname">Votre prénom :</label>
                 <STYLEDInput
@@ -284,8 +302,11 @@ function Login() {
                   name="firstname"
                   {...register("firstname", {
                     required: true,
+                    pattern: {
+                      value: /^[a-zA-Z]+$/,
+                    },
                     validate: {
-                      onlyLetters: /^[a-zA-Z]+$/,
+                      checkLength: (value) => value.length >= 2,
                     },
                   })}
                 />
@@ -293,7 +314,7 @@ function Login() {
               </div>
 
               <div>
-                <label htmlFor="lastname">Votre nom de famille :</label>
+                <label htmlFor="lastname">&nbsp;&nbsp;&nbsp;Votre nom :</label>
                 <STYLEDInput
                   id="lastname"
                   placeholder="Saisir votre nom de famille"
@@ -301,14 +322,16 @@ function Login() {
                   name="lastname"
                   {...register("lastname", {
                     required: true,
+                    pattern: {
+                      value: /^[a-zA-Z]+$/,
+                    },
                     validate: {
-                      onlyLetters: /^[a-zA-Z]+$/,
+                      checkLength: (value) => value.length >= 2,
                     },
                   })}
                 />
                 {errors.lastname ? <HiBan /> : <HiCheck />}
               </div>
-
 
               <div>
                 <label htmlFor="pseudo">Votre pseudo :</label>
@@ -320,13 +343,13 @@ function Login() {
                   {...register("pseudo", {
                     required: true,
                     validate: {
-                      checkLength: (value) => value.length >= 4,
+                      checkLength: (value) => value.length >= 2,
                     },
                   })}
                 />
                 {errors.pseudo ? <HiBan /> : <HiCheck />}
               </div>
-
+              <STYLEDhr />
               <div>
                 <label htmlFor="email">Adresse mail :</label>
                 <STYLEDInput
@@ -346,6 +369,8 @@ function Login() {
                 />
                 {errors.email ? <HiBan /> : <HiCheck />}
               </div>
+              <STYLEDhr />
+
               <div>
                 <label htmlFor="password1">Mot de passe :</label>
                 <STYLEDInput
@@ -397,6 +422,9 @@ function Login() {
                 S'enregistrer
               </STYLEDButton>
 
+
+
+
               {errors.firstname?.type === "onlyLetters" && (
                 <STYLEDErrorMessage>
                   Que des lettres pour le prénom voyons !
@@ -445,7 +473,7 @@ function Login() {
               )}
               {errors.pseudo?.type === "checkLength" && (
                 <STYLEDErrorMessage>
-                  Le pseudo doit être de 4 signes minimum, bah wé.
+                  Le pseudo doit être de 2 signes minimum, bah wé.
                 </STYLEDErrorMessage>
               )}
               {errors.pseudo?.type === "required" && (
