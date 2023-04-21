@@ -1,39 +1,45 @@
-import axios from 'axios';
-import config from '../../config';
+import axios from "axios";
+import config from "../../config";
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: config.api.url,
   withCredentials: true,
   headers: {
-    Authorization: `Bearer ${config.api.authorization}`,
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 });
-
+// export const axiosInstance = axios.create({
+//   baseURL: config.api.url,
+//   withCredentials: true,
+//   headers: {
+//     Authorization: `Bearer ${config.api.authorization}`,
+//     'Content-Type': 'application/json'
+//   }
+// });
 
 // Add a request interceptor
-axiosInstance.interceptors.request.use(function (config) {
-    console.log("FIRST interceptor proc")
-    config.metadata = { startTime: new Date() };
-    console.log("Request:", config);
-    return config;
-}, function (error) {
-    console.error("Request Error:", error);
-    return Promise.reject(error);
-});
+// axiosInstance.interceptors.request.use(function (config) {
+//     console.log("FIRST interceptor proc")
+//     config.metadata = { startTime: new Date() };
+//     console.log("Request:", config);
+//     return config;
+// }, function (error) {
+//     console.error("Request Error:", error);
+//     return Promise.reject(error);
+// });
 
 // Add a response interceptor
-axiosInstance.interceptors.response.use(function (response) {
-      console.log("SECOND interceptor proc")
-    const endTime = new Date();
-    response.config.metadata.endTime = endTime;
-    response.duration = endTime - response.config.metadata.startTime;
-    console.log("Response:", response);
-    return response;
-  }, function (error) {
-    console.error("Response Error:", error);
-    return Promise.reject(error);
-  });
+// axiosInstance.interceptors.response.use(function (response) {
+//       console.log("SECOND interceptor proc")
+//     const endTime = new Date();
+//     response.config.metadata.endTime = endTime;
+//     response.duration = endTime - response.config.metadata.startTime;
+//     console.log("Response:", response);
+//     return response;
+//   }, function (error) {
+//     console.error("Response Error:", error);
+//     return Promise.reject(error);
+//   });
 
 const fetcher = {};
 
@@ -79,7 +85,10 @@ fetcher.patch = async (endpoint, body = {}, params = {}) => {
 
 fetcher.delete = async (endpoint, body = {}, params = {}) => {
   try {
-    const response = await axiosInstance.delete(endpoint, { data: body, params });
+    const response = await axiosInstance.delete(endpoint, {
+      data: body,
+      params,
+    });
     return response.data;
   } catch (error) {
     console.error(error);
