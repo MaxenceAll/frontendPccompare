@@ -56,15 +56,6 @@ function Header() {
                 Login
               </SPAN_HiddenMobile>
             </NavLink>
-            <NavLink
-              to="/login2"
-              className={({ isActive }) => (isActive ? "active-link" : null)}
-            >
-              <HiUser />
-              <SPAN_HiddenMobile className="hide-mobile">
-                Login2
-              </SPAN_HiddenMobile>
-            </NavLink>
 
             <NavLink
               to="/themes"
@@ -155,7 +146,7 @@ const fadeIn = keyframes`
 const DIV_DropdownMenuContainer = styled.div`
   position: absolute;
   /* left:50vw; */
-  width:100%;
+  width: 100%;
   background-color: var(--background-color-200);
   display: flex;
   justify-content: center;
@@ -169,7 +160,7 @@ const DIV_DropdownMenuContainer = styled.div`
     flex-direction: column;
     height: 120px;
     width: 120px;
-  
+
     border: 1px solid;
     animation: ${fadeIn} 0.6s ease;
     &:hover {
@@ -182,7 +173,6 @@ const DIV_DropdownMenuContainer = styled.div`
 `;
 
 const HEADER_Container = styled.header`
-
   /* pour gèrer le focus sur double click */
   user-select: none;
 

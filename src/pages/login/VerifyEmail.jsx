@@ -59,7 +59,7 @@ function VerifyEmail() {
           Cliquez sur ce bouton pour valider votre compte.
         </div>
 
-        <STYLEDButton onClick={handleClick}>
+        <STYLEDButton width={"100%"} onClick={handleClick}>
           Valider en cliquant ici
         </STYLEDButton>
       </STYLEDContainerBox>

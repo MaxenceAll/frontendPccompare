@@ -6,20 +6,30 @@ import { STYLEDInput } from "../styles/genericInput";
 import { STYLEDButton } from "../styles/genericButton";
 
 function ForgottenPasswordModal() {
-
-    const [isModalOpenForgottenPassword, setIsModalOpenForgottenPassword] =
+  const [isModalOpenForgottenPassword, setIsModalOpenForgottenPassword] =
     useState(false);
 
-    const handleRenewPassword = () =>{
-        alert("handleRenew pass");
+  const handleRenewPassword = async () => {
+    e.preventDefault();
+    const emailObject = { email };
+    console.log(emailObject);
+    const resp = await fetcher.post("reset", emailObject);
+    console.log(resp);
+    setIsModalOpenForgottenPassword(false);
+    if (resp.result) {
+      toast.success(
+        `Envoi d'un e-mail à votre adresse : ${resp.data.accepted} ; vérifiez votre boite mail !`
+      );
+    } else {
+      if (resp.message)
+        toast.error(`Ooops erreur, retour de l'api : ${resp.data.message}`);
     }
+  };
 
-    const passwordForgottenEmailInputRef = useRef(null);
+  const passwordForgottenEmailInputRef = useRef(null);
 
   return (
     <>
-      {/* MODAL EST laiisé PAR ICI POUR GARDER LA LOGIC ICI */}
-      {/* TODO : déporter ce modal... */}
       <GenericModal
         ariaLabelMessage="Modal de récupération de mot de passe"
         isOpen={isModalOpenForgottenPassword}

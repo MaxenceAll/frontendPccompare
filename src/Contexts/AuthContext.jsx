@@ -5,8 +5,7 @@ import useCookie from "../Hooks/useCookie";
 export const AuthContext = createContext(null);
 
 export const AuthContextProvider = ({ children }) => {
-    
-  const [auth, setAuth] = useState({data: null});
+  const [auth, setAuth] = useState({ data: null });
   const authMemo = useMemo(() => ({ auth, setAuth }), [auth]);
 
   const [authCookie, setAuthCookie] = useCookie("accessToken");
@@ -14,17 +13,23 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const doFetch = async () => {
       const resp = await fetcher.get("auth");
-        console.log(resp);
-        if(!resp.data){
-          console.log("yo pas de data, tentative avec le refresh token")
-          const response = await fetcher.get("refresh");
-          // console.log(response)
+      // console.log(resp);
+      if (!resp.data) {
+        console.log("yo pas de data, tentative avec le refresh token");
+        const response = await fetcher.get("refresh");
+        console.log(response);
+        if (!response.data) {
           setAuthCookie(response.accessToken ?? null, {
-            "max-age": `${60 * 60 * 24 * 10}`, 
+            "max-age": `${60 * 60 * 24 * 10}`,
           });
-        }else{
-          setAuth(resp);
+          const resp2 = await fetcher.get("auth");
+          setAuth(resp2);
+        } else {
+          console.log("No refresh token found, you have to login.");
         }
+      } else {
+        setAuth(resp);
+      }
     };
     doFetch();
   }, []);
