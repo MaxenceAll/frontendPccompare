@@ -1,0 +1,38 @@
+.carousel--container {
+  background-color: var(--background-color-100);
+  width: 100vw;
+  height: 300px;
+  /* overflow: hidden; */
+  position: relative;
+  padding-bottom: 10%;
+}
+
+.carousel-card--container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  height: 250px;
+  /* width: 100vw; */
+}
+
+.carousel--container img {
+  /* max-width: 100%; */
+  /* position: absolute; */
+  /* z-index: -1; */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* position: absolute; */
+  z-index: -1;
+}
+
+.carousel--container p {
+  z-index: 1;
+  color: var(--main-color-100);
+}
+
+.carousel--container button {
+  z-index: 1;
+  margin-bottom: 5px;
+}

@@ -3,6 +3,8 @@ import { STYLEDButton } from "../styles/genericButton";
 
 function ButtonReturnToProps(props) {
   const navigate = useNavigate();
+  // console.log(props.destinationUrl)
+  // TODO fix props.destinationUrl not working
   return (
     <>
       <p>{props.msg}</p>

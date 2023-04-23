@@ -42,9 +42,9 @@ function ResetPassword() {
     if (resp.result) {
       toast.success(
         <ButtonReturnToProps
-          msg={"Modification de votre mot de passe avec succes !"}
+          msg={"Modification de votre mot de passe avec succes !!"}
           destinationMsg={"de login."}
-          destinationUrl={"/login"}
+          destinationUrl={"/toto"}
         />
       );
       // navigate("/login"); //TODO TROUVER UNE SOLUTION POUR AFFICHER LE MSG AVANT DE NAVIGATE Ou apres

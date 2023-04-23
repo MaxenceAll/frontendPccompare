@@ -1,15 +1,20 @@
 import React, { useRef, useState } from "react";
-import GenericModal from "../Tools/GenericModal";
 import { STYLEDForm } from "../styles/genericForm";
 import { STYLEDhr } from "../styles/genericHR";
 import { STYLEDInput } from "../styles/genericInput";
 import { STYLEDButton } from "../styles/genericButton";
+import fetcher from "../../helper/fetcher";
 
 function ForgottenPasswordModal() {
+  // Mot de passe oublié logic:
+  const passwordForgottenEmailInputRef = useRef(null);
+  const [email, setEmail] = useState(null);
   const [isModalOpenForgottenPassword, setIsModalOpenForgottenPassword] =
     useState(false);
-
-  const handleRenewPassword = async () => {
+  const openForgottenPasswordModal = (e) => {
+    setIsModalOpenForgottenPassword(true);
+  };
+  const handleRenewPassword = async (e) => {
     e.preventDefault();
     const emailObject = { email };
     console.log(emailObject);
@@ -18,7 +23,7 @@ function ForgottenPasswordModal() {
     setIsModalOpenForgottenPassword(false);
     if (resp.result) {
       toast.success(
-        `Envoi d'un e-mail à votre adresse : ${resp.data.accepted} ; vérifiez votre boite mail !`
+        `Envoi d'un e-mail à votre adresse : ${resp.data.accepted} ; vérifiez votre boite mail ! Vous avez 10 minutes pour ré-initialiser votre mot de passe.`
       );
     } else {
       if (resp.message)
@@ -26,43 +31,37 @@ function ForgottenPasswordModal() {
     }
   };
 
-  const passwordForgottenEmailInputRef = useRef(null);
-
   return (
     <>
-      <GenericModal
-        ariaLabelMessage="Modal de récupération de mot de passe"
-        isOpen={isModalOpenForgottenPassword}
-        onClose={() => setIsModalOpenForgottenPassword(false)}
-      >
-        <STYLEDForm onSubmit={handleRenewPassword}>
-          <label htmlFor="email">
-            Envoyer les instructions sur l'adresse mail suivante ?
-          </label>
-          <STYLEDhr />
-          <STYLEDInput
-            width="80%"
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Votre adresse email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            ref={passwordForgottenEmailInputRef}
-          />
-          <STYLEDhr />
-          <STYLEDButton width="40%" type="submit">
-            Oui
-          </STYLEDButton>
-          <STYLEDButton
-            width="40%"
-            type="button"
-            onClick={() => setIsModalOpenForgottenPassword(false)}
-          >
-            Non
-          </STYLEDButton>
-        </STYLEDForm>
-      </GenericModal>
+
+
+      <STYLEDForm onSubmit={(e) => handleRenewPassword(e)}>
+        <label htmlFor="renewPasswordEmail">
+          Envoyer les instructions sur l'adresse mail suivante ?
+        </label>
+        <STYLEDhr />
+        <STYLEDInput
+          width="80%"
+          id="renewPasswordEmail"
+          name="email"
+          type="email"
+          placeholder="Votre adresse email"
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          ref={passwordForgottenEmailInputRef}
+        />
+        <STYLEDhr />
+        <STYLEDButton width="40%" type="submit">
+          Envoyer
+        </STYLEDButton>
+        {/* <STYLEDButton
+          width="40%"
+          type="button"
+          onClick={() => setIsModalOpenForgottenPassword(false)}
+        >
+          Non
+        </STYLEDButton> */}
+      </STYLEDForm>
     </>
   );
 }

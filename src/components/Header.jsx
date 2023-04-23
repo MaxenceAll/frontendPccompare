@@ -153,6 +153,7 @@ const DIV_DropdownMenuContainer = styled.div`
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
+  z-index: 999;
   div {
     display: flex;
     justify-content: center;

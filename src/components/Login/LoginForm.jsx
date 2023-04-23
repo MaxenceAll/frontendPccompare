@@ -1,10 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
-import styled from "styled-components";
-
-import {
-  STYLEDContainer,
-  STYLEDContainerBox,
-} from "../styles/genericContainer";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { STYLEDInput } from "../styles/genericInput";
 import { STYLEDhr } from "../styles/genericHR";
@@ -16,26 +10,18 @@ import ForgottenPasswordModal from "./ForgottenPasswordModal";
 import GenericModal from "../Tools/GenericModal";
 import { STYLEDForm } from "../styles/genericForm";
 import { AuthContext } from "../../Contexts/AuthContext";
+import fetcher from "../../helper/fetcher";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function LoginForm() {
+  // Context Logic :
+  const { auth, setAuth } = useContext(AuthContext);
+  // console.log("authcontext:", auth);
+  const [authCookie, setAuthCookie] = useCookie("accessToken");
+  // console.log("authCookie:", authCookie);
 
-    const { auth, setAuth } = useContext(AuthContext);
-    console.log("authcontext:",auth); 
-    const [authCookie, setAuthCookie] = useCookie("accessToken");
-    console.log("authCookie:",authCookie);
-
-  const [isModalOpenForgottenPassword, setIsModalOpenForgottenPassword] =
-  useState(false);
-
-  const handleRenewPassword = () =>{
-      alert("handleRenew pass");
-  }
-
-  const passwordForgottenEmailInputRef = useRef(null);
-  const openForgottenPasswordModal = (e) => {
-    setIsModalOpenForgottenPassword(true);
-  };
-
+  // Form logic :
   const {
     register,
     handleSubmit,
@@ -43,6 +29,7 @@ function LoginForm() {
     reset,
   } = useForm();
 
+  // Login Logic :
   const onSubmitLogin = async (data) => {
     data.email = data.email.toLowerCase();
     console.log(data);
@@ -60,140 +47,132 @@ function LoginForm() {
           accessToken: response?.accessToken,
         });
         setAuthCookie(response.accessToken ?? null, {
-          "max-age": `${60 * 60 * 24 * 10}`, 
+          "max-age": `${60 * 60 * 24 * 10}`,
         });
       }
+      if (response.result === false) {
+        toast.error(
+          `Erreur lors de la connexion, retour du server: ${response.message}`
+        );
+      }
     } catch (err) {
-      console.error("Hey, l'erreur est:", err);
+      console.error("Oops une erreur apparait :", err);
     }
   };
 
-  return (
-    <STYLEDContainer>
-      <STYLEDContainerBox>
+  // Mot de passe oublié logic:
+  const [isModalOpenForgottenPassword, setIsModalOpenForgottenPassword] =
+    useState(false);
+  const openForgottenPasswordModal = (e) => {
+    setIsModalOpenForgottenPassword(true);
+  };
 
- {/* MODAL EST laiisé PAR ICI POUR GARDER LA LOGIC ICI */}
-      {/* TODO : déporter ce modal... */}
+  return (<>
+
+<ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        toastStyle={{
+          backgroundColor: "var(--background-color-100)",
+          color: "var(--main-color-100)",
+        }}
+      />
+
       <GenericModal
         ariaLabelMessage="Modal de récupération de mot de passe"
         isOpen={isModalOpenForgottenPassword}
         onClose={() => setIsModalOpenForgottenPassword(false)}
       >
-        <STYLEDForm onSubmit={handleRenewPassword}>
-          <label htmlFor="email">
-            Envoyer les instructions sur l'adresse mail suivante ?
-          </label>
-          <STYLEDhr />
-          <STYLEDInput
-            width="80%"
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Votre adresse email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            ref={passwordForgottenEmailInputRef}
-          />
-          <STYLEDhr />
-          <STYLEDButton width="40%" type="submit">
-            Oui
-          </STYLEDButton>
-          <STYLEDButton
-            width="40%"
-            type="button"
-            onClick={() => setIsModalOpenForgottenPassword(false)}
-          >
-            Non
-          </STYLEDButton>
-        </STYLEDForm>
+        <ForgottenPasswordModal />
       </GenericModal>
 
-        <STYLEDLoginContainerBoxForm onSubmit={handleSubmit(onSubmitLogin)}>
-            <ForgottenPasswordModal/>
-          <div>
-            <label htmlFor="emailInputLogin">Adresse mail :</label>
-            <STYLEDInput
-              id="emailInputLogin"
-              autoComplete="username"
-              placeholder="Saisir votre adresse mail"
-              type="text"
-              name="email"
-              {...register("email", {
-                required: "Il faut saisir une adresse mail voyons !",
-                pattern: {
-                  value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-                  message: "Adresse mail invalide",
-                },
-              })}
-            />
-            {errors.email ? <HiBan /> : <HiCheck />}
-          </div>
-          <div>
-            <label htmlFor="passwordInputLogin">Mot de passe :</label>
-            <STYLEDInput
-              id="passwordInputLogin"
-              placeholder="Saisir votre mot de passe"
-              autoComplete="current-password"
-              type="password"
-              name="password"
-              {...register("password", {
-                required: true,
-                validate: {
-                  checkLength: (value) => value.length >= 4,
-                  matchPattern: (value) =>
-                    /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
-                      value
-                    ),
-                },
-              })}
-            />
-            {errors.password ? <HiBan /> : <HiCheck />}
-          </div>
-
-          <STYLEDhr />
-
-          <STYLEDButton width="50%" type="submit">
-            S'identifier
-          </STYLEDButton>
-
-          {errors.email && (
-            <STYLEDErrorMessage>{errors.email.message}</STYLEDErrorMessage>
-          )}
-          {errors.password?.type === "matchPattern" && (
-              <STYLEDErrorMessage>
-                Doit contenir au moins une Majuscule,
-                une minuscule, une chiffre et un caractère spécial..
-              </STYLEDErrorMessage>
-            )}
-          {errors.password?.type === "required" && (
-            <STYLEDErrorMessage>
-              Il faut saisir un mot de passe voyons !
-            </STYLEDErrorMessage>
-          )}
-          {errors.password?.type === "checkLength" && (
-            <STYLEDErrorMessage>
-              Le mot de passe doit être de 4 signes minimum, bah wé.
-            </STYLEDErrorMessage>
-          )}
-          <STYLEDButton width="50%" onClick={openForgottenPasswordModal}>
-            Mot de passe oublié ?
-          </STYLEDButton>
-        </STYLEDLoginContainerBoxForm>
-
-        
-      </STYLEDContainerBox>
-    </STYLEDContainer>
-  );
+    <STYLEDForm onSubmit={handleSubmit(onSubmitLogin)}>
+      Se connecter :
+      <STYLEDhr />
+      <div>
+        <label htmlFor="emailInputLogin">Adresse mail :</label>
+        <STYLEDInput
+          id="emailInputLogin"
+          autoComplete="username"
+          placeholder="Saisir votre adresse mail"
+          type="text"
+          name="email"
+          {...register("email", {
+            required: "Il faut saisir une adresse mail voyons !",
+            pattern: {
+              value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+              message: "Adresse mail invalide",
+            },
+          })}
+        />
+        {errors.email ? (
+          <HiBan style={{ color: "red" }} />
+        ) : (
+          <HiCheck style={{ color: "green" }} />
+        )}
+      </div>
+      <div>
+        <label htmlFor="passwordInputLogin">Mot de passe :</label>
+        <STYLEDInput
+          id="passwordInputLogin"
+          placeholder="Saisir votre mot de passe"
+          autoComplete="current-password"
+          type="password"
+          name="password"
+          {...register("password", {
+            required: true,
+            validate: {
+              checkLength: (value) => value.length >= 4,
+              // TODO : réactiver cela pour la prod
+              // matchPattern: (value) =>
+              //   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+              //     value
+              //   ),
+            },
+          })}
+        />
+        {errors.password ? (
+          <HiBan style={{ color: "red" }} />
+        ) : (
+          <HiCheck style={{ color: "green" }} />
+        )}
+      </div>
+      <STYLEDhr />
+      <STYLEDButton width="50%" type="submit">
+        S'identifier
+      </STYLEDButton>
+      <STYLEDButton width="50%" onClick={openForgottenPasswordModal}>
+        Mot de passe oublié ?
+      </STYLEDButton>
+      {errors.email && (
+        <STYLEDErrorMessage>{errors.email.message}</STYLEDErrorMessage>
+      )}
+      {errors.password?.type === "matchPattern" && (
+        <STYLEDErrorMessage>
+          Doit contenir au moins une Majuscule, une minuscule, une chiffre et un
+          caractère spécial..
+        </STYLEDErrorMessage>
+      )}
+      {errors.password?.type === "required" && (
+        <STYLEDErrorMessage>
+          Il faut saisir un mot de passe voyons !
+        </STYLEDErrorMessage>
+      )}
+      {errors.password?.type === "checkLength" && (
+        <STYLEDErrorMessage>
+          Le mot de passe doit être de 4 signes minimum, bah wé.
+        </STYLEDErrorMessage>
+      )}
+    </STYLEDForm>
+    </>);
 }
 
 export default LoginForm;
-
-
-const STYLEDLoginContainerBoxForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* max-height: 250px; */
-  padding: 25px;
-`;
