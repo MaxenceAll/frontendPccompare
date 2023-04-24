@@ -10,6 +10,7 @@ import { STYLEDForm } from "../styles/genericForm";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import fetcher from "../../helper/fetcher";
 
 function RegisterForm() {
   // Context Logic :
@@ -27,12 +28,23 @@ function RegisterForm() {
   } = useForm();
 
   // Register Logic :
+  // TODO hasher le password avant
   const onSubmitRegister = async (data) => {
     data.email = data.email.toLowerCase();
     console.log(data);
     if (data.password !== data.password2) {
       toast.error(`Oooooops les mots de passe ne correspondent pas !`);
       return;
+    }else{
+      const response = await fetcher.post("/register", data);
+      console.log(response);
+      //TODO fix this: (voir les interceptors)
+      // console.log(`Request took ${response.duration}ms`);
+      if (response.result === true){
+        toast.success(`${response.message}`)
+        reset();
+      }
+      
     }
   };
 
@@ -255,6 +267,12 @@ function RegisterForm() {
         )}
         {errors.pseudo?.type === "required" && (
           <STYLEDErrorMessage>Il faut choisir un pseudo.</STYLEDErrorMessage>
+        )}
+        {errors.firstname?.type === "required" && (
+          <STYLEDErrorMessage>Il faut saisir un nom.</STYLEDErrorMessage>
+        )}
+        {errors.lastname?.type === "required" && (
+          <STYLEDErrorMessage>Il faut saisir un prénom.</STYLEDErrorMessage>
         )}
       </STYLEDForm>
     </>

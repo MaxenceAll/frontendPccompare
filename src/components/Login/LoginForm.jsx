@@ -14,12 +14,21 @@ import fetcher from "../../helper/fetcher";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 function LoginForm() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
   // console.log("authcontext:", auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   // console.log("authCookie:", authCookie);
+
+  // Reveal Password logic:
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   // Form logic :
   const {
@@ -67,9 +76,9 @@ function LoginForm() {
     setIsModalOpenForgottenPassword(true);
   };
 
-  return (<>
-
-<ToastContainer
+  return (
+    <>
+      <ToastContainer
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -94,85 +103,106 @@ function LoginForm() {
         <ForgottenPasswordModal />
       </GenericModal>
 
-    <STYLEDForm onSubmit={handleSubmit(onSubmitLogin)}>
-      Se connecter :
-      <STYLEDhr />
-      <div>
-        <label htmlFor="emailInputLogin">Adresse mail :</label>
-        <STYLEDInput
-          id="emailInputLogin"
-          autoComplete="username"
-          placeholder="Saisir votre adresse mail"
-          type="text"
-          name="email"
-          {...register("email", {
-            required: "Il faut saisir une adresse mail voyons !",
-            pattern: {
-              value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-              message: "Adresse mail invalide",
-            },
-          })}
-        />
-        {errors.email ? (
-          <HiBan style={{ color: "red" }} />
-        ) : (
-          <HiCheck style={{ color: "green" }} />
+      <STYLEDForm onSubmit={handleSubmit(onSubmitLogin)}>
+        Se connecter :
+        <STYLEDhr />
+        <div>
+          <label htmlFor="emailInputLogin">Adresse mail :</label>
+          <STYLEDInput
+            id="emailInputLogin"
+            autoComplete="username"
+            placeholder="Saisir votre adresse mail"
+            type="text"
+            name="email"
+            {...register("email", {
+              required: "Il faut saisir une adresse mail voyons !",
+              pattern: {
+                value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                message: "Adresse mail invalide",
+              },
+            })}
+          />
+          {errors.email ? (
+            <HiBan style={{ color: "red" }} />
+          ) : (
+            <HiCheck style={{ color: "green" }} />
+          )}
+        </div>
+        <div
+          style={{
+            position: "relative",
+          }}
+        >
+          <label htmlFor="passwordInputLogin">Mot de passe :</label>
+          <STYLEDInput
+            id="passwordInputLogin"
+            placeholder="Saisir votre mot de passe"
+            autoComplete="current-password"
+            type={showPassword ? "text" : "password"}
+            name="password"
+            {...register("password", {
+              required: true,
+              validate: {
+                checkLength: (value) => value.length >= 4,
+                // TODO : réactiver cela pour la prod
+                // matchPattern: (value) =>
+                //   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                //     value
+                //   ),
+              },
+            })}
+          />
+          <button
+            type="button"
+            onClick={handleTogglePassword}
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: 15,
+              transform: "translateY(-50%)",
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              outline: "none",
+            }}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+          {errors.password ? (
+            <HiBan style={{ color: "red" }} />
+          ) : (
+            <HiCheck style={{ color: "green" }} />
+          )}
+        </div>
+        <STYLEDhr />
+        <STYLEDButton width="50%" type="submit">
+          S'identifier
+        </STYLEDButton>
+        <STYLEDButton width="50%" onClick={openForgottenPasswordModal}>
+          Mot de passe oublié ?
+        </STYLEDButton>
+        {errors.email && (
+          <STYLEDErrorMessage>{errors.email.message}</STYLEDErrorMessage>
         )}
-      </div>
-      <div>
-        <label htmlFor="passwordInputLogin">Mot de passe :</label>
-        <STYLEDInput
-          id="passwordInputLogin"
-          placeholder="Saisir votre mot de passe"
-          autoComplete="current-password"
-          type="password"
-          name="password"
-          {...register("password", {
-            required: true,
-            validate: {
-              checkLength: (value) => value.length >= 4,
-              // TODO : réactiver cela pour la prod
-              // matchPattern: (value) =>
-              //   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
-              //     value
-              //   ),
-            },
-          })}
-        />
-        {errors.password ? (
-          <HiBan style={{ color: "red" }} />
-        ) : (
-          <HiCheck style={{ color: "green" }} />
+        {errors.password?.type === "matchPattern" && (
+          <STYLEDErrorMessage>
+            Doit contenir au moins une Majuscule, une minuscule, une chiffre et
+            un caractère spécial..
+          </STYLEDErrorMessage>
         )}
-      </div>
-      <STYLEDhr />
-      <STYLEDButton width="50%" type="submit">
-        S'identifier
-      </STYLEDButton>
-      <STYLEDButton width="50%" onClick={openForgottenPasswordModal}>
-        Mot de passe oublié ?
-      </STYLEDButton>
-      {errors.email && (
-        <STYLEDErrorMessage>{errors.email.message}</STYLEDErrorMessage>
-      )}
-      {errors.password?.type === "matchPattern" && (
-        <STYLEDErrorMessage>
-          Doit contenir au moins une Majuscule, une minuscule, une chiffre et un
-          caractère spécial..
-        </STYLEDErrorMessage>
-      )}
-      {errors.password?.type === "required" && (
-        <STYLEDErrorMessage>
-          Il faut saisir un mot de passe voyons !
-        </STYLEDErrorMessage>
-      )}
-      {errors.password?.type === "checkLength" && (
-        <STYLEDErrorMessage>
-          Le mot de passe doit être de 4 signes minimum, bah wé.
-        </STYLEDErrorMessage>
-      )}
-    </STYLEDForm>
-    </>);
+        {errors.password?.type === "required" && (
+          <STYLEDErrorMessage>
+            Il faut saisir un mot de passe voyons !
+          </STYLEDErrorMessage>
+        )}
+        {errors.password?.type === "checkLength" && (
+          <STYLEDErrorMessage>
+            Le mot de passe doit être de 4 signes minimum, bah wé.
+          </STYLEDErrorMessage>
+        )}
+      </STYLEDForm>
+    </>
+  );
 }
 
 export default LoginForm;

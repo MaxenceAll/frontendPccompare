@@ -55,21 +55,21 @@ const STYLEDCard = styled.div`
 
 const STYLEDCardTitle = styled.div`
   position: absolute;
-  left: 15%;
+  left: 20%;
   top: 20%;
   &:hover {
   }
 `;
 const STYLEDCardDescription = styled.div`
   position: absolute;
-  left: 15%;
+  left: 20%;
   top: 40%;
   &:hover {
   }
 `;
 const STYLEDCardButton = styled.div`
   position: absolute;
-  left: 15%;
+  left: 20%;
   top: 75%;
   &:hover {
   }
