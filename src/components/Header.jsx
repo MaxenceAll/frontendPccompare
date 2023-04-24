@@ -11,17 +11,21 @@ import { NavLink } from "react-router-dom";
 import { GiComputerFan } from "react-icons/gi";
 import { FaWrench, FaSearchDollar } from "react-icons/fa";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
 import CPU_IMAGE from "../assets/generics/CPU.jpg";
 import GPU_IMAGE from "../assets/generics/GPU.jpg";
 import MEMORY_IMAGE from "../assets/generics/MEMORY.jpg";
 import MB_IMAGE from "../assets/generics/MOTHERBOARD.jpg";
+import { ThemeContext } from "../Contexts/ThemeContext";
+import { STYLEDButton } from "./styles/genericButton";
+import { BsSun, BsMoon } from "react-icons/bs";
 
 function Header() {
-  const [showDropdown, setShowDropdown] = useState(false);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
+  const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -76,6 +80,12 @@ function Header() {
                 Apropos
               </SPAN_HiddenMobile>
             </NavLink>
+        <STYLEDButton
+        onClick={()=>toggleTheme()}
+        >
+          {theme==="dark" && <BsSun/>}
+          {theme==="light" && <BsMoon/>}
+        </STYLEDButton>
           </DIV_LinksContainer>
         </DIV_TopHeader>
 

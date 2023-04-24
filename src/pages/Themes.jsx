@@ -1,45 +1,25 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   STYLEDContainer,
   STYLEDContainerBox,
 } from "../components/styles/genericContainer";
 import { STYLEDButton } from "../components/styles/genericButton";
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import { ThemeContext } from "../Contexts/ThemeContext";
 
 function Themes() {
-
-  const [theme, setTheme] = useState("dark");
-
-
-
-  useEffect(() => {
-    const root = document.querySelector(":root");
-    switch (theme) {
-      case "dark":
-        root.style.setProperty("--main-color", "#18dc0c");
-        root.style.setProperty("--secondary-color", "#11291b");
-        root.style.setProperty("--background-color", "#10170f");
-        break;
-      case "light":
-        root.style.setProperty("--main-color", "#ff0033");
-        root.style.setProperty("--secondary-color", "#4d0000");
-        root.style.setProperty("--background-color", "#330000");
-        break;
-      default:
-        break;
-    }
-  }, [theme]);
-
+  const { setTheme } = useContext(ThemeContext);
 
   function handleClick(color) {
     setTheme(color);
     toast.success(`Changement de theme pour ${color}`);
   }
-
   return (
     <>
-
-<ToastContainer
+      <ToastContainer
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -51,22 +31,22 @@ function Themes() {
         pauseOnHover
         theme="light"
         toastStyle={{
-          backgroundColor: "var(--background-color)",
-          color: "var(--main-color)",
+          backgroundColor: "var(--background-color-100)",
+          color: "var(--main-color-100)",
         }}
       />
 
       <STYLEDContainer>
+        Thème prédéfinis :
         <STYLEDContainerBox>
-          Thème prédéfinis :
-          <div>
+          <>
             <STYLEDButton width="25%" onClick={() => handleClick("dark")}>
               Dark
             </STYLEDButton>
             <STYLEDButton width="25%" onClick={() => handleClick("light")}>
               Light
             </STYLEDButton>
-          </div>
+          </>
         </STYLEDContainerBox>
       </STYLEDContainer>
     </>
