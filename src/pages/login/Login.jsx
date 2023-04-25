@@ -14,7 +14,7 @@ import fetcher from "../../helper/fetcher";
 function Login() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  // console.log("authcontext:", auth);
+  console.log("authcontext:", auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   // console.log("authCookie:", authCookie);
 
