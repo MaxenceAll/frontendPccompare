@@ -85,8 +85,7 @@ function Login() {
       </GenericModal>
 
       <STYLEDLoginContainerBox>
-        {auth?.data?.email ? <>have data:{auth.data.email}</> : <>no data</>}
-        {auth?.data ? (
+        {auth?.data?.email ? (
           <>
             <p>Bonjour, {auth.data.email}</p>
             <STYLEDButton width="100%" onClick={openDisconnectModal}>

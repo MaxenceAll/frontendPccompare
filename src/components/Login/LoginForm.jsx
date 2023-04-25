@@ -13,7 +13,7 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import fetcher from "../../helper/fetcher";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function LoginForm() {
@@ -39,25 +39,20 @@ function LoginForm() {
   } = useForm();
 
   // Login Logic :
+  const navigate = useNavigate();
   const onSubmitLogin = async (data) => {
     data.email = data.email.toLowerCase();
-    console.log(data);
+    // console.log(data);
     const { email, password } = data;
     try {
       const response = await fetcher.post("/login", { email, password });
       console.log("response from login fetcher.post query:", response);
       if (response.data) {
-        setAuth({
-          email: response?.data?.email,
-          pseudo: response?.data?.pseudo,
-          firstname: response?.data?.firstname,
-          lastname: response?.data?.lastname,
-          id_role: response?.data?.id_role,
-          accessToken: response?.accessToken,
-        });
+        setAuth(response.data);
         setAuthCookie(response.accessToken ?? null, {
           "max-age": `${60 * 60 * 24 * 10}`,
         });
+        // navigate("/dashboard")
       }
       if (response.result === false) {
         toast.error(

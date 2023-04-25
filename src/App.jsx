@@ -2,7 +2,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  RouterProvider
+  RouterProvider,
 } from "react-router-dom";
 
 import Layout from "./layouts/MainLayout";
@@ -14,6 +14,11 @@ import About from "./pages/About";
 import Themes from "./pages/Themes";
 import Error from "./components/Error";
 import ResetPassword from "./pages/login/ResetPassword";
+import Dashboard from "./pages/dashboard/dashboard";
+import { AuthContext } from "./Contexts/AuthContext";
+import { useContext } from "react";
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,19 +29,20 @@ const router = createBrowserRouter(
       <Route path="reset" element={<ResetPassword />} />
       <Route path="about" element={<About />} />
       <Route path="themes" element={<Themes />} />
+      <Route path="dashboard" element={<Dashboard />} />
 
       <Route path="*" element={<NotFound />} />
     </Route>
   )
 );
 
-
-
-function App() { 
+function App() {
+  const { auth, setAuth } = useContext(AuthContext);
   return (
     <div>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} auth={auth} setAuth={setAuth} />
     </div>
   );
 }
 export default App;
+  

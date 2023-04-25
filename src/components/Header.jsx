@@ -20,11 +20,16 @@ import MEMORY_IMAGE from "../assets/generics/MEMORY.jpg";
 import MB_IMAGE from "../assets/generics/MOTHERBOARD.jpg";
 import { ThemeContext } from "../Contexts/ThemeContext";
 import { STYLEDButton } from "./styles/genericButton";
-import { BsSun, BsMoon } from "react-icons/bs";
+import { BsSun, BsMoon, BsEmojiSunglasses } from "react-icons/bs";
+import { AuthContext } from "../Contexts/AuthContext";
 
 function Header() {
+  // Context Logic :
+  const { auth, setAuth } = useContext(AuthContext);
+  // console.log(auth);
+  //Theme logic:
   const { theme, toggleTheme } = useContext(ThemeContext);
-
+  // Dropdown menu logic:
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -40,7 +45,17 @@ function Header() {
               {import.meta.env.VITE_APP_NAME}
             </NavLink>
           </div>
-
+          {auth?.data && (
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) => (isActive ? "active-link" : null)}
+            >
+              <HiUser />
+              <SPAN_HiddenMobile className="hide-mobile">
+                {auth?.data?.email} ({auth?.data?.last_connection})
+              </SPAN_HiddenMobile>
+            </NavLink>
+          )}
           <DIV_LinksContainer>
             <NavLink
               to="/"
@@ -51,6 +66,7 @@ function Header() {
                 Home
               </SPAN_HiddenMobile>
             </NavLink>
+
             <NavLink
               to="/login"
               className={({ isActive }) => (isActive ? "active-link" : null)}
@@ -80,12 +96,11 @@ function Header() {
                 Apropos
               </SPAN_HiddenMobile>
             </NavLink>
-        <STYLEDButton
-        onClick={()=>toggleTheme()}
-        >
-          {theme==="dark" && <BsSun/>}
-          {theme==="light" && <BsMoon/>}
-        </STYLEDButton>
+            <STYLEDButton onClick={() => toggleTheme()}>
+              {theme === "dark" && <BsSun />}
+              {theme === "light" && <BsMoon />}
+              {theme === "custom" && <BsEmojiSunglasses />}
+            </STYLEDButton>
           </DIV_LinksContainer>
         </DIV_TopHeader>
 

@@ -1,6 +1,6 @@
 .carousel--container {
   background-color: var(--background-color-100);
-  width: 100vw;
+  width: 100dvw;
   height: 300px;
   /* overflow: hidden; */
   position: relative;
