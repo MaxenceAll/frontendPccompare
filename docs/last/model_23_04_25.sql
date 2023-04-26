@@ -1,0 +1,11 @@
+INSERT INTO model (Id_model, name, Id_category) VALUES (1, "RTX 4000",1);
+INSERT INTO model (Id_model, name, Id_category) VALUES (2, "RTX 3000",1);
+INSERT INTO model (Id_model, name, Id_category) VALUES (3, "RX 7000",1);
+INSERT INTO model (Id_model, name, Id_category) VALUES (4, "RX 6000",1);
+INSERT INTO model (Id_model, name, Id_category) VALUES (5, "AMD RYZEN 7",2);
+INSERT INTO model (Id_model, name, Id_category) VALUES (6, "AMD RYZEN 5",2);
+INSERT INTO model (Id_model, name, Id_category) VALUES (7, "AMD RYZEN 3",2);
+INSERT INTO model (Id_model, name, Id_category) VALUES (8, "Intel Core i9",2);
+INSERT INTO model (Id_model, name, Id_category) VALUES (9, "Intel Core i7",2);
+INSERT INTO model (Id_model, name, Id_category) VALUES (10, "Intel Core i5",2);
+INSERT INTO model (Id_model, name, Id_category) VALUES (11, "Intel Core i3",2);
