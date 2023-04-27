@@ -11,21 +11,30 @@ import {
 import { STYLEDButton } from "../../components/styles/genericButton";
 
 import styled from "styled-components";
-
+import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
+import { useState } from "react";
 
 function VerifyEmail() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("t");
 
+  const [respResult, setRespResult] = useState(null);
   // console.log(token)
 
   const handleClick = async () => {
     try {
-      const resp = await fetcher.get(`register/verify?${token}`,  {});
-      console.log(resp);
-      if (resp.result==="success") {
-        toast.success("Validation de votre compte avec success !");
+      const resp = await fetcher.get(`register/verify?${token}`, {});
+      // console.log(resp);
+      setRespResult(resp.result);
+      if (resp.result === "success") {
+        toast.success(
+          <ButtonReturnToProps
+            msg="Validation de votre compte avec success !"
+            destinationUrl="login"
+            destinationMsg="de login"
+          />
+        );
       } else {
         toast.error(`Oops erreur, retour de l'api : ${resp.message}`);
       }
@@ -55,11 +64,9 @@ function VerifyEmail() {
           }}
         />
 
-        <div>
-          Cliquez sur ce bouton pour valider votre compte.
-        </div>
+        <div>Cliquez sur ce bouton pour valider votre compte.</div>
 
-        <STYLEDButton width={"100%"} onClick={handleClick}>
+        <STYLEDButton width={"100%"} onClick={handleClick} disabled={respResult === "success"}>
           Valider en cliquant ici
         </STYLEDButton>
       </STYLEDContainerBox>

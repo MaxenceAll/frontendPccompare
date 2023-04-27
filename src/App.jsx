@@ -15,10 +15,9 @@ import Themes from "./pages/Themes";
 import Error from "./components/Error";
 import ResetPassword from "./pages/login/ResetPassword";
 import Dashboard from "./pages/dashboard/dashboard";
+import Compare from "./pages/compare/Compare";
 import { AuthContext } from "./Contexts/AuthContext";
 import { useContext } from "react";
-
-
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +29,7 @@ const router = createBrowserRouter(
       <Route path="about" element={<About />} />
       <Route path="themes" element={<Themes />} />
       <Route path="dashboard" element={<Dashboard />} />
+      <Route path="compare" element={<Compare />} />
 
       <Route path="*" element={<NotFound />} />
     </Route>
@@ -45,4 +45,3 @@ function App() {
   );
 }
 export default App;
-  

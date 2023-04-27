@@ -37,7 +37,7 @@ export default function HomeCarousel() {
         const response = await fetcher.get("carousel", {
           signal: controller.signal,
         });
-        console.log(response.data);
+        // console.log(response.data);
         isMounted && setCarouselData(response.data);
       } catch (error) {
         console.error(error);
@@ -69,7 +69,7 @@ export default function HomeCarousel() {
             ))}
         </Slider>
       </div>
-      <STYLEDhr/>
+      {/* <STYLEDhr/> */}
       <STYLEDCardContainer>
         {carouselData &&
           carouselData.map((card) => (
@@ -80,6 +80,7 @@ export default function HomeCarousel() {
               description={card.description}
               button_text={card.button_text}
               navigate_to={card.navigate_to}
+              long_description={card.long_description}
             />
           ))}
       </STYLEDCardContainer>

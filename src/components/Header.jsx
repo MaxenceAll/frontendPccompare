@@ -52,7 +52,11 @@ function Header() {
             >
               <HiUser />
               <SPAN_HiddenMobile className="hide-mobile">
-                {auth?.data?.email} ({auth?.data?.last_connection})
+                <>Bonjour,{auth?.data?.pseudo}</>
+                <DIV_lastConnexionStyle>
+                  ( Dernière connection:
+                  {new Date(auth?.data?.last_connection).toLocaleString()})
+                </DIV_lastConnexionStyle>
               </SPAN_HiddenMobile>
             </NavLink>
           )}
@@ -61,27 +65,35 @@ function Header() {
               to="/"
               className={({ isActive }) => (isActive ? "active-link" : null)}
             >
-              <HiHome />
+              <STYLEDHeaderLinkIcon>
+                <HiHome />
+              </STYLEDHeaderLinkIcon>
               <SPAN_HiddenMobile className="hide-mobile">
                 Home
               </SPAN_HiddenMobile>
             </NavLink>
 
-            <NavLink
-              to="/login"
-              className={({ isActive }) => (isActive ? "active-link" : null)}
-            >
-              <HiUser />
-              <SPAN_HiddenMobile className="hide-mobile">
-                Login
-              </SPAN_HiddenMobile>
-            </NavLink>
+            {!auth?.data && (
+              <NavLink
+                to="/login"
+                className={({ isActive }) => (isActive ? "active-link" : null)}
+              >
+                <STYLEDHeaderLinkIcon>
+                  <HiUser />
+                </STYLEDHeaderLinkIcon>
+                <SPAN_HiddenMobile className="hide-mobile">
+                  Login
+                </SPAN_HiddenMobile>
+              </NavLink>
+            )}
 
             <NavLink
               to="/themes"
               className={({ isActive }) => (isActive ? "active-link" : null)}
             >
-              <HiAdjustments />
+              <STYLEDHeaderLinkIcon>
+                <HiAdjustments />
+              </STYLEDHeaderLinkIcon>
               <SPAN_HiddenMobile className="hide-mobile">
                 Theme
               </SPAN_HiddenMobile>
@@ -91,7 +103,9 @@ function Header() {
               to="/about"
               className={({ isActive }) => (isActive ? "active-link" : null)}
             >
-              <HiInformationCircle />
+              <STYLEDHeaderLinkIcon>
+                <HiInformationCircle />
+              </STYLEDHeaderLinkIcon>
               <SPAN_HiddenMobile className="hide-mobile">
                 Apropos
               </SPAN_HiddenMobile>
@@ -122,25 +136,25 @@ function Header() {
         <DIV_DropdownMenuContainer>
           {showDropdown && (
             <>
-              <NavLink to="/search?s=gpu">
+              <NavLink to="/compare?s=gpu">
                 <div>
                   Carte Graphique
                   <img src={GPU_IMAGE}></img>
                 </div>
               </NavLink>
-              <NavLink to="/search?s=cpu">
+              <NavLink to="/compare?s=cpu">
                 <div>
                   C.P.U.
                   <img src={CPU_IMAGE}></img>
                 </div>
               </NavLink>
-              <NavLink to="/search?s=motherboard">
+              <NavLink to="/compare?s=motherboard">
                 <div>
                   Carte mère
                   <img src={MB_IMAGE}></img>
                 </div>
               </NavLink>
-              <NavLink to="/search?s=memory">
+              <NavLink to="/compare?s=memory">
                 <div>
                   Mémoires
                   <img src={MEMORY_IMAGE}></img>
@@ -155,6 +169,14 @@ function Header() {
 }
 
 export default Header;
+
+const STYLEDHeaderLinkIcon = styled.div`
+  text-align: center;
+`;
+
+const DIV_lastConnexionStyle = styled.div`
+  font-size: 0.5rem;
+`;
 
 const fadeIn = keyframes`
 0% {
@@ -205,9 +227,9 @@ const HEADER_Container = styled.header`
 
   position: relative;
   .active-link {
-    text-decoration: underline;
+    /* text-decoration: underline; */
     background-color: var(--secondary-color-200);
-    border-radius: 10px;
+    border-radius: 4px;
   }
 `;
 
@@ -231,7 +253,12 @@ const DIV_TopHeader = styled.div`
   }
 `;
 
-const DIV_LinksContainer = styled.div``;
+const DIV_LinksContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* gap: 5%; */
+`;
 
 const DIV_BotHeader = styled.div`
   background-color: var(--background-color-300);
@@ -240,4 +267,6 @@ const DIV_BotHeader = styled.div`
   align-items: center;
   height: 45px;
   gap: 15%;
+  position: sticky;
+  top: 0;
 `;
