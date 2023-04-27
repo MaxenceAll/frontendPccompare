@@ -17,7 +17,7 @@ export default function CardFromCarousel({
     <CardContainer>
       <CardImage alt={img_alt} src={img_src} />
       <CardTitle>{import.meta.env.VITE_APP_NAME}</CardTitle>
-      <STYLEDhr/>
+      <STYLEDhr />
       <CardDescription>{description}</CardDescription>
       <CardLongDescription>{long_description}</CardLongDescription>
       <NavLink to={navigate_to}>
@@ -48,11 +48,15 @@ const CardImage = styled.img`
   height: 400px;
   object-fit: cover;
   border-radius: 4px;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const CardTitle = styled.h1`
   font-size: 1.5rem;
-  text-align:center;
+  text-align: center;
   /* margin-top: 20px;
   margin-bottom: 10px; */
   /* margin-bottom: 20px; */
@@ -64,12 +68,10 @@ const CardTitle = styled.h1`
 const CardDescription = styled.div`
   font-size: 1rem;
   /* margin-bottom: 20px; */
-  
 `;
 const CardLongDescription = styled.div`
   font-size: 0.5rem;
   /* margin-bottom: 20px; */
-  
 `;
 
 const CardButton = styled.button`

@@ -22,11 +22,18 @@ import { ThemeContext } from "../Contexts/ThemeContext";
 import { STYLEDButton } from "./styles/genericButton";
 import { BsSun, BsMoon, BsEmojiSunglasses } from "react-icons/bs";
 import { AuthContext } from "../Contexts/AuthContext";
+import { useRef } from "react";
+import { useEffect } from "react";
+import GenericModal from "./Tools/GenericModal";
+import fetcher from "../helper/fetcher";
+import useCookie from "../Hooks/useCookie";
 
 function Header() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
   // console.log(auth);
+  // Cookie logic for disconnect
+  const [authCookie, setAuthCookie] = useCookie("accessToken");
   //Theme logic:
   const { theme, toggleTheme } = useContext(ThemeContext);
   // Dropdown menu logic:
@@ -34,137 +41,208 @@ function Header() {
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
+  const dropdownRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  // disconnect logic:
+  // Disconnect logic:
+  const [isModalOpenDisconnect, setIsModalOpenDisconnect] = useState(false);
+  const openDisconnectModal = (e) => {
+    setIsModalOpenDisconnect(true);
+  };
+  async function handleDisconnect(e) {
+    try {
+      const response = await fetcher.post("/login/logout");
+      console.log(response);
+      // Remove the access token cookie
+      document.cookie =
+        "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      setAuth(null);
+      setAuthCookie(null);
+      setIsModalOpenDisconnect(false);
+      toast.info(`Deconnexion avec succes.`);
+      setDisplay("login");
+    } catch (error) {
+      console.error("Oops une erreur apparait :", error);
+    }
+  }
 
   return (
-    <HEADER_Container>
-      <nav role="navigation">
-        <DIV_TopHeader>
-          <div>
-            <NavLink to="/">
-              <GiComputerFan />
-              {import.meta.env.VITE_APP_NAME}
-            </NavLink>
-          </div>
-          {auth?.data && (
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) => (isActive ? "active-link" : null)}
-            >
-              <HiUser />
-              <SPAN_HiddenMobile className="hide-mobile">
-                <>Bonjour,{auth?.data?.pseudo}</>
-                <DIV_lastConnexionStyle>
-                  ( Dernière connection:
-                  {new Date(auth?.data?.last_connection).toLocaleString()})
-                </DIV_lastConnexionStyle>
-              </SPAN_HiddenMobile>
-            </NavLink>
-          )}
-          <DIV_LinksContainer>
-            <NavLink
-              to="/"
-              className={({ isActive }) => (isActive ? "active-link" : null)}
-            >
-              <STYLEDHeaderLinkIcon>
-                <HiHome />
-              </STYLEDHeaderLinkIcon>
-              <SPAN_HiddenMobile className="hide-mobile">
-                Home
-              </SPAN_HiddenMobile>
-            </NavLink>
+    <>
+      <GenericModal
+        ariaLabelMessage="Modal de confirmation déconnexion"
+        isOpen={isModalOpenDisconnect}
+        onClose={() => setIsModalOpenDisconnect(false)}
+      >
+        <label>Voulez-vous vraiment vous déconnecter ?</label>
+        <STYLEDButton
+          onClick={(e) => handleDisconnect(e)}
+          width="40%"
+          type="button"
+        >
+          Oui
+        </STYLEDButton>
+        <STYLEDButton
+          width="40%"
+          type="button"
+          onClick={() => setIsModalOpenDisconnect(false)}
+        >
+          Non
+        </STYLEDButton>
+      </GenericModal>
 
-            {!auth?.data && (
+      <HEADER_Container>
+        <nav role="navigation">
+          <DIV_TopHeader>
+            <div>
+              <NavLink to="/">
+                <GiComputerFan />
+                {import.meta.env.VITE_APP_NAME}
+              </NavLink>
+            </div>
+            {auth?.data && (
+              <>
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    isActive ? "active-link" : null
+                  }
+                >
+                  <HiUser />
+                  <SPAN_HiddenMobile className="hide-mobile">
+                    Bonjour,{auth?.data?.pseudo}
+                    <DIV_lastConnexionStyle>
+                      (Dernière connection:
+                      {new Date(auth?.data?.last_connection).toLocaleString()})
+                      <STYLEDButton onClick={openDisconnectModal}>
+                        x
+                      </STYLEDButton>
+                    </DIV_lastConnexionStyle>
+                  </SPAN_HiddenMobile>
+                </NavLink>
+              </>
+            )}
+            <DIV_LinksContainer>
               <NavLink
-                to="/login"
+                to="/"
                 className={({ isActive }) => (isActive ? "active-link" : null)}
               >
                 <STYLEDHeaderLinkIcon>
-                  <HiUser />
+                  <HiHome />
                 </STYLEDHeaderLinkIcon>
                 <SPAN_HiddenMobile className="hide-mobile">
-                  Login
+                  Home
                 </SPAN_HiddenMobile>
               </NavLink>
-            )}
 
-            <NavLink
-              to="/themes"
-              className={({ isActive }) => (isActive ? "active-link" : null)}
-            >
-              <STYLEDHeaderLinkIcon>
-                <HiAdjustments />
-              </STYLEDHeaderLinkIcon>
-              <SPAN_HiddenMobile className="hide-mobile">
-                Theme
-              </SPAN_HiddenMobile>
-            </NavLink>
+              {!auth?.data && (
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    isActive ? "active-link" : null
+                  }
+                >
+                  <STYLEDHeaderLinkIcon>
+                    <HiUser />
+                  </STYLEDHeaderLinkIcon>
+                  <SPAN_HiddenMobile className="hide-mobile">
+                    Login
+                  </SPAN_HiddenMobile>
+                </NavLink>
+              )}
 
-            <NavLink
-              to="/about"
-              className={({ isActive }) => (isActive ? "active-link" : null)}
-            >
-              <STYLEDHeaderLinkIcon>
-                <HiInformationCircle />
-              </STYLEDHeaderLinkIcon>
-              <SPAN_HiddenMobile className="hide-mobile">
-                Apropos
-              </SPAN_HiddenMobile>
-            </NavLink>
-            <STYLEDButton onClick={() => toggleTheme()}>
-              {theme === "dark" && <BsSun />}
-              {theme === "light" && <BsMoon />}
-              {theme === "custom" && <BsEmojiSunglasses />}
-            </STYLEDButton>
-          </DIV_LinksContainer>
-        </DIV_TopHeader>
+              <NavLink
+                to="/themes"
+                className={({ isActive }) => (isActive ? "active-link" : null)}
+              >
+                <STYLEDHeaderLinkIcon>
+                  <HiAdjustments />
+                </STYLEDHeaderLinkIcon>
+                <SPAN_HiddenMobile className="hide-mobile">
+                  Theme
+                </SPAN_HiddenMobile>
+              </NavLink>
 
-        <DIV_BotHeader>
-          <div>
-            <NavLink to="/builder">
-              <FaWrench />
-              Construire
-            </NavLink>
-          </div>
-          <div>
-            <div onClick={toggleDropdown}>
+              <NavLink
+                to="/about"
+                className={({ isActive }) => (isActive ? "active-link" : null)}
+              >
+                <STYLEDHeaderLinkIcon>
+                  <HiInformationCircle />
+                </STYLEDHeaderLinkIcon>
+                <SPAN_HiddenMobile className="hide-mobile">
+                  Apropos
+                </SPAN_HiddenMobile>
+              </NavLink>
+              <STYLEDButton onClick={() => toggleTheme()}>
+                {theme === "dark" && <BsSun />}
+                {theme === "light" && <BsMoon />}
+                {theme === "custom" && <BsEmojiSunglasses />}
+              </STYLEDButton>
+            </DIV_LinksContainer>
+          </DIV_TopHeader>
+
+          <DIV_BotHeaderContainer>
+            <DIV_BotHeader>
+              <NavLink to="/builder">
+                <FaWrench />
+                Construire
+              </NavLink>
+            </DIV_BotHeader>
+
+            <DIV_BotHeader onClick={toggleDropdown} ref={dropdownRef}>
               <FaSearchDollar />
               Chercher
-              {showDropdown ? <BsChevronUp /> : <BsChevronDown />}
-            </div>
-          </div>
-        </DIV_BotHeader>
-        <DIV_DropdownMenuContainer>
-          {showDropdown && (
-            <>
-              <NavLink to="/compare?s=gpu">
-                <div>
-                  Carte Graphique
-                  <img src={GPU_IMAGE}></img>
-                </div>
-              </NavLink>
-              <NavLink to="/compare?s=cpu">
-                <div>
-                  C.P.U.
-                  <img src={CPU_IMAGE}></img>
-                </div>
-              </NavLink>
-              <NavLink to="/compare?s=motherboard">
-                <div>
-                  Carte mère
-                  <img src={MB_IMAGE}></img>
-                </div>
-              </NavLink>
-              <NavLink to="/compare?s=memory">
-                <div>
-                  Mémoires
-                  <img src={MEMORY_IMAGE}></img>
-                </div>
-              </NavLink>
-            </>
-          )}
-        </DIV_DropdownMenuContainer>
-      </nav>
-    </HEADER_Container>
+              {showDropdown ? (
+                <BsChevronUp onClick={toggleDropdown} />
+              ) : (
+                <BsChevronDown onClick={toggleDropdown} />
+              )}
+            </DIV_BotHeader>
+          </DIV_BotHeaderContainer>
+          <DIV_DropdownMenuContainer>
+            {showDropdown && (
+              <>
+                <NavLink to="/compare?s=gpu">
+                  <div>
+                    Carte Graphique
+                    <img src={GPU_IMAGE}></img>
+                  </div>
+                </NavLink>
+                <NavLink to="/compare?s=cpu">
+                  <div>
+                    C.P.U.
+                    <img src={CPU_IMAGE}></img>
+                  </div>
+                </NavLink>
+                <NavLink to="/compare?s=motherboard">
+                  <div>
+                    Carte mère
+                    <img src={MB_IMAGE}></img>
+                  </div>
+                </NavLink>
+                <NavLink to="/compare?s=memory">
+                  <div>
+                    Mémoires
+                    <img src={MEMORY_IMAGE}></img>
+                  </div>
+                </NavLink>
+              </>
+            )}
+          </DIV_DropdownMenuContainer>
+        </nav>
+      </HEADER_Container>
+    </>
   );
 }
 
@@ -224,7 +302,8 @@ const DIV_DropdownMenuContainer = styled.div`
 const HEADER_Container = styled.header`
   /* pour gèrer le focus sur double click */
   user-select: none;
-
+  height: 100%;
+  /* overflow: scroll; */
   position: relative;
   .active-link {
     /* text-decoration: underline; */
@@ -257,10 +336,10 @@ const DIV_LinksContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* gap: 5%; */
+  gap: 5%;
 `;
 
-const DIV_BotHeader = styled.div`
+const DIV_BotHeaderContainer = styled.div`
   background-color: var(--background-color-300);
   display: flex;
   justify-content: center;
@@ -269,4 +348,12 @@ const DIV_BotHeader = styled.div`
   gap: 15%;
   position: sticky;
   top: 0;
+  /* z-index: 9999999999; */
+`;
+const DIV_BotHeader = styled.div`
+  &:hover {
+    color: var(--main-color-300);
+    background-color: var(--background-color-100);
+    border-radius: 4px;
+  }
 `;

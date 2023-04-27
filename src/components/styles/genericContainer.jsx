@@ -19,7 +19,7 @@ export const STYLEDContainer = styled.div`
 export const STYLEDContainerBox = styled.div`
 
 
-  width: 100%;
+  width: 90%;
   max-width: 1000px;
   border-radius: 15px;
   overflow: hidden;

@@ -82,14 +82,16 @@ const CardLink = styled.a`
   align-items: center;
   width: 65%;
   height: 25px;
-  background-color: var(--background-color-100);
+  background-color: var(--background-color-200);
   border-radius: 5px;
   border: 1px solid var(--main-color-100);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   &:hover {
+    background-color: var(--background-color-300);
     transform: translateY(-3px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    color: var(--main-color-300);
   }
 `;
 

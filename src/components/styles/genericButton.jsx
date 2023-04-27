@@ -18,4 +18,9 @@ export const STYLEDButton = styled.button`
     transform: translateY(-3px);
     box-shadow: 0 6px 4px rgba(0, 0, 0, 0.2);
   }
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--background-color-400);
+    color: var(--main-color-200);
+  }
 `;
