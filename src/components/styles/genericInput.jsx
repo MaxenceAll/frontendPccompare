@@ -9,4 +9,10 @@ export const STYLEDInput = styled.input`
     color: var(--secondary-color);
     background-color: var(--main-color);
   }
+  &:read-only {
+    cursor: not-allowed;
+    background-color: var(--background-color-400);
+    color: var(--main-color-200);
+  }
 `;
+

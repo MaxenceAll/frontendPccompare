@@ -13,18 +13,40 @@ export const pccompareApi = createApi({
       return headers;
     },
     credentials: "include",
-    tagTypes: ["Customer"],
+    tagTypes: ["Customer", "Account"],
   }),
   endpoints: (builder) => ({
+
+
 
     getAllCustomer: builder.query({
       query: () => "customer",
       providesTags: ["Customer"],
     }),
+    getAllAccount: builder.query({
+      query: () => "account",
+      providesTags: ["Account"],
+    }),
+    getAllUserData: builder.query({
+      query: () => "alluserdata",
+      providesTags: ["Users"],
+    }),
+    getAllRoleData: builder.query({
+      query: () => "allroledata",
+      providesTags: ["Roles"],
+    }),
+
+
+
 
 
 
   }),
 });
 
-export const {useGetAllCustomerQuery} = pccompareApi;
+export const {
+  useGetAllCustomerQuery,
+  useGetAllAccountQuery,
+  useGetAllUserDataQuery,
+  useGetAllRoleDataQuery,
+} = pccompareApi;

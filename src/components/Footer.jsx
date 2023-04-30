@@ -18,4 +18,6 @@ const FOOTER_Container = styled.footer`
   display: flex;
   justify-content: space-between;
   padding: 2%;
+  padding-top: 5%;
+  
 `;
