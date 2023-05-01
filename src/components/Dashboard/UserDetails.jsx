@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { STYLEDButton } from "../styles/genericButton";
 import { useForm } from "react-hook-form";
-import { useGetAllRoleDataQuery } from "../../features/pccompareSlice";
+import {
+  useGetAllRoleDataQuery,
+  useUpdateCustomerMutation,
+} from "../../features/pccompareSlice";
 import { STYLEDInput } from "../styles/genericInput";
 import { STYLEDSelect } from "../styles/genericSelect";
+import { STYLEDErrorMessage } from "../styles/genericParagraphError";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function UserDetails(props) {
   const [editMode, setEditMode] = useState(false);
   const { user } = props;
 
   let allRoleDataQuery = useGetAllRoleDataQuery();
-
   const {
     data: allRoleData,
     error: allRoleDataError,
@@ -20,16 +25,24 @@ function UserDetails(props) {
     isSuccess: allRoleDataIsSuccess,
   } = allRoleDataQuery;
 
-  console.log(allRoleData);
+  // console.log(allRoleData);
+
+  // redux slice pour la query update
+  const [updateCustomer, { updateCustomerIsLoading }] =
+    useUpdateCustomerMutation();
 
   // Edit form logic :
   const onSubmit = async (data) => {
-    console.log(data);
+    data.Id_customer = user?.Id_customer;
+    // console.log(data);
     try {
-      setEditMode(false);
-    } catch (err) {
-      console.error(err);
+      const response = await updateCustomer(data);
+      console.log(response);
+      toast.success(`Changement avec succes !`);
+    } catch (error) {
+      toast.error(`Oops une erreur; retour du server : ${error}`);
     }
+    setEditMode(false);
   };
   const {
     register,
@@ -82,25 +95,47 @@ function UserDetails(props) {
           <StyledCardBody>
             <StyledDetail>
               <StyledLabel>Nom:</StyledLabel>
-              <STYLEDInput defaultValue={user?.lastname} />
+              <STYLEDInput
+                defaultValue={user?.lastname}
+                {...register("lastname", { required: true })}
+              />
+              {errors.lastname && <span>This field is required</span>}
             </StyledDetail>
             <StyledDetail>
               <StyledLabel>Prénom:</StyledLabel>
-              <STYLEDInput defaultValue={user?.firstname} />
+              <STYLEDInput
+                defaultValue={user?.firstname}
+                {...register("firstname", { required: true })}
+              />
+              {errors.firstname && (
+                <STYLEDErrorMessage>This field is required</STYLEDErrorMessage>
+              )}
             </StyledDetail>
             <StyledDetail>
               <StyledLabel>Pseudo:</StyledLabel>
-              <STYLEDInput defaultValue={user?.pseudo} />
+              <STYLEDInput
+                defaultValue={user?.pseudo}
+                {...register("pseudo", { required: true })}
+              />
+              {errors.pseudo && (
+                <STYLEDErrorMessage>This field is required</STYLEDErrorMessage>
+              )}
             </StyledDetail>
             <StyledDetail>
               <StyledLabel>Role:</StyledLabel>
-              <STYLEDSelect defaultValue={role?.Id_role}>
+              <STYLEDSelect
+                defaultValue={role?.Id_role}
+                {...register("Id_role", { required: true })}
+              >
                 {allRoleData.data.map((role) => (
                   <option key={role.Id_role} value={role.Id_role}>
                     {role.title}
                   </option>
                 ))}
               </STYLEDSelect>
+              {errors.Id_role && (
+                <STYLEDErrorMessage>This field is required</STYLEDErrorMessage>
+              )}
             </StyledDetail>
           </StyledCardBody>
           <div>
@@ -117,7 +152,28 @@ function UserDetails(props) {
     );
   }
 
-  return <>{content}</>;
+  return (
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        toastStyle={{
+          backgroundColor: "var(--background-color-100)",
+          color: "var(--main-color-100)",
+        }}
+      />
+
+      {content}
+    </>
+  );
 }
 
 export default UserDetails;

@@ -16,133 +16,34 @@ import fetcher from "../../helper/fetcher";
 import Loader from "../../components/Tools/Loader";
 import GenericModal from "../../components/Tools/GenericModal";
 import UserBrowser from "../../components/Dashboard/UserBrowser";
+import UserInformations from "../../components/Dashboard/UserInformations";
+import { useGetCurrentCustomerQuery } from "../../features/pccompareSlice";
+import ImageGallery from "../../components/Dashboard/ImageGallery";
+import CarouselBrowser2 from "../../components/Dashboard/CarouselBrowser2";
+import CarouselBrowser from "../../components/Dashboard/CarouselBrowser";
 
 function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
-  console.log(auth);
+  // console.log(auth);
 
   // set title logic:
   useEffect(() => {
-    document.title = `${import.meta.env.VITE_APP_NAME} | Page de gestion`;
+    document.title = `${
+      import.meta.env.VITE_APP_NAME
+    } | Page de gestion | ${display}`;
   }, []);
 
-  //Mini form pour modify logic:
+  // get current customer info (based on auth token):
+  let currentUserQuery = useGetCurrentCustomerQuery(auth?.data?.Id_customer);
   const {
-    register,
-    handleSubmit,
-    formState: { errors = "" },
-    reset,
-  } = useForm();
+    data: currentUser,
+    error: currentUserError,
+    isError: currentUserIsError,
+    isLoading: currentUserIsLoading,
+    isSuccess: currentUserIsSuccess,
+  } = currentUserQuery;
 
-  // Edit nom logic:
-  ////////////////////////////////
-  const [editNom, setEditNom] = useState(false);
-  // le slice/mutation pour edit le nom HERE
-  const handleDoubleClickNewNom = (e) => {
-    e.stopPropagation();
-    setEditNom(!editNom);
-    reset();
-  };
-  const handleSubmitNewNom = (data) => {
-    // console.log(data);
-    // requete pour changer le nom
-    try {
-      toast.success(`Changement de nom avec succes !`);
-    } catch (error) {
-      toast.error(`Oops une erreur; retour du server : ${error}`);
-    }
-    setEditNom(false);
-    reset();
-  };
-  // Edit prénom logic:
-  ////////////////////////////////
-  const [editPrenom, setEditPrenom] = useState(false);
-  // le slice/mutation pour edit le prenom HERE
-  const handleDoubleClickNewPrenom = (e) => {
-    e.stopPropagation();
-    setEditPrenom(!editPrenom);
-    reset();
-  };
-  const handleSubmitNewPrenom = (data) => {
-    // console.log(data);
-    // requete pour changer le prenom
-    try {
-      toast.success(`Changement de prénom avec succes !`);
-    } catch (error) {
-      toast.error(`Oops une erreur; retour du server : ${error}`);
-    }
-    setEditPrenom(false);
-    reset();
-  };
-  // Edit pseudo logic:
-  ////////////////////////////////
-  const [editPseudo, setEditPseudo] = useState(false);
-  // le slice/mutation pour edit le prenom HERE
-  const handleDoubleClickNewPseudo = (e) => {
-    e.stopPropagation();
-    setEditPseudo(!editPseudo);
-    reset();
-  };
-  const handleSubmitNewPseudo = (data) => {
-    // console.log(data);
-    // requete pour changer le prenom
-    try {
-      toast.success(`Changement de pseudo avec succes !`);
-    } catch (error) {
-      toast.error(`Oops une erreur; retour du server : ${error}`);
-    }
-    setEditPseudo(false);
-    reset();
-  };
-
-  // Edit password logic:
-  ////////////////////////////////
-  const [editPassword, setEditPassword] = useState(false);
-  const handleDoubleClickNewPassword = (e) => {
-    e.stopPropagation();
-    setEditPassword(!editPassword);
-    reset();
-  };
-  const handleSubmitNewPassword = async (email) => {
-    try {
-      const emailObject = { email };
-      const resp = await toast.promise(fetcher.post("reset", emailObject), {
-        pending: "Préparation de l'e-mail...",
-        error: {
-          message: "Erreur lors de l'envoi",
-        },
-      });
-      toast.success(
-        `Envoi d'un e-mail à votre adresse : ${resp.data.accepted} ; vérifiez votre boite mail ! Vous avez 10 minutes pour ré-initialiser votre mot de passe.`
-      );
-      setEditPassword(false);
-      reset();
-    } catch (error) {
-      console.log(error);
-      toast.error(`Oops, error: ${error.message}`);
-    }
-  };
-
-  // Edit email logic:
-  ////////////////////////////////
-  const [editEmail, setEditEmail] = useState(false);
-  // le slice/mutation pour edit le email HERE
-  const handleDoubleClickNewEmail = (e) => {
-    e.stopPropagation();
-    setEditEmail(!editEmail);
-    reset();
-  };
-  const handleSubmitNewEmail = (data) => {
-    // console.log(data);
-    // requete pour changer le prenom
-    try {
-      toast.success(`Changement d'e-mail' avec succes !`);
-    } catch (error) {
-      toast.error(`Oops une erreur; retour du server : ${error}`);
-    }
-    setEditEmail(false);
-    reset();
-  };
+  // console.log(currentUser);
 
   // Disconnect logic:
   const [isModalOpenDisconnect, setIsModalOpenDisconnect] = useState(false);
@@ -150,25 +51,20 @@ function Dashboard() {
     setIsModalOpenDisconnect(true);
   };
 
-  return (
-    <STYLEDContainer>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastStyle={{
-          backgroundColor: "var(--background-color-100)",
-          color: "var(--main-color-100)",
-        }}
-      />
+  const [display, setDisplay] = useState("Vos informations");
 
+  if (currentUserIsLoading) {
+    return (
+      <STYLEDContainer>
+        <>
+          <Loader />
+        </>
+      </STYLEDContainer>
+    );
+  }
+
+  return (
+    <>
       <GenericModal
         ariaLabelMessage="Modal de confirmation déconnexion"
         isOpen={isModalOpenDisconnect}
@@ -190,303 +86,91 @@ function Dashboard() {
           Non
         </STYLEDButton>
       </GenericModal>
-
-      <STYLEDContainerBox>
+      <STYLEDContainer>
         <div>
-          Bonjour, {auth?.data?.firstname} {auth?.data?.lastname}, bienvenue sur
-          votre page de gestion :
+          Bonjour, {currentUser?.data?.firstname}({currentUser?.data?.pseudo})
+          {currentUser?.data?.lastname}, bienvenue sur votre page de gestion :
         </div>
-        <STYLEDButton width="100%" onClick={openDisconnectModal}>
+        <STYLEDButton width="50%" onClick={openDisconnectModal}>
           Se déconnecter.
         </STYLEDButton>
-        <STYLEDhr />
-        <STYLEDContainerBox>
-          <DIV_InformationUserContainer>
-            <table>
-              <thead>
-                <tr>
-                  <th>Vos informations:</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Nom:</td>
-                  <td onDoubleClick={handleDoubleClickNewNom}>
-                    {!editNom ? (
-                      auth?.data?.lastname ?? "-------------------"
-                    ) : (
-                      <>
-                        <form onSubmit={handleSubmit(handleSubmitNewNom)}>
-                          <STYLEDInput
-                            defaultValue={auth?.data?.lastname}
-                            placeholder="Saisir le nouveau nom"
-                            type="text"
-                            name="lastname"
-                            {...register("lastname", {
-                              required: "Saisir un nouveau nom !",
-                              validate: {
-                                checkLength: (value) => value.length <= 255,
-                                onlyLetters: (value) =>
-                                  /^[A-Za-z]+$/.test(value),
-                              },
-                            })}
-                          ></STYLEDInput>
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton onClick={handleDoubleClickNewNom}>
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Prénom:</td>
-                  <td onDoubleClick={handleDoubleClickNewPrenom}>
-                    {!editPrenom ? (
-                      auth?.data?.firstname ?? "-------------------"
-                    ) : (
-                      <>
-                        <form onSubmit={handleSubmit(handleSubmitNewPrenom)}>
-                          <STYLEDInput
-                            defaultValue={auth?.data?.firstname}
-                            placeholder="Saisir le nouveau prénom"
-                            type="text"
-                            name="firstname"
-                            {...register("firstname", {
-                              required: "Saisir un nouveau prénom !",
-                              validate: {
-                                checkLength: (value) => value.length <= 255,
-                                onlyLetters: (value) =>
-                                  /^[A-Za-z]+$/.test(value),
-                              },
-                            })}
-                          ></STYLEDInput>
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton onClick={handleDoubleClickNewPrenom}>
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Pseudo:</td>
-                  <td onDoubleClick={handleDoubleClickNewPseudo}>
-                    {!editPseudo ? (
-                      auth?.data?.pseudo ?? "-------------------"
-                    ) : (
-                      <>
-                        <form onSubmit={handleSubmit(handleSubmitNewPseudo)}>
-                          <STYLEDInput
-                            defaultValue={auth?.data?.pseudo}
-                            placeholder="Saisir le nouveau pseudo"
-                            type="text"
-                            name="pseudo"
-                            {...register("pseudo", {
-                              required: "Saisir un nouveau pseudo !",
-                              validate: {
-                                checkLength: (value) => value.length <= 255,
-                              },
-                            })}
-                          ></STYLEDInput>
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton onClick={handleDoubleClickNewPseudo}>
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Mot de passe:</td>
-                  <td onDoubleClick={handleDoubleClickNewPassword}>
-                    {!editPassword ? (
-                      "******"
-                    ) : (
-                      <>
-                        <form
-                          onSubmit={handleSubmit(() =>
-                            handleSubmitNewPassword(auth?.data?.email)
-                          )}
-                        >
-                          <STYLEDInput
-                            readOnly={true}
-                            defaultValue={auth?.data?.email}
-                          ></STYLEDInput>
 
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton onClick={handleDoubleClickNewPassword}>
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
+        <hr style={{ width: "80%" }} />
 
-                <tr>
-                  <td>Email:</td>
-                  <td>
-                    {!editEmail ? (
-                      auth?.data?.email ?? "-------------------"
-                    ) : (
-                      <>
-                        <form onSubmit={handleSubmit(handleSubmitNewEmail)}>
-                          <STYLEDInput
-                            defaultValue={auth?.data?.email}
-                            placeholder="Saisir le nouvel email"
-                            type="email"
-                            name="email"
-                            {...register("email", {
-                              required: "Saisir un nouvel email !",
-                              validate: {
-                                checkLength: (value) => value.length <= 255,
-                              },
-                              pattern: {
-                                value:
-                                  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                                message: "Saisir une adresse email valide !",
-                              },
-                            })}
-                          ></STYLEDInput>
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton
-                      onClick={handleDoubleClickNewEmail}
-                      disabled={auth?.data?.role !== "Administrateur"}
-                    >
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Type de compte:</td>
-                  <td> {auth?.data?.role ?? "-------------------"}</td>
-                </tr>
-                <tr>
-                  <td>Compte crée depuis:</td>
-                  <td>
-                    {new Date(auth?.data?.createdAt).toLocaleString() ??
-                      "-------------------"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Compte crée par:</td>
-                  <td> {auth?.data?.createdBy ?? "-------------------"}</td>
-                </tr>
-                <tr>
-                  <td>Dernière modification :</td>
-                  <td>
-                    {new Date(auth?.data?.modifiedAt).toLocaleString() ??
-                      "-------------------"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Dernière modification :</td>
-                  <td> {auth?.data?.modifiedBy ?? "-------------------"}</td>
-                </tr>
-                <tr>
-                  <td>Dernière connection :</td>
-                  <td>
-                    {new Date(auth?.data?.last_connection).toLocaleString() ??
-                      "-------------------"}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            {/* ALL ERRORS here : */}
-            {/* lastname : */}
-            {errors.lastname?.type === "checkLength" && (
-              <STYLEDErrorMessage>
-                Maximum 255 signes pour le nom svp !
-              </STYLEDErrorMessage>
-            )}
-            {errors.lastname?.type === "onlyLetters" && (
-              <STYLEDErrorMessage>
-                Que des lettres pour le nom svp !
-              </STYLEDErrorMessage>
-            )}
-            {/* firstname : */}
-            {errors.firstname?.type === "checkLength" && (
-              <STYLEDErrorMessage>
-                Maximum 255 signes pour le prénom svp !
-              </STYLEDErrorMessage>
-            )}
-            {errors.firstname?.type === "onlyLetters" && (
-              <STYLEDErrorMessage>
-                Que des lettres pour le prénom svp !
-              </STYLEDErrorMessage>
-            )}
-            {/* pseudo : */}
-            {errors.pseudo?.type === "checkLength" && (
-              <STYLEDErrorMessage>
-                Maximum 255 signes pour le prénom svp !
-              </STYLEDErrorMessage>
-            )}
-            {/* email : */}
-            {errors?.email?.type === "pattern" && (
-              <STYLEDErrorMessage>Adresse mail invalide.</STYLEDErrorMessage>
-            )}
-          </DIV_InformationUserContainer>
-        </STYLEDContainerBox>
-      </STYLEDContainerBox>
-      {auth?.data?.role === "Administrateur" ? (
-        <STYLEDContainer>
-          <STYLEDContainerBox>
-            <DIV_UserBrowserForAdmins>
-              <UserBrowser />
-            </DIV_UserBrowserForAdmins>
-          </STYLEDContainerBox>
-        </STYLEDContainer>
+        <STYLEDOptionsButtons>
+          <STYLEDButton
+            onClick={() => setDisplay("Vos informations")}
+            className={display === "Vos informations" ? "active" : ""}
+          >
+            Vos informations
+          </STYLEDButton>
+          {auth?.data?.role === "Administrateur" ? (
+            <STYLEDButton
+              onClick={() => setDisplay("Gérer les utilisateurs")}
+              className={display === "Gérer les utilisateurs" ? "active" : ""}
+            >
+              Gérer les utilisateurs
+            </STYLEDButton>
+          ) : null}
+          {auth?.data?.role === "Administrateur" ? (
+            <STYLEDButton
+              onClick={() => setDisplay("Gérer le carousel")}
+              className={display === "Gérer le carousel" ? "active" : ""}
+            >
+              Gérer le carousel
+            </STYLEDButton>
+          ) : null}
+          <STYLEDButton
+            onClick={() => setDisplay("Mes favoris")}
+            className={display === "Mes favoris" ? "active" : ""}
+          >
+            Mes favoris
+          </STYLEDButton>
+          <STYLEDButton
+            onClick={() => setDisplay("Mes commentaires")}
+            className={display === "Mes commentaires" ? "active" : ""}
+          >
+            Mes commentaires
+          </STYLEDButton>
+          <STYLEDButton
+            onClick={() => setDisplay("Ma gallerie")}
+            className={display === "Ma gallerie" ? "active" : ""}
+          >
+            Ma gallerie
+          </STYLEDButton>
+        </STYLEDOptionsButtons>
+
+        <hr style={{ width: "80%" }} />
+      </STYLEDContainer>
+
+      {display === "Vos informations" ? <UserInformations /> : null}
+      {display === "Gérer les utilisateurs" ? (
+        auth?.data?.role === "Administrateur" ? (
+          <UserBrowser />
+        ) : null
       ) : null}
-    </STYLEDContainer>
+      {display === "Gérer le carousel" ? (
+        auth?.data?.role === "Administrateur" ? (
+          <CarouselBrowser2 />
+        ) : null
+      ) : null}
+      {display === "Ma gallerie" ? <ImageGallery /> : null}
+    </>
   );
 }
 
 export default Dashboard;
 
-const DIV_InformationUserContainer = styled.div`
- font-size: clamp(0.5rem, 3vw, 1.5rem);
-
+const STYLEDOptionsButtons = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  div {
-    
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .active {
+    background-color: var(--background-color-300);
+    color: var(--main-color-300);
+    margin: 0 10px;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 4px rgba(0, 0, 0, 0.2);
   }
-`;
-const DIV_UserBrowserForAdmins = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 `;

@@ -12,4 +12,6 @@ export const STYLEDhr = styled.hr`
   border: 1px solid var(--main-color-100);
   border-color: ${(props) => props.color || "var(--main-color-100)"};
 
+  margin-top:5%;
+  margin-bottom:5%;
 `;

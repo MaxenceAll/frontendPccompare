@@ -14,6 +14,9 @@ import { FaWrench, FaSearchDollar } from "react-icons/fa";
 import { useContext, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import CPU_IMAGE from "../assets/generics/CPU.jpg";
 import GPU_IMAGE from "../assets/generics/GPU.jpg";
 import MEMORY_IMAGE from "../assets/generics/MEMORY.jpg";
@@ -79,6 +82,25 @@ function Header() {
 
   return (
     <>
+
+
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        toastStyle={{
+          backgroundColor: "var(--background-color-100)",
+          color: "var(--main-color-100)",
+        }}
+      />
+    
       <GenericModal
         ariaLabelMessage="Modal de confirmation déconnexion"
         isOpen={isModalOpenDisconnect}

@@ -13,12 +13,9 @@ export const pccompareApi = createApi({
       return headers;
     },
     credentials: "include",
-    tagTypes: ["Customer", "Account"],
+    tagTypes: ["Customer", "Account", "Users", "Roles"],
   }),
   endpoints: (builder) => ({
-
-
-
     getAllCustomer: builder.query({
       query: () => "customer",
       providesTags: ["Customer"],
@@ -35,9 +32,20 @@ export const pccompareApi = createApi({
       query: () => "allroledata",
       providesTags: ["Roles"],
     }),
+    
 
-
-
+    getCurrentCustomer: builder.query({
+      query: (Id_customer) => `customer/${Id_customer}`,
+      providesTags: ["Users"],
+    }),
+    updateCustomer: builder.mutation({
+      query: ({ Id_customer, pseudo, firstname, lastname, email }) => ({
+        url: `customer/${Id_customer}`,
+        method: "PUT",
+        body: { Id_customer, pseudo, firstname, lastname, email },
+      }),
+      invalidatesTags: ["Users"],
+    }),
 
 
 
@@ -49,4 +57,6 @@ export const {
   useGetAllAccountQuery,
   useGetAllUserDataQuery,
   useGetAllRoleDataQuery,
+  useGetCurrentCustomerQuery,
+  useUpdateCustomerMutation,
 } = pccompareApi;

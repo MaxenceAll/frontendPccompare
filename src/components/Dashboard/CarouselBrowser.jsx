@@ -1,28 +1,47 @@
-import React, { useState } from "react";
-import { useGetAllUserDataQuery } from "../../features/pccompareSlice";
-import styled from "styled-components";
-import { STYLEDButton } from "../styles/genericButton";
-import { STYLEDhr } from "../styles/genericHR";
-import Loader from "../Tools/Loader";
-import { FixedSizeList, VariableSizeList } from "react-window";
-import UserDetails from "./UserDetails";
+import React, { useEffect, useState } from "react";
 import {
   STYLEDContainer,
   STYLEDContainerBox,
 } from "../styles/genericContainer";
+import fetcher from "../../helper/fetcher";
+import styled from "styled-components";
+import Loader from "../Tools/Loader";
+import { FixedSizeList } from "react-window";
+import { STYLEDhr } from "../styles/genericHR";
+import { STYLEDButton } from "../styles/genericButton";
+import CarouselDetails from "./CarouselDetails";
 
-function UserBrowser() {
-  let allUserDataQuery = useGetAllUserDataQuery();
+function CarouselBrowser() {
+  const [carouselData, setCarouselData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const {
-    data: allUserData,
-    error: allUserDataError,
-    isError: allUserDataIsError,
-    isLoading: allUserDataIsLoading,
-    isSuccess: allUserDataIsSuccess,
-  } = allUserDataQuery;
+  // console.log(carouselData);
 
-  // console.log(allUserData);
+  useEffect(() => {
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getData = async () => {
+      try {
+        const response = await fetcher.get("carousel", {
+          signal: controller.signal,
+        });
+        isMounted && setCarouselData(response.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    const timeout = setTimeout(() => {
+      getData();
+    }, 2000); // delay the execution by 2 seconds
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, []);
 
   // // PAGINATION LOGIC
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,22 +66,24 @@ function UserBrowser() {
   };
 
   let content = "";
-  if (allUserDataIsSuccess) {
+  if (!isLoading) {
     const startIndex = pageSize * (currentPage - 1);
     const endIndex = startIndex + pageSize;
-    const usersToDisplay = allUserData?.data?.slice(startIndex, endIndex);
+    console.log(carouselData);
+    const itemToDisplay = carouselData?.slice(startIndex, endIndex);
+    console.log(itemToDisplay);
 
     content = (
       <>
         <FixedSizeList
-          height={300}
-          itemCount={usersToDisplay.length}
-          itemSize={300}
-          width={375}
+          height={444}
+          itemCount={itemToDisplay?.length}
+          itemSize={444}
+          width={600}
         >
           {({ index, style }) => (
             <div style={style}>
-              <UserDetails user={usersToDisplay[index]} />
+              <CarouselDetails item={itemToDisplay[index]} />
             </div>
           )}
         </FixedSizeList>
@@ -78,13 +99,13 @@ function UserBrowser() {
             </STYLEDButton>
             <span>
               &nbsp;{currentPage}&nbsp;sur&nbsp;
-              {Math.ceil(allUserData?.data?.length / pageSize)}&nbsp;
+              {Math.ceil(carouselData?.length / pageSize)}&nbsp;
             </span>
             <STYLEDButton
               width="30%"
               onClick={handleNextPageClick}
               disabled={
-                currentPage === Math.ceil(allUserData?.data?.length / pageSize)
+                currentPage === Math.ceil(carouselData?.length / pageSize)
               }
             >
               Page Suivante
@@ -103,8 +124,8 @@ function UserBrowser() {
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="15">15</option>
-              <option value={allUserData?.data?.length}>
-                All({allUserData?.data?.length})
+              <option value={carouselData?.length}>
+                All({carouselData?.length})
               </option>
             </STYLEDSelect>
           </div>
@@ -112,7 +133,7 @@ function UserBrowser() {
 
         <STYLEDPageContainer>
           {Array.from(
-            { length: Math.ceil(allUserData?.data?.length / pageSize) },
+            { length: Math.ceil(carouselData?.length / pageSize) },
             (_, i) => (
               <STYLEDButton
                 style={{
@@ -137,32 +158,48 @@ function UserBrowser() {
     );
   }
 
-  if (allUserDataIsError) {
-    content = <>Oops error spotted, {allUserDataError}</>;
-  }
-  if (allUserDataIsLoading) {
-    content = (
-      <>
-        <Loader />
-      </>
+  if (isLoading) {
+    return (
+      <STYLEDContainer>
+        <STYLEDLoader>
+          <Loader />
+        </STYLEDLoader>
+      </STYLEDContainer>
     );
   }
 
   return (
-    <DIV_UserBrowserForAdmins>
+    <DIV_CarouselBrowserForAdmins>
+      Vous êtes admin, vous pouvez piloter le carousel:
+
+      {/*
       <STYLEDContainer>
         <STYLEDContainerBox>
-          Vous êtes admin, <br /> vous pouvez modifier les utilisateurs:
-          {content}
+          
+        toto
+
         </STYLEDContainerBox>
       </STYLEDContainer>
-    </DIV_UserBrowserForAdmins>
+      */}
+
+
+      <STYLEDContainer>
+        <STYLEDContainerBox>{content}</STYLEDContainerBox>
+      </STYLEDContainer>
+
+    </DIV_CarouselBrowserForAdmins>
   );
 }
 
-export default UserBrowser;
+export default CarouselBrowser;
 
-const DIV_UserBrowserForAdmins = styled.div`
+const STYLEDLoader = styled.div`
+  position: fixed;
+  top: 65%;
+  left: 45%;
+`;
+
+const DIV_CarouselBrowserForAdmins = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -3,18 +3,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./HomeCarousel.css";
-
 import styled from "styled-components";
-
 import { STYLEDButton } from "../styles/genericButton";
 import fetcher from "../../helper/fetcher";
 import { NavLink } from "react-router-dom";
-import { STYLEDhr } from "../styles/genericHR";
-import {
-  STYLEDContainer,
-  STYLEDContainerBox,
-} from "../styles/genericContainer";
 import CardFromCarousel from "./CardFromCarousel";
+import Loader from "../Tools/Loader";
+import { STYLEDContainer } from "../styles/genericContainer";
 
 export default function HomeCarousel() {
   const settings = {
@@ -27,7 +22,8 @@ export default function HomeCarousel() {
   };
 
   const [carouselData, setCarouselData] = useState();
-  // console.log(carouselData)
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
@@ -37,19 +33,32 @@ export default function HomeCarousel() {
         const response = await fetcher.get("carousel", {
           signal: controller.signal,
         });
-        // console.log(response.data);
         isMounted && setCarouselData(response.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    getData();
+    const timeout = setTimeout(() => {
+      getData();
+    }, 4000); // delay the execution by 2 seconds
 
     return () => {
       isMounted = false;
       controller.abort();
     };
   }, []);
+
+  if (isLoading) {
+    return (
+      <STYLEDContainer>
+        <STYLEDLoader>
+          <Loader />
+        </STYLEDLoader>
+      </STYLEDContainer>
+    );
+  }
 
   return (
     <>
@@ -88,14 +97,15 @@ export default function HomeCarousel() {
   );
 }
 
-
-
 const STYLEDCardContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  &:hover {
-      
-    }
+`;
+
+const STYLEDLoader = styled.div`
+  position: fixed;
+  top: 35%;
+  left: 45%;
 `;

@@ -52,6 +52,7 @@ function LoginForm() {
         setAuthCookie(response.accessToken ?? null, {
           "max-age": `${60 * 60 * 24 * 10}`,
         });
+        toast.info(`Connection avec succes.`);
         // navigate("/dashboard")
       }
       if (response.result === false) {
