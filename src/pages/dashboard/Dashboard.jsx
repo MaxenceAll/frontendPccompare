@@ -21,10 +21,13 @@ import { useGetCurrentCustomerQuery } from "../../features/pccompareSlice";
 import ImageGallery from "../../components/Dashboard/ImageGallery";
 import CarouselBrowser2 from "../../components/Dashboard/CarouselBrowser2";
 import CarouselBrowser from "../../components/Dashboard/CarouselBrowser";
+import useCookie from "../../Hooks/useCookie";
 
 function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
   // console.log(auth);
+  const [authCookie, setAuthCookie] = useCookie("accessToken");
+  // console.log("authCookie:", authCookie);
 
   // set title logic:
   useEffect(() => {
@@ -50,6 +53,22 @@ function Dashboard() {
   const openDisconnectModal = (e) => {
     setIsModalOpenDisconnect(true);
   };
+  async function handleDisconnect(e) {
+    try {
+      const response = await fetcher.post("/login/logout");
+      console.log(response);
+      // Remove the access token cookie
+      document.cookie =
+        "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      setAuth(null);
+      setAuthCookie(null);
+      setIsModalOpenDisconnect(false);
+      toast.info(`Deconnexion avec succes.`);
+      setDisplay("login");
+    } catch (error) {
+      console.error("Oops une erreur apparait :", error);
+    }
+  }
 
   const [display, setDisplay] = useState("Vos informations");
 

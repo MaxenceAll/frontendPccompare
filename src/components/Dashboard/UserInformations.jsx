@@ -28,7 +28,7 @@ function UserInformations() {
     document.title = `${
       import.meta.env.VITE_APP_NAME
     } | Page de gestion | Vos informations`;
-  }, []);
+  }, []); 
 
   // get current customer info (based on auth token):
   let currentUserQuery = useGetCurrentCustomerQuery(auth?.data?.Id_customer);
@@ -64,8 +64,13 @@ function UserInformations() {
     data.Id_customer = auth?.data?.Id_customer;
     // console.log(data);
     try {
-      await updateCustomer(data);
-      toast.success(`Changement de nom avec succes !`);
+      const resp = await updateCustomer(data);
+      console.log(resp);
+      if (resp?.result){
+        toast.success(`Changement de prénom avec succes !`);
+      } else {
+        toast.error(`Oops une erreur lors de la modification: ${resp?.message}`)
+      }
     } catch (error) {
       toast.error(`Oops une erreur; retour du server : ${error}`);
     }
@@ -84,8 +89,13 @@ function UserInformations() {
     data.Id_customer = auth?.data?.Id_customer;
     // console.log(data);
     try {
-      await updateCustomer(data);
-      toast.success(`Changement de prénom avec succes !`);
+      const resp = await updateCustomer(data);
+      console.log(resp);
+      if (resp?.result){
+        toast.success(`Changement de prénom avec succes !`);
+      } else {
+        toast.error(`Oops une erreur lors de la modification: ${resp?.message}`)
+      }
     } catch (error) {
       toast.error(`Oops une erreur; retour du server : ${error}`);
     }
@@ -102,10 +112,15 @@ function UserInformations() {
   };
   const handleSubmitNewPseudo = async (data) => {
     data.Id_customer = auth?.data?.Id_customer;
-    // console.log(data);
+    console.log(data);
     try {
-      await updateCustomer(data);
-      toast.success(`Changement de pseudo avec succes !`);
+      const resp = await updateCustomer(data);
+      console.log(resp);
+      if (resp?.data?.result){
+        toast.success(`Changement de pseudo avec succes !`);
+      } else {
+        toast.error(`Oops une erreur lors de la modification: ${resp?.message}`)
+      }
     } catch (error) {
       toast.error(`Oops une erreur; retour du server : ${error}`);
     }
@@ -153,8 +168,13 @@ function UserInformations() {
     data.Id_customer = auth?.data?.Id_customer;
     // console.log(data);
     try {
-      await updateCustomer(data);
-      toast.success(`Changement d'email avec succes !`);
+      const resp = await updateCustomer(data);
+      console.log(resp);
+      if (resp?.result){
+        toast.success(`Changement de prénom avec succes !`);
+      } else {
+        toast.error(`Oops une erreur lors de la modification: ${resp?.message}`)
+      }
     } catch (error) {
       toast.error(`Oops une erreur; retour du server : ${error}`);
     }
@@ -378,7 +398,6 @@ function UserInformations() {
                 <tr>
                   <td>Compte crée par:</td>
                   <td>
-                    {" "}
                     {currentUser?.data?.createdBy ?? "-------------------"}
                   </td>
                 </tr>
@@ -392,7 +411,7 @@ function UserInformations() {
                 <tr>
                   <td>Dernière modification:</td>
                   <td>
-                    {" "}
+
                     {currentUser?.data?.modifiedBy ?? "-------------------"}
                   </td>
                 </tr>

@@ -14,11 +14,13 @@ import About from "./pages/About";
 import Themes from "./pages/Themes";
 import Error from "./components/Error";
 import ResetPassword from "./pages/login/ResetPassword";
-import Dashboard from "./pages/dashboard/Dashboard";
+// import Dashboard from "./pages/dashboard/Dashboard";
 import Compare from "./pages/compare/Compare";
 import { AuthContext } from "./Contexts/AuthContext";
 import { useContext } from "react";
 import PrivateRoutes from "./layouts/PrivateRoutes";
+import Product from "./pages/compare/Product/Product";
+import Dashboard from "./pages/dashboard/dashboard";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,6 +32,7 @@ const router = createBrowserRouter(
       <Route path="about" element={<About />} />
       <Route path="themes" element={<Themes />} />
       <Route path="compare" element={<Compare />} />
+      <Route path="compare/product" element={<Product />} />
 
       <Route element={<PrivateRoutes />}>
         <Route path="dashboard" element={<Dashboard />} />

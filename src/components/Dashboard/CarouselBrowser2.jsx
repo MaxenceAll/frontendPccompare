@@ -28,9 +28,9 @@ function CarouselBrowser2() {
         setIsLoading(false);
       }
     };
-    const timeout = setTimeout(() => {
+    // const timeout = setTimeout(() => {
       getData();
-    }, 2000); // delay the execution by 2 seconds
+    // }, 2000); // delay the execution by 2 seconds
 
     return () => {
       isMounted = false;
@@ -57,6 +57,8 @@ function CarouselBrowser2() {
     );
   }
 
+  console.log(carouselData);
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -71,57 +73,60 @@ function CarouselBrowser2() {
       </form>
       {selectedId !== null && (
         <table>
+          <thead>
+            
+          </thead>
           <tr>
             <td>id:</td>
-            <td>{carouselData[selectedId - 1].id}</td>
+            <td>{carouselData[selectedId - 1]?.id}</td>
           </tr>
           <tr>
             <td>img_src:</td>
-            <td>{carouselData[selectedId - 1].img_src}</td>
+            <td>{carouselData[selectedId - 1]?.img_src}</td>
           </tr>
           <tr>
             <td>img_alt:</td>
-            <td>{carouselData[selectedId - 1].img_alt}</td>
+            <td>{carouselData[selectedId - 1]?.img_alt}</td>
           </tr>
           <tr>
             <td>description:</td>
-            <td>{carouselData[selectedId - 1].description}</td>
+            <td>{carouselData[selectedId - 1]?.description}</td>
           </tr>
           <tr>
             <td>button_text:</td>
-            <td>{carouselData[selectedId - 1].button_text}</td>
+            <td>{carouselData[selectedId - 1]?.button_text}</td>
           </tr>
           <tr>
             <td>createdAt:</td>
-            <td>{carouselData[selectedId - 1].createdAt}</td>
+            <td>{carouselData[selectedId - 1]?.createdAt}</td>
           </tr>
           <tr>
             <td>createdBy:</td>
-            <td>{carouselData[selectedId - 1].createdBy}</td>
+            <td>{carouselData[selectedId - 1]?.createdBy}</td>
           </tr>
           <tr>
             <td>deletedAt:</td>
-            <td>{carouselData[selectedId - 1].deletedAt}</td>
+            <td>{carouselData[selectedId - 1]?.deletedAt}</td>
           </tr>
           <tr>
             <td>deletedBy:</td>
-            <td>{carouselData[selectedId - 1].deletedBy}</td>
+            <td>{carouselData[selectedId - 1]?.deletedBy}</td>
           </tr>
           <tr>
             <td>modifiedAt:</td>
-            <td>{carouselData[selectedId - 1].modifiedAt}</td>
+            <td>{carouselData[selectedId - 1]?.modifiedAt}</td>
           </tr>
           <tr>
             <td>modifiedBy:</td>
-            <td>{carouselData[selectedId - 1].modifiedBy}</td>
+            <td>{carouselData[selectedId - 1]?.modifiedBy}</td>
           </tr>
           <tr>
             <td>navigate_to:</td>
-            <td>{carouselData[selectedId - 1].navigate_to}</td>
+            <td>{carouselData[selectedId - 1]?.navigate_to}</td>
           </tr>
           <tr>
             <td>long_description:</td>
-            <td>{carouselData[selectedId - 1].long_description}</td>
+            <td>{carouselData[selectedId - 1]?.long_description}</td>
           </tr>
         </table>
       )}

@@ -35,16 +35,24 @@ function RegisterForm() {
     if (data.password !== data.password2) {
       toast.error(`Oooooops les mots de passe ne correspondent pas !`);
       return;
-    }else{
-      const response = await fetcher.post("/register", data);
-      console.log(response);
-      //TODO fix this: (voir les interceptors)
-      // console.log(`Request took ${response.duration}ms`);
-      if (response.result === true){
-        toast.success(`${response.message}`)
+    } else {
+      const resp = await fetcher.post(`/register/pseudo`, data);
+      console.log(resp);
+      if (resp.result) {
+        const response = await fetcher.post("/register", data);
+        console.log(response);
+        //TODO fix this: (voir les interceptors)
+        // console.log(`Request took ${response.duration}ms`);
+        if (response.result === true) {
+          toast.success(`${response.message}`);
+          reset();
+        }
+      } else {
+        console.log("OK");
+        toast.error(`Ce pseudo est déjà utilisé ! Changez`);
         reset();
+        return;
       }
-      
     }
   };
 

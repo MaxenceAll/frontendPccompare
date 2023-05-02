@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import config from "../../config";
+import config from "../../config"; 
 
 export const pccompareApi = createApi({
   reducerPath: "pccompareApi",
@@ -15,6 +15,7 @@ export const pccompareApi = createApi({
     credentials: "include",
     tagTypes: ["Customer", "Account", "Users", "Roles"],
   }),
+  
   endpoints: (builder) => ({
     getAllCustomer: builder.query({
       query: () => "customer",
@@ -39,10 +40,10 @@ export const pccompareApi = createApi({
       providesTags: ["Users"],
     }),
     updateCustomer: builder.mutation({
-      query: ({ Id_customer, pseudo, firstname, lastname, email }) => ({
+      query: ({ Id_customer, pseudo, firstname, lastname, email, last_connection ,createdBy , createdAt }) => ({
         url: `customer/${Id_customer}`,
         method: "PUT",
-        body: { Id_customer, pseudo, firstname, lastname, email },
+        body: { Id_customer, pseudo, firstname, lastname, email, last_connection ,createdBy , createdAt },
       }),
       invalidatesTags: ["Users"],
     }),

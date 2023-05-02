@@ -37,7 +37,7 @@ function UserDetails(props) {
     // console.log(data);
     try {
       const response = await updateCustomer(data);
-      console.log(response);
+      // console.log(response);
       toast.success(`Changement avec succes !`);
     } catch (error) {
       toast.error(`Oops une erreur; retour du server : ${error}`);
@@ -51,11 +51,11 @@ function UserDetails(props) {
     reset,
   } = useForm();
 
-  console.log(user);
+  // console.log(user);
 
   // Find the role object that corresponds to the account's Id_role.
   const role = allRoleData?.data.find((r) => r.Id_role === user?.Id_role);
-  console.log(role?.title);
+  // console.log(role?.title);
 
   let content = "";
   if (!editMode) {
