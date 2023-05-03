@@ -15,6 +15,14 @@ import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
 import { useState } from "react";
 
 function VerifyEmail() {
+  
+  // set title logic:
+  useEffect(() => {
+    document.title = `${
+      import.meta.env.VITE_APP_NAME
+    } | Page principale | Vérification d'e-mail`;
+  }, []);
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("t");
@@ -47,26 +55,13 @@ function VerifyEmail() {
   return (
     <STYLEDContainer>
       <STYLEDContainerBox>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          toastStyle={{
-            backgroundColor: "var(--background-color-200)",
-            color: "var(--main-color-100)",
-          }}
-        />
-
         <div>Cliquez sur ce bouton pour valider votre compte.</div>
 
-        <STYLEDButton width={"100%"} onClick={handleClick} disabled={respResult === "success"}>
+        <STYLEDButton
+          width={"100%"}
+          onClick={handleClick}
+          disabled={respResult === "success"}
+        >
           Valider en cliquant ici
         </STYLEDButton>
       </STYLEDContainerBox>

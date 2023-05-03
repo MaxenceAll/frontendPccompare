@@ -16,6 +16,14 @@ import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
 import fetcher from "../../helper/fetcher";
 
 function ResetPassword() {
+  
+  // set title logic:
+  useEffect(() => {
+    document.title = `${
+      import.meta.env.VITE_APP_NAME
+    } | Page principale | Modification de mot de passe`;
+  }, []);
+
   let [searchParams] = useSearchParams();
 
   const {
@@ -36,7 +44,7 @@ function ResetPassword() {
     const token = searchParams.get("t");
     data.token = token;
     console.log(token);
-    console.log(data.token); 
+    console.log(data.token);
     const resp = await fetcher.post("reset/newpassword", data);
     console.log(resp);
     if (resp.result) {
@@ -55,23 +63,6 @@ function ResetPassword() {
 
   return (
     <STYLEDContainer>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastStyle={{
-          backgroundColor: "var(--background-color-100)",
-          color: "var(--main-color-100)",
-        }}
-      />
-
       <STYLEDContainerBox>
         <STYLEDForm onSubmit={handleSubmit(onSubmit)}>
           <div>

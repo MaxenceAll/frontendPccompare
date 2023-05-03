@@ -154,23 +154,6 @@ function UserDetails(props) {
 
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastStyle={{
-          backgroundColor: "var(--background-color-100)",
-          color: "var(--main-color-100)",
-        }}
-      />
-
       {content}
     </>
   );

@@ -13,29 +13,19 @@ import { ThemeContext } from "../Contexts/ThemeContext";
 function Themes() {
   const { setTheme } = useContext(ThemeContext);
 
+  // set title logic:
+  useEffect(() => {
+    document.title = `${
+      import.meta.env.VITE_APP_NAME
+    } | Page principale | Themes`;
+  }, []);
+
   function handleClick(color) {
     setTheme(color);
     toast.success(`Changement de theme pour ${color}`);
   }
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastStyle={{
-          backgroundColor: "var(--background-color-100)",
-          color: "var(--main-color-100)",
-        }}
-      />
-
       <STYLEDContainer>
         Thème prédéfinis :
         <STYLEDContainerBox>

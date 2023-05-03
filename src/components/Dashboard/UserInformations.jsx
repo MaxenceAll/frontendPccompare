@@ -6,7 +6,6 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
-import GenericModal from "../Tools/GenericModal";
 import { STYLEDButton } from "../styles/genericButton";
 import styled from "styled-components";
 import { AuthContext } from "../../Contexts/AuthContext";
@@ -24,6 +23,7 @@ function UserInformations() {
   const { auth, setAuth } = useContext(AuthContext);
   // console.log(auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
+  // console.log(authCookie);
 
   // set title logic:
   useEffect(() => {

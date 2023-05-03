@@ -1,34 +1,35 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import fetcher from "../helper/fetcher";
 import useCookie from "../Hooks/useCookie";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [auth, setAuth] = useState({data:null});
+  const [auth, setAuth] = useState({ data: null });
   const [authCookie, setAuthCookie] = useCookie("accessToken");
+  //TODO réfléchir à l'utilité d'un mémo ici...
   // const authMemo = useMemo(() => ({ auth, setAuth }), [auth]);
 
   useEffect(() => {
     const doFetch = async () => {
-      const resp = await fetcher.get("auth");
-      console.log("yo la response de auth fetcher is :",resp)
-      if (!resp.data) {
-        console.log("no data, trying to get a new accessToken via le refresh token");
+      const firstAuthTry = await fetcher.get("auth");
+      if (!firstAuthTry.data) {
+        console.log("Pas d'accessToken, tentative avec refreshToken.");
         const response = await fetcher.get("refresh");
-        console.log(response);
         if (response.result) {
+          console.log("Réception d'un accessToken via le refreshToken.");
           setAuthCookie(response.accessToken ?? null, {
             "max-age": `${60 * 60 * 24 * 10}`,
           });
-          const resp2 = await fetcher.get("auth");
-          console.log(resp2) 
-          setAuth(resp2);
+          const secondAuthTry = await fetcher.get("auth");
+          console.log("accessToken est ok, authentification OK !");
+          setAuth(secondAuthTry);
         } else {
-          console.log("No refresh token found, you have to login.");
+          console.log("Pas non plus de refreshToken, il faut s'identifier !");
         }
       } else {
-        setAuth(resp);
+        console.log("accessToken présent, authentification OK !");
+        setAuth(firstAuthTry);
       }
     };
     doFetch();

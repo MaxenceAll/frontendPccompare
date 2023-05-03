@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { STYLEDInput } from "../styles/genericInput";
 import { STYLEDhr } from "../styles/genericHR";
@@ -18,6 +18,13 @@ function RegisterForm() {
   // console.log("authcontext:", auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   // console.log("authCookie:", authCookie);
+
+  // set title logic:
+  useEffect(() => {
+    document.title = `${
+      import.meta.env.VITE_APP_NAME
+    } | Page principale | Formulaire d'inscription`;
+  }, []);
 
   // Form logic :
   const {
@@ -58,22 +65,6 @@ function RegisterForm() {
 
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastStyle={{
-          backgroundColor: "var(--background-color-100)",
-          color: "var(--main-color-100)",
-        }}
-      />
 
       <STYLEDForm onSubmit={handleSubmit(onSubmitRegister)}>
         Formulaire d'inscription :

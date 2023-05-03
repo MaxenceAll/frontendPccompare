@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { STYLEDInput } from "../styles/genericInput";
 import { STYLEDhr } from "../styles/genericHR";
@@ -13,19 +13,24 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import fetcher from "../../helper/fetcher";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function LoginForm() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  console.log("authcontext:", auth);
+  // console.log("authcontext:", auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   // console.log("authCookie:", authCookie);
 
+  // set title logic:
+  useEffect(() => {
+    document.title = `${
+      import.meta.env.VITE_APP_NAME
+    } | Page principale | Formulaire de login`;
+  }, []);
+
   // Reveal Password logic:
   const [showPassword, setShowPassword] = useState(false);
-
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -39,22 +44,18 @@ function LoginForm() {
   } = useForm();
 
   // Login Logic :
-  const navigate = useNavigate();
   const onSubmitLogin = async (data) => {
     data.email = data.email.toLowerCase();
     // console.log(data);
     const { email, password } = data;
     try {
       const response = await fetcher.post("/login", { email, password });
-      console.log("response from login fetcher.post query:", response); 
       if (response.data && response.result === true) {
-        console.log("yoyoyo hello there iam gonna add this to context yo :",response.data)
         setAuth(response);
         setAuthCookie(response.accessToken ?? null, {
           "max-age": `${60 * 60 * 24 * 10}`,
         });
         toast.info(`Connection avec succes.`);
-        // navigate("/dashboard")
       }
       if (response.result === false) {
         toast.error(
@@ -75,22 +76,6 @@ function LoginForm() {
 
   return (
     <>
-      {/* <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastStyle={{
-          backgroundColor: "var(--background-color-100)",
-          color: "var(--main-color-100)",
-        }}
-      /> */}
 
       <GenericModal
         ariaLabelMessage="Modal de récupération de mot de passe"
