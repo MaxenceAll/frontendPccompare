@@ -30,13 +30,15 @@ import { useEffect } from "react";
 import GenericModal from "./Tools/GenericModal";
 import fetcher from "../helper/fetcher";
 import useCookie from "../Hooks/useCookie";
+import { useDisconnect } from "../Hooks/useDisconnect";
 
 function Header() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  // console.log(auth);
-  // Cookie logic for disconnect
+  // console.log(auth);  
   const [authCookie, setAuthCookie] = useCookie("accessToken");
+  // console.log(authCookie);  
+
   //Theme logic:
   const { theme, toggleTheme } = useContext(ThemeContext);
   // Dropdown menu logic:
@@ -57,33 +59,11 @@ function Header() {
     };
   }, [dropdownRef]);
 
-  // disconnect logic:
-  // Disconnect logic:
-  const [isModalOpenDisconnect, setIsModalOpenDisconnect] = useState(false);
-  const openDisconnectModal = (e) => {
-    setIsModalOpenDisconnect(true);
-  };
-  async function handleDisconnect(e) {
-    try {
-      const response = await fetcher.post("/login/logout");
-      console.log(response);
-      // Remove the access token cookie
-      document.cookie =
-        "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      setAuth(null);
-      setAuthCookie(null);
-      setIsModalOpenDisconnect(false);
-      toast.info(`Deconnexion avec succes.`);
-    } catch (error) {
-      console.error("Oops une erreur apparait :", error);
-    }
-  }
-
   return (
     <>
 
 
-      <ToastContainer
+      {/* <ToastContainer
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -98,29 +78,8 @@ function Header() {
           backgroundColor: "var(--background-color-100)",
           color: "var(--main-color-100)",
         }}
-      />
-    
-      <GenericModal
-        ariaLabelMessage="Modal de confirmation déconnexion"
-        isOpen={isModalOpenDisconnect}
-        onClose={() => setIsModalOpenDisconnect(false)}
-      >
-        <label>Voulez-vous vraiment vous déconnecter ?</label>
-        <STYLEDButton
-          onClick={(e) => handleDisconnect(e)}
-          width="40%"
-          type="button"
-        >
-          Oui
-        </STYLEDButton>
-        <STYLEDButton
-          width="40%"
-          type="button"
-          onClick={() => setIsModalOpenDisconnect(false)}
-        >
-          Non
-        </STYLEDButton>
-      </GenericModal>
+      /> */}    
+
 
       <HEADER_Container>
         <nav role="navigation">
@@ -141,13 +100,10 @@ function Header() {
                 >
                   <HiUser />
                   <SPAN_HiddenMobile className="hide-mobile">
-                    Bonjour,{auth?.data?.pseudo}
+                    Bonjour,{auth?.data?.customer?.pseudo}
                     <DIV_lastConnexionStyle>
                       (Dernière connection:
-                      {new Date(auth?.data?.last_connection).toLocaleString()})
-                      <STYLEDButton onClick={openDisconnectModal}>
-                        x
-                      </STYLEDButton>
+                      {new Date(auth?.data?.customer?.last_connection).toLocaleString()})
                     </DIV_lastConnexionStyle>
                   </SPAN_HiddenMobile>
                 </NavLink>

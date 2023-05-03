@@ -42,7 +42,7 @@ export default function HomeCarousel() {
     };
     const timeout = setTimeout(() => {
       getData();
-    }, 4000); // delay the execution by 2 seconds
+    }, 2000);
 
     return () => {
       isMounted = false;

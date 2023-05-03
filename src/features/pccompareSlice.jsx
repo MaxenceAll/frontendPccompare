@@ -17,14 +17,8 @@ export const pccompareApi = createApi({
   }),
   
   endpoints: (builder) => ({
-    getAllCustomer: builder.query({
-      query: () => "customer",
-      providesTags: ["Customer"],
-    }),
-    getAllAccount: builder.query({
-      query: () => "account",
-      providesTags: ["Account"],
-    }),
+
+
     getAllUserData: builder.query({
       query: () => "alluserdata",
       providesTags: ["Users"],
@@ -36,7 +30,14 @@ export const pccompareApi = createApi({
     
 
     getCurrentCustomer: builder.query({
-      query: (Id_customer) => `customer/${Id_customer}`,
+      // On check si l'argument est defined ou pas avant d'envoyer la requete
+      query: (Id_customer) => {
+        if (Id_customer) {
+          return `customer/${Id_customer}`;
+        } else {
+          return {}; // test if null better
+        }
+      },
       providesTags: ["Users"],
     }),
     updateCustomer: builder.mutation({
@@ -54,8 +55,6 @@ export const pccompareApi = createApi({
 });
 
 export const {
-  useGetAllCustomerQuery,
-  useGetAllAccountQuery,
   useGetAllUserDataQuery,
   useGetAllRoleDataQuery,
   useGetCurrentCustomerQuery,

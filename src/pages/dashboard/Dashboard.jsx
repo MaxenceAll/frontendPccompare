@@ -25,7 +25,7 @@ import useCookie from "../../Hooks/useCookie";
 
 function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
-  // console.log(auth);
+  console.log(auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   // console.log("authCookie:", authCookie);
 
@@ -37,7 +37,9 @@ function Dashboard() {
   }, []);
 
   // get current customer info (based on auth token):
-  let currentUserQuery = useGetCurrentCustomerQuery(auth?.data?.Id_customer);
+  let currentUserQuery = useGetCurrentCustomerQuery(
+    auth?.data?.customer?.Id_customer
+  );
   const {
     data: currentUser,
     error: currentUserError,
@@ -107,8 +109,8 @@ function Dashboard() {
       </GenericModal>
       <STYLEDContainer>
         <div>
-          Bonjour, {currentUser?.data?.firstname}({currentUser?.data?.pseudo})
-          {currentUser?.data?.lastname}, bienvenue sur votre page de gestion :
+          Bonjour, {currentUser?.data?.customer?.firstname}({currentUser?.data?.customer?.pseudo})
+          {currentUser?.data?.customer?.lastname}, bienvenue sur votre page de gestion :
         </div>
         <STYLEDButton width="50%" onClick={openDisconnectModal}>
           Se déconnecter.

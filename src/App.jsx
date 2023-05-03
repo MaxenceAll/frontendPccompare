@@ -16,7 +16,7 @@ import Error from "./components/Error";
 import ResetPassword from "./pages/login/ResetPassword";
 // import Dashboard from "./pages/dashboard/Dashboard";
 import Compare from "./pages/compare/Compare";
-import { AuthContext } from "./Contexts/AuthContext";
+// import { AuthContext } from "./Contexts/AuthContext";
 import { useContext } from "react";
 import PrivateRoutes from "./layouts/PrivateRoutes";
 import Product from "./pages/compare/Product/Product";
@@ -44,10 +44,10 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  const { auth, setAuth } = useContext(AuthContext);
+  // const { auth, setAuth } = useContext(AuthContext);
   return (
     <div>
-      <RouterProvider router={router} auth={auth} setAuth={setAuth} />
+      <RouterProvider router={router} />
     </div>
   );
 }

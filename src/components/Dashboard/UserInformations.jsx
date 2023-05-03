@@ -30,10 +30,12 @@ function UserInformations() {
     document.title = `${
       import.meta.env.VITE_APP_NAME
     } | Page de gestion | Vos informations`;
-  }, []); 
+  }, []);
 
   // get current customer info (based on auth token):
-  let currentUserQuery = useGetCurrentCustomerQuery(auth?.data?.Id_customer);
+  let currentUserQuery = useGetCurrentCustomerQuery(
+    auth?.data?.customer?.Id_customer
+  );
   const {
     data: currentUser,
     error: currentUserError,
@@ -41,7 +43,6 @@ function UserInformations() {
     isLoading: currentUserIsLoading,
     isSuccess: currentUserIsSuccess,
   } = currentUserQuery;
-
   //Mini form pour modify logic:
   const {
     register,
@@ -63,15 +64,17 @@ function UserInformations() {
     reset();
   };
   const handleSubmitNewNom = async (data) => {
-    data.Id_customer = auth?.data?.Id_customer;
+    data.Id_customer = auth?.data?.customer?.Id_customer;
     // console.log(data);
     try {
       const resp = await updateCustomer(data);
       // console.log("yo allo la resp est:",resp);
-      if (resp?.result){
+      if (resp?.result) {
         toast.success(`Changement de prénom avec succes !`);
       } else {
-        toast.error(`Oops une erreur lors de la modification: ${resp?.message}`)
+        toast.error(
+          `Oops une erreur lors de la modification: ${resp?.message}`
+        );
       }
     } catch (error) {
       toast.error(`Oops une erreur; retour du server : ${error}`);
@@ -88,15 +91,17 @@ function UserInformations() {
     reset();
   };
   const handleSubmitNewPrenom = async (data) => {
-    data.Id_customer = auth?.data?.Id_customer;
+    data.Id_customer = auth?.data?.customer?.Id_customer;
     // console.log(data);
     try {
       const resp = await updateCustomer(data);
       console.log(resp);
-      if (resp?.result){
+      if (resp?.result) {
         toast.success(`Changement de prénom avec succes !`);
       } else {
-        toast.error(`Oops une erreur lors de la modification: ${resp?.message}`)
+        toast.error(
+          `Oops une erreur lors de la modification: ${resp?.message}`
+        );
       }
     } catch (error) {
       toast.error(`Oops une erreur; retour du server : ${error}`);
@@ -113,22 +118,24 @@ function UserInformations() {
     reset();
   };
   const handleSubmitNewPseudo = async (data) => {
-    data.Id_customer = auth?.data?.Id_customer;
+    data.Id_customer = auth?.data?.customer?.Id_customer;
     console.log(data);
     try {
       const resp = await updateCustomer(data);
-      console.log("yo allo la resp est:",resp);  
-      if (resp?.data?.result){
-        console.log("yo c'est ok ici")
+      console.log("yo allo la resp est:", resp);
+      if (resp?.data?.result) {
+        console.log("yo c'est ok ici");
         setAuthCookie(resp?.accessToken ?? null, {
           "max-age": `${60 * 60 * 24 * 10}`,
         });
         const resp2 = await fetcher.get("auth");
-        console.log(resp2)
+        console.log(resp2);
         setAuth(resp2);
         toast.success(`Changement de pseudo avec succes !`);
       } else {
-        toast.error(`Oops une erreur lors de la modification: ${resp?.message}`)
+        toast.error(
+          `Oops une erreur lors de la modification: ${resp?.message}`
+        );
       }
     } catch (error) {
       toast.error(`Oops une erreur; retour du server : ${error}`);
@@ -174,15 +181,17 @@ function UserInformations() {
     reset();
   };
   const handleSubmitNewEmail = async (data) => {
-    data.Id_customer = auth?.data?.Id_customer;
+    data.Id_customer = auth?.data?.customer?.Id_customer;
     // console.log(data);
     try {
       const resp = await updateCustomer(data);
       console.log(resp);
-      if (resp?.result){
+      if (resp?.result) {
         toast.success(`Changement de prénom avec succes !`);
       } else {
-        toast.error(`Oops une erreur lors de la modification: ${resp?.message}`)
+        toast.error(
+          `Oops une erreur lors de la modification: ${resp?.message}`
+        );
       }
     } catch (error) {
       toast.error(`Oops une erreur; retour du server : ${error}`);
@@ -217,13 +226,14 @@ function UserInformations() {
                   <td>Nom:</td>
                   <td onDoubleClick={handleDoubleClickNewNom}>
                     {!editNom ? (
-                      currentUser?.data?.lastname ?? "-------------------"
+                      currentUser?.data?.customer?.lastname ??
+                      "-------------------"
                     ) : (
                       <>
                         <form onSubmit={handleSubmit(handleSubmitNewNom)}>
                           <STYLEDInput
                             width={"80%"}
-                            defaultValue={currentUser?.data?.lastname}
+                            defaultValue={currentUser?.data?.customer?.lastname}
                             placeholder="Saisir le nouveau nom"
                             type="text"
                             name="lastname"
@@ -253,13 +263,16 @@ function UserInformations() {
                   <td>Prénom:</td>
                   <td onDoubleClick={handleDoubleClickNewPrenom}>
                     {!editPrenom ? (
-                      currentUser?.data?.firstname ?? "-------------------"
+                      currentUser?.data?.customer?.firstname ??
+                      "-------------------"
                     ) : (
                       <>
                         <form onSubmit={handleSubmit(handleSubmitNewPrenom)}>
                           <STYLEDInput
                             width={"80%"}
-                            defaultValue={currentUser?.data?.firstname}
+                            defaultValue={
+                              currentUser?.data?.customer?.firstname
+                            }
                             placeholder="Saisir le nouveau prénom"
                             type="text"
                             name="firstname"
@@ -289,13 +302,14 @@ function UserInformations() {
                   <td>Pseudo:</td>
                   <td onDoubleClick={handleDoubleClickNewPseudo}>
                     {!editPseudo ? (
-                      currentUser?.data?.pseudo ?? "-------------------"
+                      currentUser?.data?.customer?.pseudo ??
+                      "-------------------"
                     ) : (
                       <>
                         <form onSubmit={handleSubmit(handleSubmitNewPseudo)}>
                           <STYLEDInput
                             width={"80%"}
-                            defaultValue={currentUser?.data?.pseudo}
+                            defaultValue={currentUser?.data?.customer?.pseudo}
                             placeholder="Saisir le nouveau pseudo"
                             type="text"
                             name="pseudo"
@@ -328,7 +342,9 @@ function UserInformations() {
                       <>
                         <form
                           onSubmit={handleSubmit(() =>
-                            handleSubmitNewPassword(currentUser?.data?.email)
+                            handleSubmitNewPassword(
+                              currentUser?.data?.account?.email
+                            )
                           )}
                         >
                           <STYLEDInput
@@ -355,13 +371,13 @@ function UserInformations() {
                   <td>Email:</td>
                   <td>
                     {!editEmail ? (
-                      currentUser?.data?.email ?? "-------------------"
+                      currentUser?.data?.account?.email ?? "-------------------"
                     ) : (
                       <>
                         <form onSubmit={handleSubmit(handleSubmitNewEmail)}>
                           <STYLEDInput
                             width={"80%"}
-                            defaultValue={currentUser?.data?.email}
+                            defaultValue={currentUser?.data?.account?.email}
                             placeholder="Saisir le nouvel email"
                             type="email"
                             name="email"
@@ -400,35 +416,38 @@ function UserInformations() {
                 <tr>
                   <td>Compte crée:</td>
                   <td>
-                    {new Date(currentUser?.data?.createdAt).toLocaleString() ??
-                      "-------------------"}
+                    {new Date(
+                      currentUser?.data?.customer?.createdAt
+                    ).toLocaleString() ?? "-------------------"}
                   </td>
                 </tr>
                 <tr>
                   <td>Compte crée par:</td>
                   <td>
-                    {currentUser?.data?.createdBy ?? "-------------------"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Dernière modification:</td>
-                  <td>
-                    {new Date(currentUser?.data?.modifiedAt).toLocaleString() ??
+                    {currentUser?.data?.customer?.createdBy ??
                       "-------------------"}
                   </td>
                 </tr>
                 <tr>
                   <td>Dernière modification:</td>
                   <td>
-
-                    {currentUser?.data?.modifiedBy ?? "-------------------"}
+                    {new Date(
+                      currentUser?.data?.customer?.modifiedAt
+                    ).toLocaleString() ?? "-------------------"}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Dernière modification:</td>
+                  <td>
+                    {currentUser?.data?.customer?.modifiedBy ??
+                      "-------------------"}
                   </td>
                 </tr>
                 <tr>
                   <td>Dernière connection:</td>
                   <td>
                     {new Date(
-                      currentUser?.data?.last_connection
+                      currentUser?.data?.customer?.last_connection
                     ).toLocaleString() ?? "-------------------"}
                   </td>
                 </tr>
@@ -478,7 +497,6 @@ export default UserInformations;
 
 const DIV_InformationUserContainer = styled.div`
   font-size: clamp(0.5rem, 3vw, 1.5rem);
-
   display: flex;
   justify-content: center;
   align-items: center;

@@ -69,9 +69,9 @@ function CarouselBrowser() {
   if (!isLoading) {
     const startIndex = pageSize * (currentPage - 1);
     const endIndex = startIndex + pageSize;
-    console.log(carouselData);
+    // console.log(carouselData);
     const itemToDisplay = carouselData?.slice(startIndex, endIndex);
-    console.log(itemToDisplay);
+    // console.log(itemToDisplay);
 
     content = (
       <>

@@ -49,7 +49,7 @@ function LoginForm() {
       console.log("response from login fetcher.post query:", response); 
       if (response.data && response.result === true) {
         console.log("yoyoyo hello there iam gonna add this to context yo :",response.data)
-        setAuth(response.data);
+        setAuth(response);
         setAuthCookie(response.accessToken ?? null, {
           "max-age": `${60 * 60 * 24 * 10}`,
         });
@@ -75,7 +75,7 @@ function LoginForm() {
 
   return (
     <>
-      <ToastContainer
+      {/* <ToastContainer
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -90,7 +90,7 @@ function LoginForm() {
           backgroundColor: "var(--background-color-100)",
           color: "var(--main-color-100)",
         }}
-      />
+      /> */}
 
       <GenericModal
         ariaLabelMessage="Modal de récupération de mot de passe"

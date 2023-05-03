@@ -10,6 +10,8 @@ import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
 import LoginForm from "../../components/Login/LoginForm";
 import RegisterForm from "../../components/Login/RegisterForm";
 import fetcher from "../../helper/fetcher";
+import DisconnectButton from "../../components/Login/DisconnectButton";
+import { useDisconnect } from "../../Hooks/useDisconnect";
 
 
 function Login() {
@@ -23,25 +25,15 @@ function Login() {
   const [display, setDisplay] = useState("login");
 
   // Disconnect logic:
+  const [disconnect, isDisconnecting] = useDisconnect();
   const [isModalOpenDisconnect, setIsModalOpenDisconnect] = useState(false);
   const openDisconnectModal = (e) => {
     setIsModalOpenDisconnect(true);
   };
   async function handleDisconnect(e) {
-    try {
-      const response = await fetcher.post("/login/logout");
-      console.log(response);
-      // Remove the access token cookie
-      document.cookie =
-        "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      setAuth(null);
-      setAuthCookie(null);
-      setIsModalOpenDisconnect(false);
-      toast.info(`Deconnexion avec succes.`);
-      setDisplay("login");
-    } catch (error) {
-      console.error("Oops une erreur apparait :", error);
-    }
+    disconnect();
+    setIsModalOpenDisconnect(false);
+    toast.info(`Deconnexion avec succes.`);
   }
 
   return (
@@ -73,8 +65,9 @@ function Login() {
           onClick={(e) => handleDisconnect(e)}
           width="40%"
           type="button"
+          disabled={isDisconnecting}
         >
-          Oui
+          {isDisconnecting ? 'Déconnexion en cours...' : 'Oui'}
         </STYLEDButton>
         <STYLEDButton
           width="40%"
@@ -86,9 +79,9 @@ function Login() {
       </GenericModal>
 
       <STYLEDLoginContainerBox>
-        {auth?.data?.email ? (
+        {auth?.data?.account ? (
           <>
-            <p>Bonjour, {auth.data.email}</p>
+            <p>Bonjour, {auth.data.account}</p>
             <STYLEDButton width="100%" onClick={openDisconnectModal}>
               Se déconnecter.
             </STYLEDButton>
