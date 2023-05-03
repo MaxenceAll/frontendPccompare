@@ -19,7 +19,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 function LoginForm() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  // console.log("authcontext:", auth);
+  console.log("authcontext:", auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   // console.log("authCookie:", authCookie);
 
@@ -46,8 +46,9 @@ function LoginForm() {
     const { email, password } = data;
     try {
       const response = await fetcher.post("/login", { email, password });
-      console.log("response from login fetcher.post query:", response);
-      if (response.data) {
+      console.log("response from login fetcher.post query:", response); 
+      if (response.data && response.result === true) {
+        console.log("yoyoyo hello there iam gonna add this to context yo :",response.data)
         setAuth(response.data);
         setAuthCookie(response.accessToken ?? null, {
           "max-age": `${60 * 60 * 24 * 10}`,

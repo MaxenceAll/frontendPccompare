@@ -18,10 +18,12 @@ import {
 } from "../../features/pccompareSlice";
 import Loader from "../Tools/Loader";
 import { STYLEDErrorMessage } from "../styles/genericParagraphError";
+import useCookie from "../../Hooks/useCookie";
 
 function UserInformations() {
   const { auth, setAuth } = useContext(AuthContext);
   // console.log(auth);
+  const [authCookie, setAuthCookie] = useCookie("accessToken");
 
   // set title logic:
   useEffect(() => {
@@ -65,7 +67,7 @@ function UserInformations() {
     // console.log(data);
     try {
       const resp = await updateCustomer(data);
-      console.log(resp);
+      // console.log("yo allo la resp est:",resp);
       if (resp?.result){
         toast.success(`Changement de prénom avec succes !`);
       } else {
@@ -115,8 +117,15 @@ function UserInformations() {
     console.log(data);
     try {
       const resp = await updateCustomer(data);
-      console.log(resp);
+      console.log("yo allo la resp est:",resp);  
       if (resp?.data?.result){
+        console.log("yo c'est ok ici")
+        setAuthCookie(resp?.accessToken ?? null, {
+          "max-age": `${60 * 60 * 24 * 10}`,
+        });
+        const resp2 = await fetcher.get("auth");
+        console.log(resp2)
+        setAuth(resp2);
         toast.success(`Changement de pseudo avec succes !`);
       } else {
         toast.error(`Oops une erreur lors de la modification: ${resp?.message}`)

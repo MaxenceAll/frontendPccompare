@@ -10,7 +10,7 @@ import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
 import { pccompareApi } from "./features/pccompareSlice";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
 
     <Provider store={store}>
       <ApiProvider api={pccompareApi}>
@@ -24,5 +24,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </ApiProvider>
     </Provider>
     
-  </React.StrictMode>
+  // </React.StrictMode>
 );

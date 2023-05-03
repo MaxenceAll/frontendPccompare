@@ -74,7 +74,6 @@ function Header() {
       setAuthCookie(null);
       setIsModalOpenDisconnect(false);
       toast.info(`Deconnexion avec succes.`);
-      setDisplay("login");
     } catch (error) {
       console.error("Oops une erreur apparait :", error);
     }
