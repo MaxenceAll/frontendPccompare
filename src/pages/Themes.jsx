@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   STYLEDContainer,
   STYLEDContainerBox,
 } from "../components/styles/genericContainer";
 import { STYLEDButton } from "../components/styles/genericButton";
-import styled from "styled-components";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useLocalStorage from "../Hooks/useLocalStorage";
 import { ThemeContext } from "../Contexts/ThemeContext";
 
 function Themes() {

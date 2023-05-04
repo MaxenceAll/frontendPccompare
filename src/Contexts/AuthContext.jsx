@@ -13,12 +13,13 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const doFetch = async () => {
       const firstAuthTry = await fetcher.get("auth");
+      // console.log(firstAuthTry);
       if (!firstAuthTry.data) {
         console.log("Pas d'accessToken, tentative avec refreshToken.");
-        const response = await fetcher.get("refresh");
-        if (response.result) {
+        const tryingWithRefreshToken = await fetcher.get("refresh");
+        if (tryingWithRefreshToken.result) {
           console.log("Réception d'un accessToken via le refreshToken.");
-          setAuthCookie(response.accessToken ?? null, {
+          setAuthCookie(tryingWithRefreshToken.accessToken ?? null, {
             "max-age": `${60 * 60 * 24 * 10}`,
           });
           const secondAuthTry = await fetcher.get("auth");

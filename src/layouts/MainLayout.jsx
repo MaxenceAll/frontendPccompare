@@ -5,10 +5,8 @@ import Footer from "../components/Footer";
 
 export default function Layout() {
   return (
-    <DIV_AppContainer className="app-container">
+    <DIV_AppContainer>
       <Header />
-      {/* <Header /> */}
-
       <main>
         <Outlet />
       </main>

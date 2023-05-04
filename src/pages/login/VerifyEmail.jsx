@@ -1,21 +1,16 @@
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { useLocation } from "react-router-dom";
-
 import fetcher from "../../helper/fetcher";
 import {
   STYLEDContainer,
   STYLEDContainerBox,
 } from "../../components/styles/genericContainer";
 import { STYLEDButton } from "../../components/styles/genericButton";
-
-import styled from "styled-components";
 import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
 import { useState } from "react";
 
 function VerifyEmail() {
-  
   // set title logic:
   useEffect(() => {
     document.title = `${

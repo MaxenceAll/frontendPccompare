@@ -1,17 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
-import {
-  STYLEDContainer,
-  STYLEDContainerBox,
-} from "../../components/styles/genericContainer";
-import { STYLEDhr } from "../../components/styles/genericHR";
+import { STYLEDContainer } from "../../components/styles/genericContainer";
 import { STYLEDButton } from "../../components/styles/genericButton";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
-import { STYLEDInput } from "../../components/styles/genericInput";
-import { STYLEDErrorMessage } from "../../components/styles/genericParagraphError";
 import fetcher from "../../helper/fetcher";
 import Loader from "../../components/Tools/Loader";
 import GenericModal from "../../components/Tools/GenericModal";
@@ -25,7 +18,7 @@ import useCookie from "../../Hooks/useCookie";
 
 function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
-  console.log(auth);
+  // console.log(auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   // console.log("authCookie:", authCookie);
 
@@ -109,8 +102,10 @@ function Dashboard() {
       </GenericModal>
       <STYLEDContainer>
         <div>
-          Bonjour, {currentUser?.data?.customer?.firstname}({currentUser?.data?.customer?.pseudo})
-          {currentUser?.data?.customer?.lastname}, bienvenue sur votre page de gestion :
+          Bonjour, {currentUser?.data?.customer?.firstname}(
+          {currentUser?.data?.customer?.pseudo})
+          {currentUser?.data?.customer?.lastname}, bienvenue sur votre page de
+          gestion :
         </div>
         <STYLEDButton width="50%" onClick={openDisconnectModal}>
           Se déconnecter.

@@ -22,6 +22,7 @@ export function useDisconnect() {
           "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         setAuth(null);
         setAuthCookie(null);
+        toast.success(`Déconnection avec succès !`)
       } else {
         console.error(
           `Oops une erreur lors de la déconnection, retour de l'api ${response?.message}:`

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import GenericModal from "../../components/Tools/GenericModal";
@@ -9,8 +9,6 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
 import LoginForm from "../../components/Login/LoginForm";
 import RegisterForm from "../../components/Login/RegisterForm";
-import fetcher from "../../helper/fetcher";
-import DisconnectButton from "../../components/Login/DisconnectButton";
 import { useDisconnect } from "../../Hooks/useDisconnect";
 
 
