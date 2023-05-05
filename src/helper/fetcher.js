@@ -38,7 +38,7 @@ const fetcher = {};
 fetcher.get = async (endpoint, params = {}) => {
   try {
     const response = await axiosInstance.get(endpoint, { params });
-    response.data.duration = response.duration;
+    // response.data.duration = response.duration;
     return response.data;
   } catch (error) {
     console.error(error);

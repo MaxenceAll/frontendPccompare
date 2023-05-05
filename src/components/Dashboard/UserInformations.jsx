@@ -124,13 +124,14 @@ function UserInformations() {
       const resp = await updateCustomer(data);
       console.log("yo allo la resp est:", resp);
       if (resp?.data?.result) {
-        console.log("yo c'est ok ici");
-        setAuthCookie(resp?.accessToken ?? null, {
-          "max-age": `${60 * 60 * 24 * 10}`,
-        });
-        const resp2 = await fetcher.get("auth");
-        console.log(resp2);
-        setAuth(resp2);
+        // console.log("yo c'est ok ici");
+        // setAuthCookie(resp?.accessToken ?? null, {
+        //   "max-age": `${60 * 60 * 24 * 10}`,
+        // });
+        // const resp2 = await fetcher.get("auth");
+        // console.log(resp2);
+        // setAuth(resp2);
+        setAuthCookie(null, { expires: new Date(0) });
         toast.success(`Changement de pseudo avec succes !`);
       } else {
         toast.error(
@@ -141,7 +142,7 @@ function UserInformations() {
       toast.error(`Oops une erreur; retour du server : ${error}`);
     }
     setEditPseudo(false);
-    reset();
+    // reset();
   };
 
   // Edit password logic:

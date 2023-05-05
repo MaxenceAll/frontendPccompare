@@ -1,14 +1,38 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
 
-function ProductHeader() {
+function ProductHeader(props) {
+  const { model } = props;
+  const { article } = props;
+  const { category } = props;
+
+  console.log(model);
+  console.log(article);
+  console.log(category);
+
   return (
     <>
-      <p>(Model) here</p>
-      <h2>(Article designation) here</h2>
-      <p>(Total note ****) here</p>
-      <p>(Favorite it) here</p>
+      <STYLED_Category>
+        <NavLink to={"/compare?c=gpu"}>{category.name}</NavLink>
+      </STYLED_Category>
+      <STYLED_Model>
+        <NavLink to={"/compare?c=gpu&m=gtx%203000"}>{model.name}</NavLink>
+      </STYLED_Model>
+      <STYLED_Article>
+        <h1>{article.designation}</h1>
+      </STYLED_Article>
+      {/* <p>(Total note ****) here</p>
+      <p>(Favorite it) here</p> */}
     </>
   );
 }
 
 export default ProductHeader;
+
+const STYLED_Category = styled.div`
+  text-decoration: underline;
+  color: var(--main-color-200);
+`;
+const STYLED_Model = styled.div``;
+const STYLED_Article = styled.div``;

@@ -12,6 +12,9 @@ export default function PrivateRoutes({ children, ...rest }) {
   const { auth } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log(auth);
+console.log(isLoading);
+
   useEffect(() => {
     setIsLoading(!auth?.data);
   }, [auth]);
@@ -26,7 +29,7 @@ export default function PrivateRoutes({ children, ...rest }) {
     );
   }
 
-  if (!auth?.data) {
+  if (!auth?.data || auth?.data === null || auth === null) {
     toast.warning("Il faut être identifié pour accèder à cette page !");
     return <Navigate to="/login" />;
   }

@@ -22,13 +22,6 @@ function Dashboard() {
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   // console.log("authCookie:", authCookie);
 
-  // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page de gestion | ${display}`;
-  }, []);
-
   // get current customer info (based on auth token):
   let currentUserQuery = useGetCurrentCustomerQuery(
     auth?.data?.customer?.Id_customer
