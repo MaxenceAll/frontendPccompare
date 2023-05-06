@@ -41,10 +41,10 @@ export const pccompareApi = createApi({
       providesTags: ["Users"],
     }),
     updateCustomer: builder.mutation({
-      query: ({ Id_customer, pseudo, firstname, lastname, email, last_connection ,createdBy , createdAt }) => ({
+      query: ({ Id_customer, pseudo, firstname, lastname, email, last_connection ,createdBy , createdAt , img_src}) => ({
         url: `customer/${Id_customer}`,
         method: "PUT",
-        body: { Id_customer, pseudo, firstname, lastname, email, last_connection ,createdBy , createdAt },
+        body: { Id_customer, pseudo, firstname, lastname, email, last_connection ,createdBy , createdAt, img_src },
       }),
       invalidatesTags: ["Users"],
     }),

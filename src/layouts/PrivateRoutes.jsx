@@ -12,8 +12,8 @@ export default function PrivateRoutes({ children, ...rest }) {
   const { auth } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log(auth);
-console.log(isLoading);
+  // console.log(auth);
+// console.log(isLoading);
 
   useEffect(() => {
     setIsLoading(!auth?.data);

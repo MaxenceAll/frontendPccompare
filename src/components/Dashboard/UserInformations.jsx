@@ -18,6 +18,8 @@ import {
 import Loader from "../Tools/Loader";
 import { STYLEDErrorMessage } from "../styles/genericParagraphError";
 import useCookie from "../../Hooks/useCookie";
+import Image from "./Image/Image";
+import AvatarImage from "../Header/AvatarImage";
 
 function UserInformations() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -212,289 +214,309 @@ function UserInformations() {
   }
 
   return (
-    <STYLEDContainer>
-      <>
-        <STYLEDContainerBox>
-          <DIV_InformationUserContainer>
-            <table>
-              <thead>
-                <tr>
-                  <th>Vos informations:</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Nom:</td>
-                  <td onDoubleClick={handleDoubleClickNewNom}>
-                    {!editNom ? (
-                      currentUser?.data?.customer?.lastname ??
-                      "-------------------"
-                    ) : (
-                      <>
-                        <form onSubmit={handleSubmit(handleSubmitNewNom)}>
-                          <STYLEDInput
-                            width={"80%"}
-                            defaultValue={currentUser?.data?.customer?.lastname}
-                            placeholder="Saisir le nouveau nom"
-                            type="text"
-                            name="lastname"
-                            {...register("lastname", {
-                              required: "Saisir un nouveau nom !",
-                              validate: {
-                                checkLength: (value) => value.length <= 255,
-                                onlyLetters: (value) =>
-                                  /^[A-Za-z]+$/.test(value),
-                              },
-                            })}
-                          ></STYLEDInput>
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton onClick={handleDoubleClickNewNom}>
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Prénom:</td>
-                  <td onDoubleClick={handleDoubleClickNewPrenom}>
-                    {!editPrenom ? (
-                      currentUser?.data?.customer?.firstname ??
-                      "-------------------"
-                    ) : (
-                      <>
-                        <form onSubmit={handleSubmit(handleSubmitNewPrenom)}>
-                          <STYLEDInput
-                            width={"80%"}
-                            defaultValue={
-                              currentUser?.data?.customer?.firstname
-                            }
-                            placeholder="Saisir le nouveau prénom"
-                            type="text"
-                            name="firstname"
-                            {...register("firstname", {
-                              required: "Saisir un nouveau prénom !",
-                              validate: {
-                                checkLength: (value) => value.length <= 255,
-                                onlyLetters: (value) =>
-                                  /^[A-Za-z]+$/.test(value),
-                              },
-                            })}
-                          ></STYLEDInput>
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton onClick={handleDoubleClickNewPrenom}>
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Pseudo:</td>
-                  <td onDoubleClick={handleDoubleClickNewPseudo}>
-                    {!editPseudo ? (
-                      currentUser?.data?.customer?.pseudo ??
-                      "-------------------"
-                    ) : (
-                      <>
-                        <form onSubmit={handleSubmit(handleSubmitNewPseudo)}>
-                          <STYLEDInput
-                            width={"80%"}
-                            defaultValue={currentUser?.data?.customer?.pseudo}
-                            placeholder="Saisir le nouveau pseudo"
-                            type="text"
-                            name="pseudo"
-                            {...register("pseudo", {
-                              required: "Saisir un nouveau pseudo !",
-                              validate: {
-                                checkLength: (value) => value.length <= 255,
-                              },
-                            })}
-                          ></STYLEDInput>
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton onClick={handleDoubleClickNewPseudo}>
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Mot de passe:</td>
-                  <td onDoubleClick={handleDoubleClickNewPassword}>
-                    {!editPassword ? (
-                      "******"
-                    ) : (
-                      <>
-                        <form
-                          onSubmit={handleSubmit(() =>
-                            handleSubmitNewPassword(
-                              currentUser?.data?.account?.email
-                            )
-                          )}
-                        >
-                          <STYLEDInput
-                            readOnly={true}
-                            width={"80%"}
-                            defaultValue={"Mail de récupération?"}
-                          ></STYLEDInput>
+    <>
+      <STYLEDContainer>
+        <>
+          <STYLEDContainerBox>
+            <DIV_InformationUserContainer>
+              Vos informations:
+              <table>
+                <thead></thead>
+                <tbody>
+                  <tr>
+                    <td>Nom:</td>
+                    <td onDoubleClick={handleDoubleClickNewNom}>
+                      {!editNom ? (
+                        currentUser?.data?.customer?.lastname ??
+                        "-------------------"
+                      ) : (
+                        <>
+                          <form onSubmit={handleSubmit(handleSubmitNewNom)}>
+                            <STYLEDInput
+                              width={"80%"}
+                              defaultValue={
+                                currentUser?.data?.customer?.lastname
+                              }
+                              placeholder="Saisir le nouveau nom"
+                              type="text"
+                              name="lastname"
+                              {...register("lastname", {
+                                required: "Saisir un nouveau nom !",
+                                validate: {
+                                  checkLength: (value) => value.length <= 255,
+                                  onlyLetters: (value) =>
+                                    /^[A-Za-z]+$/.test(value),
+                                },
+                              })}
+                            ></STYLEDInput>
+                            <STYLEDButton width="12%" type="submit">
+                              ✓
+                            </STYLEDButton>
+                          </form>
+                        </>
+                      )}
+                    </td>
+                    <td>
+                      <STYLEDButton onClick={handleDoubleClickNewNom}>
+                        Edit
+                      </STYLEDButton>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Prénom:</td>
+                    <td onDoubleClick={handleDoubleClickNewPrenom}>
+                      {!editPrenom ? (
+                        currentUser?.data?.customer?.firstname ??
+                        "-------------------"
+                      ) : (
+                        <>
+                          <form onSubmit={handleSubmit(handleSubmitNewPrenom)}>
+                            <STYLEDInput
+                              width={"80%"}
+                              defaultValue={
+                                currentUser?.data?.customer?.firstname
+                              }
+                              placeholder="Saisir le nouveau prénom"
+                              type="text"
+                              name="firstname"
+                              {...register("firstname", {
+                                required: "Saisir un nouveau prénom !",
+                                validate: {
+                                  checkLength: (value) => value.length <= 255,
+                                  onlyLetters: (value) =>
+                                    /^[A-Za-z]+$/.test(value),
+                                },
+                              })}
+                            ></STYLEDInput>
+                            <STYLEDButton width="12%" type="submit">
+                              ✓
+                            </STYLEDButton>
+                          </form>
+                        </>
+                      )}
+                    </td>
+                    <td>
+                      <STYLEDButton onClick={handleDoubleClickNewPrenom}>
+                        Edit
+                      </STYLEDButton>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Pseudo:</td>
+                    <td onDoubleClick={handleDoubleClickNewPseudo}>
+                      {!editPseudo ? (
+                        currentUser?.data?.customer?.pseudo ??
+                        "-------------------"
+                      ) : (
+                        <>
+                          <form onSubmit={handleSubmit(handleSubmitNewPseudo)}>
+                            <STYLEDInput
+                              width={"80%"}
+                              defaultValue={currentUser?.data?.customer?.pseudo}
+                              placeholder="Saisir le nouveau pseudo"
+                              type="text"
+                              name="pseudo"
+                              {...register("pseudo", {
+                                required: "Saisir un nouveau pseudo !",
+                                validate: {
+                                  checkLength: (value) => value.length <= 255,
+                                },
+                              })}
+                            ></STYLEDInput>
+                            <STYLEDButton width="12%" type="submit">
+                              ✓
+                            </STYLEDButton>
+                          </form>
+                        </>
+                      )}
+                    </td>
+                    <td>
+                      <STYLEDButton onClick={handleDoubleClickNewPseudo}>
+                        Edit
+                      </STYLEDButton>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Mot de passe:</td>
+                    <td onDoubleClick={handleDoubleClickNewPassword}>
+                      {!editPassword ? (
+                        "******"
+                      ) : (
+                        <>
+                          <form
+                            onSubmit={handleSubmit(() =>
+                              handleSubmitNewPassword(
+                                currentUser?.data?.account?.email
+                              )
+                            )}
+                          >
+                            <STYLEDInput
+                              readOnly={true}
+                              width={"80%"}
+                              defaultValue={"Mail de récupération?"}
+                            ></STYLEDInput>
 
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton onClick={handleDoubleClickNewPassword}>
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
+                            <STYLEDButton width="12%" type="submit">
+                              ✓
+                            </STYLEDButton>
+                          </form>
+                        </>
+                      )}
+                    </td>
+                    <td>
+                      <STYLEDButton onClick={handleDoubleClickNewPassword}>
+                        Edit
+                      </STYLEDButton>
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td>Email:</td>
-                  <td>
-                    {!editEmail ? (
-                      currentUser?.data?.account?.email ?? "-------------------"
-                    ) : (
-                      <>
-                        <form onSubmit={handleSubmit(handleSubmitNewEmail)}>
-                          <STYLEDInput
-                            width={"80%"}
-                            defaultValue={currentUser?.data?.account?.email}
-                            placeholder="Saisir le nouvel email"
-                            type="email"
-                            name="email"
-                            {...register("email", {
-                              required: "Saisir un nouvel email !",
-                              validate: {
-                                checkLength: (value) => value.length <= 255,
-                              },
-                              pattern: {
-                                value:
-                                  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                                message: "Saisir une adresse email valide !",
-                              },
-                            })}
-                          ></STYLEDInput>
-                          <STYLEDButton width="12%" type="submit">
-                            ✓
-                          </STYLEDButton>
-                        </form>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <STYLEDButton
-                      onClick={handleDoubleClickNewEmail}
-                      disabled={auth?.data?.role !== "Administrateur"}
-                    >
-                      Edit
-                    </STYLEDButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Type de compte:</td>
-                  <td> {auth?.data?.role ?? "-------------------"}</td>
-                </tr>
-                <tr>
-                  <td>Compte crée:</td>
-                  <td>
-                    {new Date(
-                      currentUser?.data?.customer?.createdAt
-                    ).toLocaleString() ?? "-------------------"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Compte crée par:</td>
-                  <td>
-                    {currentUser?.data?.customer?.createdBy ??
-                      "-------------------"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Dernière modification:</td>
-                  <td>
-                    {new Date(
-                      currentUser?.data?.customer?.modifiedAt
-                    ).toLocaleString() ?? "-------------------"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Dernière modification:</td>
-                  <td>
-                    {currentUser?.data?.customer?.modifiedBy ??
-                      "-------------------"}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Dernière connection:</td>
-                  <td>
-                    {new Date(
-                      currentUser?.data?.customer?.last_connection
-                    ).toLocaleString() ?? "-------------------"}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            {/* ALL ERRORS here : */}
-            {/* lastname : */}
-            {errors.lastname?.type === "checkLength" && (
-              <STYLEDErrorMessage>
-                Maximum 255 signes pour le nom svp !
-              </STYLEDErrorMessage>
-            )}
-            {errors.lastname?.type === "onlyLetters" && (
-              <STYLEDErrorMessage>
-                Que des lettres pour le nom svp !
-              </STYLEDErrorMessage>
-            )}
-            {/* firstname : */}
-            {errors.firstname?.type === "checkLength" && (
-              <STYLEDErrorMessage>
-                Maximum 255 signes pour le prénom svp !
-              </STYLEDErrorMessage>
-            )}
-            {errors.firstname?.type === "onlyLetters" && (
-              <STYLEDErrorMessage>
-                Que des lettres pour le prénom svp !
-              </STYLEDErrorMessage>
-            )}
-            {/* pseudo : */}
-            {errors.pseudo?.type === "checkLength" && (
-              <STYLEDErrorMessage>
-                Maximum 255 signes pour le prénom svp !
-              </STYLEDErrorMessage>
-            )}
-            {/* email : */}
-            {errors?.email?.type === "pattern" && (
-              <STYLEDErrorMessage>Adresse mail invalide.</STYLEDErrorMessage>
-            )}
-          </DIV_InformationUserContainer>
-        </STYLEDContainerBox>
-      </>
-    </STYLEDContainer>
+                  <tr>
+                    <td>Email:</td>
+                    <td>
+                      {!editEmail ? (
+                        currentUser?.data?.account?.email ??
+                        "-------------------"
+                      ) : (
+                        <>
+                          <form onSubmit={handleSubmit(handleSubmitNewEmail)}>
+                            <STYLEDInput
+                              width={"80%"}
+                              defaultValue={currentUser?.data?.account?.email}
+                              placeholder="Saisir le nouvel email"
+                              type="email"
+                              name="email"
+                              {...register("email", {
+                                required: "Saisir un nouvel email !",
+                                validate: {
+                                  checkLength: (value) => value.length <= 255,
+                                },
+                                pattern: {
+                                  value:
+                                    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                                  message: "Saisir une adresse email valide !",
+                                },
+                              })}
+                            ></STYLEDInput>
+                            <STYLEDButton width="12%" type="submit">
+                              ✓
+                            </STYLEDButton>
+                          </form>
+                        </>
+                      )}
+                    </td>
+                    <td>
+                      <STYLEDButton
+                        onClick={handleDoubleClickNewEmail}
+                        disabled={auth?.data?.role !== "Administrateur"}
+                      >
+                        Edit
+                      </STYLEDButton>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Type de compte:</td>
+                    <td> {auth?.data?.role ?? "-------------------"}</td>
+                  </tr>
+                  <tr>
+                    <td>Compte crée:</td>
+                    <td>
+                      {new Date(
+                        currentUser?.data?.customer?.createdAt
+                      ).toLocaleString() ?? "-------------------"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Compte crée par:</td>
+                    <td>
+                      {currentUser?.data?.customer?.createdBy ??
+                        "-------------------"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Dernière modification:</td>
+                    <td>
+                      {new Date(
+                        currentUser?.data?.customer?.modifiedAt
+                      ).toLocaleString() ?? "-------------------"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Dernière modification:</td>
+                    <td>
+                      {currentUser?.data?.customer?.modifiedBy ??
+                        "-------------------"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Dernière connection:</td>
+                    <td>
+                      {new Date(
+                        currentUser?.data?.customer?.last_connection
+                      ).toLocaleString() ?? "-------------------"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Photo de profil :</td>
+                    <td>
+                      <STYLEDAvatarContainer>
+                        <AvatarImage
+                          key={auth?.data?.customer?.img_src}
+                          userId={auth?.data?.customer?.Id_customer}
+                          filename={auth?.data?.customer?.img_src}
+                        />
+                      </STYLEDAvatarContainer>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              {/* ALL ERRORS here : */}
+              {/* lastname : */}
+              {errors.lastname?.type === "checkLength" && (
+                <STYLEDErrorMessage>
+                  Maximum 255 signes pour le nom svp !
+                </STYLEDErrorMessage>
+              )}
+              {errors.lastname?.type === "onlyLetters" && (
+                <STYLEDErrorMessage>
+                  Que des lettres pour le nom svp !
+                </STYLEDErrorMessage>
+              )}
+              {/* firstname : */}
+              {errors.firstname?.type === "checkLength" && (
+                <STYLEDErrorMessage>
+                  Maximum 255 signes pour le prénom svp !
+                </STYLEDErrorMessage>
+              )}
+              {errors.firstname?.type === "onlyLetters" && (
+                <STYLEDErrorMessage>
+                  Que des lettres pour le prénom svp !
+                </STYLEDErrorMessage>
+              )}
+              {/* pseudo : */}
+              {errors.pseudo?.type === "checkLength" && (
+                <STYLEDErrorMessage>
+                  Maximum 255 signes pour le prénom svp !
+                </STYLEDErrorMessage>
+              )}
+              {/* email : */}
+              {errors?.email?.type === "pattern" && (
+                <STYLEDErrorMessage>Adresse mail invalide.</STYLEDErrorMessage>
+              )}
+            </DIV_InformationUserContainer>
+          </STYLEDContainerBox>
+        </>
+      </STYLEDContainer>
+    </>
   );
 }
 
 export default UserInformations;
+
+const STYLEDAvatarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const DIV_InformationUserContainer = styled.div`
   font-size: clamp(0.5rem, 3vw, 1.5rem);

@@ -12,6 +12,8 @@ import {
   Legend,
   Tooltip,
   ResponsiveContainer,
+  AreaChart,
+  Area,
 } from "recharts";
 
 export default function ProductPrices({
@@ -108,14 +110,14 @@ export default function ProductPrices({
       </StyledTable>
 
       <ResponsiveContainer width="100%" height="20%">
-        <LineChart width={650} height={300}>
+        <AreaChart width={650} height={300}>
           <CartesianGrid strokeDasharray="2 2" />
           <XAxis dataKey="date" />
           <YAxis domain={["dataMin", "dataMax"]} />
           <Tooltip />
           <Legend />
           {sellerData.map((sd, index) => (
-            <Line
+            <Area
               key={sd.name}
               type="monotone"
               data={sd.data}
@@ -124,7 +126,7 @@ export default function ProductPrices({
               stroke={colors[index % colors.length]}
             />
           ))}
-        </LineChart>
+        </AreaChart>
       </ResponsiveContainer>
     </>
   );

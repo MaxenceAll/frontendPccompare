@@ -145,7 +145,12 @@ function Product() {
     { Id_historique_prix: 12, price: 735, date: "2023-02-02" },
     { Id_historique_prix: 13, price: 725, date: "2023-02-03" },
     { Id_historique_prix: 14, price: 638, date: "2023-02-04" },
-    { Id_historique_prix: 15, price: 520, date: "2023-02-05" },
+    { Id_historique_prix: 15, price: 520, date: "2023-02-08" },
+    { Id_historique_prix: 50, price: 520, date: "2023-03-05" },
+    { Id_historique_prix: 51, price: 520, date: "2023-05-01" },
+    { Id_historique_prix: 52, price: 520, date: "2023-01-22" },
+    { Id_historique_prix: 53, price: 520, date: "2023-03-11" },
+    { Id_historique_prix: 54, price: 520, date: "2023-02-08" },
   ];
 
   const seller_historique_article = [
@@ -226,6 +231,38 @@ function Product() {
       Id_seller: 3,
       Id_historique_prix: 15,
     },
+
+
+
+
+
+    {
+      Id_article: 1,
+      Id_seller: 1,
+      Id_historique_prix: 50,
+    },
+    {
+      Id_article: 1,
+      Id_seller: 1,
+      Id_historique_prix: 51,
+    },
+    {
+      Id_article: 1,
+      Id_seller: 1,
+      Id_historique_prix: 52,
+    },
+    {
+      Id_article: 1,
+      Id_seller: 1,
+      Id_historique_prix: 53,
+    },
+    {
+      Id_article: 1,
+      Id_seller: 1,
+      Id_historique_prix: 54,
+    },
+
+
 
 
   ];

@@ -31,13 +31,15 @@ import GenericModal from "./Tools/GenericModal";
 import fetcher from "../helper/fetcher";
 import useCookie from "../Hooks/useCookie";
 import { useDisconnect } from "../Hooks/useDisconnect";
+import Image from "./Dashboard/Image/Image";
+import AvatarImage from "./Header/AvatarImage";
 
 function Header() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  // console.log(auth);  
+  console.log(auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
-  // console.log(authCookie);  
+  // console.log(authCookie);
 
   //Theme logic:
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -78,14 +80,28 @@ function Header() {
                     isActive ? "active-link" : null
                   }
                 >
-                  <HiUser />
-                  <SPAN_HiddenMobile className="hide-mobile">
-                    Bonjour,{auth?.data?.customer?.pseudo}
-                    <DIV_lastConnexionStyle>
-                      (Dernière connection:
-                      {new Date(auth?.data?.customer?.last_connection).toLocaleString()})
-                    </DIV_lastConnexionStyle>
-                  </SPAN_HiddenMobile>
+                  <DIV_AvatarContainer>
+                    {auth?.data?.customer?.img_src ? (
+                      <AvatarImage
+                        key={auth?.data?.customer?.img_src}
+                        userId={auth?.data?.customer?.Id_customer}
+                        filename={auth?.data?.customer?.img_src}
+                      />
+                    ) : (
+                      <HiUser />
+                    )}
+
+                    <SPAN_HiddenMobile className="hide-mobile">
+                      Bonjour,{auth?.data?.customer?.pseudo}
+                      <DIV_lastConnexionStyle>
+                        (Dernière connection:
+                        {new Date(
+                          auth?.data?.customer?.last_connection
+                        ).toLocaleString()}
+                        )
+                      </DIV_lastConnexionStyle>
+                    </SPAN_HiddenMobile>
+                  </DIV_AvatarContainer>
                 </NavLink>
               </>
             )}
@@ -204,6 +220,16 @@ function Header() {
 }
 
 export default Header;
+
+const SPAN_AvatarContainer = styled.span`
+  /* margin-left: 5%; */
+`;
+const DIV_AvatarContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+`;
 
 const STYLEDHeaderLinkIcon = styled.div`
   text-align: center;
