@@ -13,12 +13,12 @@ export const pccompareApi = createApi({
       return headers;
     },
     credentials: "include",
-    tagTypes: ["Customer", "Account", "Users", "Roles"],
+    tagTypes: ["Customer", "Account", "Users", "Roles","Category"],
   }),
   
   endpoints: (builder) => ({
 
-
+    // DASHBOARD ADMIN ENDPOINTS logic:
     getAllUserData: builder.query({
       query: () => "alluserdata",
       providesTags: ["Users"],
@@ -29,13 +29,14 @@ export const pccompareApi = createApi({
     }),
     
 
+    // CUSTOMER ENDPOINTS LOGIC:
     getCurrentCustomer: builder.query({
       // On check si l'argument est defined ou pas avant d'envoyer la requete
       query: (Id_customer) => {
         if (Id_customer) {
           return `customer/${Id_customer}`;
         } else {
-          return {}; // test if null better
+          return {}; // TODO tester if null better
         }
       },
       providesTags: ["Users"],
@@ -49,6 +50,19 @@ export const pccompareApi = createApi({
       invalidatesTags: ["Users"],
     }),
 
+    // DROPDOWN MENU logic :
+    getAllCategoryData: builder.query({
+      query: () => "dropdownmenu",
+      providesTags: ["Category"],
+    }),
+
+
+    // COMPARE DATA logic :
+    getAllGpuData: builder.query({
+      query: () => "compare/gpu",
+      providesTags: ["gpu"],
+    }),
+
 
 
   }),
@@ -59,4 +73,8 @@ export const {
   useGetAllRoleDataQuery,
   useGetCurrentCustomerQuery,
   useUpdateCustomerMutation,
+
+  useGetAllCategoryDataQuery,
+
+  useGetAllGpuDataQuery,
 } = pccompareApi;

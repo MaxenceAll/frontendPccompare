@@ -22,6 +22,10 @@ import PrivateRoutes from "./layouts/PrivateRoutes";
 import Product from "./pages/compare/Product/Product";
 import Dashboard from "./pages/dashboard/dashboard";
 import Test from "./pages/Test";
+import Cartesmere from "./pages/compare/Product/Cartesmere";
+import Memoires from "./pages/compare/Product/Memoires";
+import Processeurs from "./pages/compare/Product/Processeurs";
+import CartesGraphiques from "./pages/compare/Product/CartesGraphique";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +37,12 @@ const router = createBrowserRouter(
       <Route path="about" element={<About />} />
       <Route path="themes" element={<Themes />} />
       <Route path="compare" element={<Compare />} />
+      <Route path="compare/gpu" element={<CartesGraphiques />} />
+      <Route path="compare/cpu" element={<Processeurs />} />
+      <Route path="compare/ram" element={<Memoires />} />
+      <Route path="compare/mb" element={<Cartesmere />} />
+
+
       <Route path="compare/product" element={<Product />} />
 
 

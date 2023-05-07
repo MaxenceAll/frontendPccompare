@@ -14,7 +14,7 @@ function AvatarImage({ userId, filename }) {
   const [imageData, setImageData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log(imageData)
+  // console.log(imageData)
 
   useEffect(() => {
     const fetchImage = async () => {

@@ -33,11 +33,12 @@ import useCookie from "../Hooks/useCookie";
 import { useDisconnect } from "../Hooks/useDisconnect";
 import Image from "./Dashboard/Image/Image";
 import AvatarImage from "./Header/AvatarImage";
+import DropDownMenu from "./Header/DropDownMenu";
 
 function Header() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  console.log(auth);
+  // console.log(auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   // console.log(authCookie);
 
@@ -183,37 +184,13 @@ function Header() {
               )}
             </DIV_BotHeader>
           </DIV_BotHeaderContainer>
+
+
           <DIV_DropdownMenuContainer>
-            {showDropdown && (
-              <>
-                <NavLink to="/compare?s=gpu">
-                  <div>
-                    Carte Graphique
-                    <img src={GPU_IMAGE}></img>
-                  </div>
-                </NavLink>
-                <NavLink to="/compare?s=cpu">
-                  <div>
-                    C.P.U.
-                    <img src={CPU_IMAGE}></img>
-                  </div>
-                </NavLink>
-                <NavLink to="/compare?s=motherboard">
-                  <div>
-                    Carte mère
-                    <img src={MB_IMAGE}></img>
-                  </div>
-                </NavLink>
-                <NavLink to="/compare?s=memory">
-                  <div>
-                    Mémoires
-                    <img src={MEMORY_IMAGE}></img>
-                  </div>
-                </NavLink>
-              </>
-            )}
+            {showDropdown && <DropDownMenu />}
           </DIV_DropdownMenuContainer>
         </nav>
+        
       </HEADER_Container>
     </>
   );

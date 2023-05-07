@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { STYLEDhr } from "../../components/styles/genericHR";
+import { STYLEDhr } from "../styles/genericHR";
 
 function ProductSpec(props) {
   const { spec } = props;

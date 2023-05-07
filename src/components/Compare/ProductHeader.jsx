@@ -14,10 +14,10 @@ function ProductHeader(props) {
   return (
     <>
       <STYLED_Category>
-        <NavLink to={"/compare?c=gpu"}>{category.name}</NavLink>
+        <NavLink to={"/compare/gpu"}>{category.name}</NavLink>
       </STYLED_Category>
       <STYLED_Model>
-        <NavLink to={"/compare?c=gpu&m=gtx%203000"}>{model.name}</NavLink>
+        <NavLink to={"/compare/gpu"}>{model.name}</NavLink>
       </STYLED_Model>
       <STYLED_Article>
         <h1>{article.designation}</h1>

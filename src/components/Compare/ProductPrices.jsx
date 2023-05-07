@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { STYLEDButton } from "../../components/styles/genericButton";
+import { STYLEDButton } from "../styles/genericButton";
 import { STYLEDhr } from "../styles/genericHR";
 
 import {
