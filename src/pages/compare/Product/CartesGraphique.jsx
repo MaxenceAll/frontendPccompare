@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useGetAllGpuDataQuery } from "../../../features/pccompareSlice";
@@ -8,9 +8,9 @@ import {
   STYLEDContainerBox,
 } from "../../../components/styles/genericContainer";
 import { STYLEDErrorMessage } from "../../../components/styles/genericParagraphError";
-import { NavLink } from "react-router-dom";
+import { NavLink, redirect } from "react-router-dom";
 import { STYLEDButton } from "../../../components/styles/genericButton";
-import DataTable from "react-data-table-component";
+import DataTable, { createTheme } from "react-data-table-component";
 
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery();
@@ -25,6 +25,9 @@ function CartesGraphique() {
   }, []);
 
   const formatData = (data) => {
+    if (!data) {
+      return [];
+    }
     return data.map((item) => {
       return {
         id: item.Id_article,
@@ -65,90 +68,206 @@ function CartesGraphique() {
         sm_cu: item.sm_cu,
         tensor_cores: item.tensor_cores,
         rt_cores: item.rt_cores,
+        latest_price: item.latest_price,
       };
     });
   };
 
-  const [formattedData, setFormattedData] = useState(null);
-
-  useEffect(() => {
-    if (data) {
-      setFormattedData(formatData(data?.data));
-    }
-  }, [data]);
+  const formattedData = formatData(data?.data);
 
   const columns = [
+    // {
+    //   name: "Product Number",
+    //   selector: "product_number",
+    //   sortable: true,
+    // },
+
     {
-      name: "Product Number",
-      selector: "product_number",
-      sortable: true,
+      cell: (row) => (<><img height="auto" width="56px" alt={row.img_alt} src={`https://picsum.photos/id/${row.id}/5000/3333`}></img></>
+      ),
+      width: "60px",
     },
+
     {
-      name: "Designation",
-      selector: "designation",
+      name: "Nom",
+      selector: (row) => (
+        <NavLink to={`/compare/product/${row.id}`}>
+          {row.designation}
+        </NavLink>
+      ),
       sortable: true,
+      // width: "350px",
     },
     {
       name: "Marque",
-      selector: "marque",
+      selector: (row) => row.marque,
       sortable: true,
+      width: "100px",
     },
     {
       name: "Chipset",
-      selector: "chipset",
+      selector: (row) => row.chipset,
       sortable: true,
+      width: "94px",
+      hide: 'sm',
     },
     {
-      name: "Memory VRAM",
-      selector: "memory_vram",
+      name: "VRAM",
+      selector: (row) => row.memory_vram,
       sortable: true,
+      width: "72px",
+      hide: 'md',
     },
     {
-      name: "GPU Clock",
-      selector: "gpu_clock",
+      name: "Clock",
+      selector: (row) => row.gpu_clock,
       sortable: true,
+      width: "79px",
+      hide: 'lg',
     },
     {
-      name: "Boost Clock",
-      selector: "boost_clock",
+      name: "Boost",
+      selector: (row) => row.boost_clock,
       sortable: true,
+      width: "79px",
+      hide: 'lg',      
     },
     {
-      name: "Memory Clock",
-      selector: "memory_clock",
+      name: "Couleur",
+      selector: (row) => row.color,
       sortable: true,
+      width: "94px",
+      hide: 'md',
     },
     {
-      name: "Bus Interface",
-      selector: "bus_interface",
+      name: "Taille",
+      selector: (row) => row.length,
       sortable: true,
+      width: "86px",
+      hide: 'md',
     },
     {
-      name: "TDP",
-      selector: "tdp",
+      name: "Prix",
+      selector: (row) => row.latest_price,
       sortable: true,
+      width: "90px",
+      right:true,
     },
     {
-      name: "Power Connector",
-      selector: "power_connector",
-      sortable: true,
+      cell: (row) => (
+        <NavLink to={`/compare/product/${row.id}`}>
+          <STYLEDButton>Voir la fiche</STYLEDButton>
+        </NavLink>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+      width: "60px",
     },
-    {
-      name: "SM/CU",
-      selector: "sm_cu",
-      sortable: true,
-    },
-    {
-      name: "Tensor Cores",
-      selector: "tensor_cores",
-      sortable: true,
-    },
-    {
-      name: "RT Cores",
-      selector: "rt_cores",
-      sortable: true,
-    },
+
+    // {
+    //   name: "Memory Clock",
+    //   selector: "memory_clock",
+    //   sortable: true,
+    // },
+    // {
+    //   name: "Bus Interface",
+    //   selector: "bus_interface",
+    //   sortable: true,
+    // },
+    // {
+    //   name: "TDP",
+    //   selector: "tdp",
+    //   sortable: true,
+    // },
+    // {
+    //   name: "Power Connector",
+    //   selector: "power_connector",
+    //   sortable: true,
+    // },
+    // {
+    //   name: "SM/CU",
+    //   selector: "sm_cu",
+    //   sortable: true,
+    // },
+    // {
+    //   name: "Tensor Cores",
+    //   selector: "tensor_cores",
+    //   sortable: true,
+    // },
+    // {
+    //   name: "RT Cores",
+    //   selector: "rt_cores",
+    //   sortable: true,
+    // },
   ];
+
+  // table options :
+  const paginationOptions = {
+    rowsPerPageText: "Produit par page",
+    rangeSeparatorText: "de",
+  };
+
+  createTheme("customTheme", {
+    text: {
+      primary: "var(--main-color-100)",
+      secondary: "var(--main-color-200)",
+    },
+    background: {
+      default: "var(--background-color-200)",
+    },
+    context: {
+      background: "#cb4b16",
+      text: "#ffffff",
+    },
+    divider: {
+      default: "var(--background-color-100)",
+    },
+    button: {
+      default: "var(--secondary-color-300)",
+      hover: "var(--main-color-100)",
+      focus: "var(--secondary-color-200)",
+      disabled: "rgba(255, 255, 255, .34)",
+    },
+    sortFocus: {
+      default: "var(--background-color-400)",
+    },
+  });
+
+  const customStyles = {
+    headRow: {
+      style: {
+        border: "none",
+      },
+    },
+    headCells: {
+      style: {
+        color: "var(--secondary-color-200)",
+        // fontSize: "14px",
+      },
+    },
+    rows: {
+      highlightOnHoverStyle: {
+        color:"var(--main-color-100)" ,
+        backgroundColor: "var(--background-color-400)",
+        borderBottomColor: "var(--main-color-100)",
+        // borderRadius: "25px",
+        outline: "1px solid var(--main-color-100)",
+      },
+      stripedStyle: {
+        color: "var(--main-color-100)",
+        backgroundColor: "var(--background-color-100)"
+      }
+    },
+    pagination: {
+      style: {
+        border: "none",
+      },
+    },
+  };
+
+
+  const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 
   if (isLoading) {
     return (
@@ -176,8 +295,23 @@ function CartesGraphique() {
         </STYLEDCompareTitle>
         <STYLEDCompareFilter>Filter box</STYLEDCompareFilter>
         <STYLEDCompareResult>
-          {formattedData.length} cartes graphique trouvés.
-          <DataTable columns={columns} data={formattedData} />
+          <DataTable
+            title={`${formattedData?.length} cartes graphique trouvées.`}
+            columns={columns}
+            data={formattedData}
+            pagination
+            paginationComponentOptions={paginationOptions}
+            theme="customTheme"
+            fixedHeader
+            highlightOnHover
+            customStyles={customStyles}
+            striped
+
+            expandableRows
+            expandableRowsComponent={ExpandedComponent}
+            expandOnRowClicked
+            // dense
+          />
         </STYLEDCompareResult>
       </STYLEDCompareContainer>
     </>
@@ -189,13 +323,13 @@ export default CartesGraphique;
 const STYLEDCompareContainer = styled.div`
   display: grid;
   grid-template-rows: auto auto;
-  grid-template-columns: 1fr 2fr 2fr;
+  grid-template-columns: auto auto auto;
   grid-template-areas:
     "title title title"
     "filter result result";
   gap: 0px;
   height: 100%;
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 1200px) {
     grid-template-areas:
       "title title title"
       "filter filter filter"
@@ -207,7 +341,7 @@ const STYLEDCompareTitle = styled.div`
   background-color: yellow;
   grid-area: title;
 
-  background-color: var(--background-color-100);
+  background-color: var(--background-color-400);
   display: flex;
   justify-content: center;
   align-items: center;
