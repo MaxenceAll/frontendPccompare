@@ -10,21 +10,11 @@ import {
 import { STYLEDErrorMessage } from "../../../components/styles/genericParagraphError";
 import { NavLink, redirect } from "react-router-dom";
 import { STYLEDButton } from "../../../components/styles/genericButton";
+import { STYLEDSelect } from "../../../components/styles/genericSelect";
 import DataTable, { createTheme } from "react-data-table-component";
 
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery();
-  const [formattedData, setFormattedData] = useState([]);
-
-  console.log(data);
-
-    // format the data and set the state
-    useEffect(() => {
-      if (data) {
-        const formatted = formatData(data.data);
-        setFormattedData(formatted);
-      }
-    }, [data]);
 
   // set title logic:
   useEffect(() => {
@@ -33,79 +23,29 @@ function CartesGraphique() {
     } | Page de recherche | Cartes graphique`;
   }, []);
 
-  const formatData = (data) => {
-    if (!data) {
-      return [];
-    }
-    return data.map((item) => {
-      return {
-        id: item.Id_article,
-        product_number: item.product_number,
-        designation: item.designation,
-        marque: item.marque,
-        img_src: item.img_src,
-        img_alt: item.img_alt,
-        model_name: item.model_name,
-        category_name: item.category_name,
-        code: item.code,
-        ean: item.ean,
-        upc: item.upc,
-        chipset: item.chipset,
-        color: item.color,
-        gpu_clock: item.gpu_clock,
-        boost_clock: item.boost_clock,
-        memory_clock: item.memory_clock,
-        bus_interface: item.bus_interface,
-        bus_width: item.bus_width,
-        memory_vram: item.memory_vram,
-        slot_width: item.slot_width,
-        length: item.length,
-        width: item.width,
-        height: item.height,
-        tdp: item.tdp,
-        psu_needed: item.psu_needed,
-        nb_hdmi: item.nb_hdmi,
-        nb_dp: item.nb_dp,
-        nb_usbc: item.nb_usbc,
-        power_connector: item.power_connector,
-        pixel_rate: item.pixel_rate,
-        texture_rate: item.texture_rate,
-        fp32: item.fp32,
-        shader: item.shader,
-        tmu: item.tmu,
-        rop: item.rop,
-        sm_cu: item.sm_cu,
-        tensor_cores: item.tensor_cores,
-        rt_cores: item.rt_cores,
-        latest_price: item.latest_price,
-      };
-    });
-  };
-
-  // const formattedData = formatData(data?.data);
-
   const columns = [
-    // {
-    //   name: "Product Number",
-    //   selector: "product_number",
-    //   sortable: true,
-    // },
-
     {
-      cell: (row) => (<><img height="auto" width="56px" alt={row.img_alt} src={`https://picsum.photos/id/${row.id}/5000/3333`}></img></>
+      cell: (row) => (
+        <>
+          <img
+            height="auto"
+            width="56px"
+            alt={row.img_alt}
+            src={`https://picsum.photos/id/${row.Id_article}/5000/3333`}
+          ></img>
+        </>
       ),
       width: "60px",
     },
-
     {
       name: "Nom",
       selector: (row) => (
-        <NavLink to={`/compare/product/${row.id}`}>
+        <NavLink to={`/compare/product/${row.Id_article}`}>
           {row.designation}
         </NavLink>
       ),
       sortable: true,
-      // width: "350px",
+      // maxwidth: "350px",
     },
     {
       name: "Marque",
@@ -118,53 +58,53 @@ function CartesGraphique() {
       selector: (row) => row.chipset,
       sortable: true,
       width: "94px",
-      hide: 'sm',
+      hide: "sm",
     },
     {
       name: "VRAM",
       selector: (row) => row.memory_vram,
       sortable: true,
       width: "72px",
-      hide: 'md',
+      hide: "md",
     },
     {
       name: "Clock",
       selector: (row) => row.gpu_clock,
       sortable: true,
       width: "79px",
-      hide: 'lg',
+      hide: "lg",
     },
     {
       name: "Boost",
       selector: (row) => row.boost_clock,
       sortable: true,
       width: "79px",
-      hide: 'lg',      
+      hide: "lg",
     },
     {
       name: "Couleur",
       selector: (row) => row.color,
       sortable: true,
       width: "94px",
-      hide: 'md',
+      hide: "lg",
     },
     {
       name: "Taille",
       selector: (row) => row.length,
       sortable: true,
       width: "86px",
-      hide: 'md',
+      hide: "lg",
     },
     {
       name: "Prix",
       selector: (row) => row.latest_price,
       sortable: true,
       width: "90px",
-      right:true,
+      right: true,
     },
     {
       cell: (row) => (
-        <NavLink to={`/compare/product/${row.id}`}>
+        <NavLink to={`/compare/product/${row.Id_article}`}>
           <STYLEDButton>Voir la fiche</STYLEDButton>
         </NavLink>
       ),
@@ -173,50 +113,43 @@ function CartesGraphique() {
       button: true,
       width: "60px",
     },
-
-    // {
-    //   name: "Memory Clock",
-    //   selector: "memory_clock",
-    //   sortable: true,
-    // },
-    // {
-    //   name: "Bus Interface",
-    //   selector: "bus_interface",
-    //   sortable: true,
-    // },
-    // {
-    //   name: "TDP",
-    //   selector: "tdp",
-    //   sortable: true,
-    // },
-    // {
-    //   name: "Power Connector",
-    //   selector: "power_connector",
-    //   sortable: true,
-    // },
-    // {
-    //   name: "SM/CU",
-    //   selector: "sm_cu",
-    //   sortable: true,
-    // },
-    // {
-    //   name: "Tensor Cores",
-    //   selector: "tensor_cores",
-    //   sortable: true,
-    // },
-    // {
-    //   name: "RT Cores",
-    //   selector: "rt_cores",
-    //   sortable: true,
-    // },
   ];
+  const ExpandedComponent = ({ data }) => (
+    <pre>{JSON.stringify(data, null, 2)}</pre>
+  );
+
+  // filter marque logic:
+  const [filteredData, setFilteredData] = useState([]);
+  const [selectedMarque, setSelectedMarque] = useState("");
+  const [marques, setMarques] = useState([]);
+  console.log(filteredData)
+  console.log(selectedMarque)
+  // console.log(marques)
+  useEffect(() => {
+    // loop through the data array and find the unique marques
+    const uniqueMarques = [...new Set(data?.data?.map((item) => item.marque))];
+    setMarques(uniqueMarques);
+  }, [data]);
+  //
+  function handleButtonClick(marque) {
+    setSelectedMarque(marque);
+  }
+  useEffect(() => {
+    // filter the data array based on the selected marque
+    if (selectedMarque !== "") {
+      const filtered = data?.data?.filter((item) => item.marque === selectedMarque);
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(data);
+    }
+  }, [selectedMarque, data]);
 
   // table options :
   const paginationOptions = {
     rowsPerPageText: "Produit par page",
     rangeSeparatorText: "de",
   };
-
+  // table custom Theme
   createTheme("customTheme", {
     text: {
       primary: "var(--main-color-100)",
@@ -242,7 +175,6 @@ function CartesGraphique() {
       default: "var(--background-color-400)",
     },
   });
-
   const customStyles = {
     headRow: {
       style: {
@@ -257,7 +189,7 @@ function CartesGraphique() {
     },
     rows: {
       highlightOnHoverStyle: {
-        color:"var(--main-color-100)" ,
+        color: "var(--main-color-100)",
         backgroundColor: "var(--background-color-400)",
         borderBottomColor: "var(--main-color-100)",
         // borderRadius: "25px",
@@ -265,8 +197,8 @@ function CartesGraphique() {
       },
       stripedStyle: {
         color: "var(--main-color-100)",
-        backgroundColor: "var(--background-color-100)"
-      }
+        backgroundColor: "var(--background-color-100)",
+      },
     },
     pagination: {
       style: {
@@ -276,7 +208,17 @@ function CartesGraphique() {
   };
 
 
-  const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
+  useEffect(() => {
+    if (!isLoading && !isError && data) {
+      // filter the data array based on the selected marque
+      if (selectedMarque !== "") {
+        const filtered = data?.data?.filter((item) => item.marque === selectedMarque);
+        setFilteredData(filtered);
+      } else {
+        setFilteredData(data?.data);
+      }
+    }
+  }, [selectedMarque, isLoading, isError, data]);
 
   if (isLoading) {
     return (
@@ -287,7 +229,6 @@ function CartesGraphique() {
       </STYLEDContainer>
     );
   }
-
   if (isError) {
     return (
       <STYLEDErrorMessage>
@@ -300,14 +241,40 @@ function CartesGraphique() {
     <>
       <STYLEDCompareContainer>
         <STYLEDCompareTitle>
-          <h1>Cherchez votre carte graphique</h1>
+          <h1>Cherchez votre carte graphique</h1>({filteredData.length}/{data?.data?.length}{" "}
+          trouvées)
         </STYLEDCompareTitle>
-        <STYLEDCompareFilter>Filter box</STYLEDCompareFilter>
+        <STYLEDCompareFilter>
+          <STYLEDMarqueFilterContainer>
+            Différentes Marques
+            <hr />
+            {marques?.map((marque) => (
+              <STYLEDButton
+              key={marque}
+              onClick={() => handleButtonClick(marque)}
+              >
+                {marque}
+              </STYLEDButton>
+            ))}
+            <STYLEDButton
+            width="100%"
+            onClick={() => handleButtonClick("")}
+            >Toutes</STYLEDButton>
+            {/* <STYLEDSelect onChange={handleSelectChange}>
+            <option value="">Tous</option>
+              {marques?.map((marque) => (
+                <option key={marque} value={marque}>
+                  {marque}
+                </option>
+              ))}
+            </STYLEDSelect> */}
+          </STYLEDMarqueFilterContainer>
+        </STYLEDCompareFilter>
         <STYLEDCompareResult>
           <DataTable
-            title={`${formattedData?.length} cartes graphique trouvées.`}
+            // title={`${formattedData?.length} cartes graphique trouvées.`}
             columns={columns}
-            data={formattedData}
+            data={filteredData}
             pagination
             paginationComponentOptions={paginationOptions}
             theme="customTheme"
@@ -315,7 +282,6 @@ function CartesGraphique() {
             highlightOnHover
             customStyles={customStyles}
             striped
-
             expandableRows
             expandableRowsComponent={ExpandedComponent}
             expandOnRowClicked
@@ -329,10 +295,12 @@ function CartesGraphique() {
 
 export default CartesGraphique;
 
+const STYLEDMarqueFilterContainer = styled.div``;
+
 const STYLEDCompareContainer = styled.div`
   display: grid;
   grid-template-rows: auto auto;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 1fr 3fr 3fr;
   grid-template-areas:
     "title title title"
     "filter result result";
@@ -347,7 +315,6 @@ const STYLEDCompareContainer = styled.div`
 `;
 
 const STYLEDCompareTitle = styled.div`
-  background-color: yellow;
   grid-area: title;
 
   background-color: var(--background-color-400);
@@ -358,15 +325,16 @@ const STYLEDCompareTitle = styled.div`
   text-align: center;
 
   border-top: 1px solid var(--secondary-color-300);
-  height: 100px;
+  height: 130px;
 `;
 
 const STYLEDCompareFilter = styled.div`
-  background-color: red;
+  background-color: var(--background-color-100);
+  border-right: 1px solid var(--main-color-300);
   grid-area: filter;
+  padding: 5%;
 `;
 
 const STYLEDCompareResult = styled.div`
-  background-color: green;
   grid-area: result;
 `;
