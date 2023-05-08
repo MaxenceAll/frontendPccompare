@@ -23,4 +23,8 @@ export const STYLEDButton = styled.button`
     background-color: var(--background-color-400);
     color: var(--main-color-200);
   }
+  &.active {
+    color: var(--background-color-300);
+    background-color: var(--main-color-300);
+  }
 `;

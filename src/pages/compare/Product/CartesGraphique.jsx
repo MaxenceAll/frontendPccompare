@@ -12,6 +12,7 @@ import { NavLink, redirect } from "react-router-dom";
 import { STYLEDButton } from "../../../components/styles/genericButton";
 import { STYLEDSelect } from "../../../components/styles/genericSelect";
 import DataTable, { createTheme } from "react-data-table-component";
+import NoDataFound from "../../../components/NoDataFound";
 
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery();
@@ -45,13 +46,15 @@ function CartesGraphique() {
         </NavLink>
       ),
       sortable: true,
-      // maxwidth: "350px",
+      maxWidth: "350px",
+      wrap: true,
     },
     {
       name: "Marque",
       selector: (row) => row.marque,
       sortable: true,
       width: "100px",
+      reorder: true,
     },
     {
       name: "Chipset",
@@ -59,12 +62,14 @@ function CartesGraphique() {
       sortable: true,
       width: "94px",
       hide: "sm",
+      reorder: true,
     },
     {
       name: "VRAM",
       selector: (row) => row.memory_vram,
       sortable: true,
       width: "72px",
+      reorder: true,
       hide: "md",
     },
     {
@@ -73,6 +78,7 @@ function CartesGraphique() {
       sortable: true,
       width: "79px",
       hide: "lg",
+      reorder: true,
     },
     {
       name: "Boost",
@@ -80,6 +86,7 @@ function CartesGraphique() {
       sortable: true,
       width: "79px",
       hide: "lg",
+      reorder: true,
     },
     {
       name: "Couleur",
@@ -87,6 +94,7 @@ function CartesGraphique() {
       sortable: true,
       width: "94px",
       hide: "lg",
+      reorder: true,
     },
     {
       name: "Taille",
@@ -94,6 +102,7 @@ function CartesGraphique() {
       sortable: true,
       width: "86px",
       hide: "lg",
+      reorder: true,
     },
     {
       name: "Prix",
@@ -101,6 +110,7 @@ function CartesGraphique() {
       sortable: true,
       width: "90px",
       right: true,
+      reorder: true,
     },
     {
       cell: (row) => (
@@ -118,31 +128,52 @@ function CartesGraphique() {
     <pre>{JSON.stringify(data, null, 2)}</pre>
   );
 
+  // "copie" de data pour manipulations
+  const [filteredData, setFilteredData] = useState(data?.data);
   // filter marque logic:
-  const [filteredData, setFilteredData] = useState([]);
-  const [selectedMarque, setSelectedMarque] = useState("");
+  const [selectedMarques, setSelectedMarques] = useState([]);
   const [marques, setMarques] = useState([]);
-  console.log(filteredData)
-  console.log(selectedMarque)
-  // console.log(marques)
+  // Trouver toutes les marques uniques :
   useEffect(() => {
-    // loop through the data array and find the unique marques
     const uniqueMarques = [...new Set(data?.data?.map((item) => item.marque))];
     setMarques(uniqueMarques);
   }, [data]);
-  //
-  function handleButtonClick(marque) {
-    setSelectedMarque(marque);
-  }
-  useEffect(() => {
-    // filter the data array based on the selected marque
-    if (selectedMarque !== "") {
-      const filtered = data?.data?.filter((item) => item.marque === selectedMarque);
-      setFilteredData(filtered);
+  function handleButtonClickMarque(marque) {
+    // déjà click ?
+    if (selectedMarques.includes(marque)) {
+      // oui: on supprime
+      setSelectedMarques((prev) =>
+        prev.filter((selected) => selected !== marque)
+      );
     } else {
-      setFilteredData(data);
+      // non on ajoute
+      setSelectedMarques((prev) => [...prev, marque]);
     }
-  }, [selectedMarque, data]);
+  }
+
+  // filter chipset logic:
+  const [selectedChipsets, setSelectedChipsets] = useState([]);
+  const [chipsets, setChipsets] = useState([]);
+  // console.log("selectedChipsets : ",selectedChipsets)
+  // console.log("chipsets:",chipsets)
+  // Trouver tous les chipsets uniques :
+  useEffect(() => {
+    const uniqueChipsets = [...new Set(data?.data?.map((item) => item.chipset))];
+    setChipsets(uniqueChipsets);
+  }, [data]);
+  function handleButtonClickChipset(chipset) {
+    // déjà click ?
+    if (selectedChipsets.includes(chipset)) {
+      // oui: on supprime
+      setSelectedChipsets((prev) =>
+        prev.filter((selected) => selected !== chipset)
+      );
+    } else {
+      // non on ajoute
+      setSelectedChipsets((prev) => [...prev, chipset]);
+    }
+  }
+
 
   // table options :
   const paginationOptions = {
@@ -208,17 +239,27 @@ function CartesGraphique() {
   };
 
 
+  // On maj ici tous les filtres actifs.
   useEffect(() => {
-    if (!isLoading && !isError && data) {
-      // filter the data array based on the selected marque
-      if (selectedMarque !== "") {
-        const filtered = data?.data?.filter((item) => item.marque === selectedMarque);
-        setFilteredData(filtered);
-      } else {
-        setFilteredData(data?.data);
+    if (selectedMarques.length > 0 || selectedChipsets.length > 0) {
+      let filtered = data?.data;
+      if (selectedMarques.length > 0) {
+        filtered = filtered?.filter((item) =>
+          selectedMarques.includes(item.marque)
+        );
       }
+      if (selectedChipsets.length > 0) {
+        filtered = filtered?.filter((item) =>
+          selectedChipsets.includes(item.chipset)
+        );
+      }
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(data?.data);
     }
-  }, [selectedMarque, isLoading, isError, data]);
+  }, [selectedMarques, selectedChipsets, data]);
+  
+  
 
   if (isLoading) {
     return (
@@ -241,34 +282,42 @@ function CartesGraphique() {
     <>
       <STYLEDCompareContainer>
         <STYLEDCompareTitle>
-          <h1>Cherchez votre carte graphique</h1>({filteredData.length}/{data?.data?.length}{" "}
-          trouvées)
+          <h1>Cherchez votre carte graphique</h1>({filteredData?.length}/
+          {data?.data?.length} trouvées)
         </STYLEDCompareTitle>
         <STYLEDCompareFilter>
           <STYLEDMarqueFilterContainer>
-            Différentes Marques
+            Marques:
             <hr />
-            {marques?.map((marque) => (
+            {marques.map((marque, index) => (
               <STYLEDButton
-              key={marque}
-              onClick={() => handleButtonClick(marque)}
+                key={index}
+                onClick={() => handleButtonClickMarque(marque)}
+                className={selectedMarques.includes(marque) ? "active" : ""}
               >
                 {marque}
               </STYLEDButton>
             ))}
-            <STYLEDButton
-            width="100%"
-            onClick={() => handleButtonClick("")}
-            >Toutes</STYLEDButton>
-            {/* <STYLEDSelect onChange={handleSelectChange}>
-            <option value="">Tous</option>
-              {marques?.map((marque) => (
-                <option key={marque} value={marque}>
-                  {marque}
-                </option>
-              ))}
-            </STYLEDSelect> */}
+            <STYLEDButton width="100%" onClick={() => setSelectedMarques([])}>
+              Toutes
+            </STYLEDButton>
           </STYLEDMarqueFilterContainer>
+          <STYLEDChipsetFilterContainer>
+            Chipsets:
+            <hr />
+            {chipsets.map((chipset, index) => (
+              <STYLEDButton
+                key={index}
+                onClick={() => handleButtonClickChipset(chipset)}
+                className={selectedChipsets.includes(chipset) ? "active" : ""}
+              >
+                {chipset}
+              </STYLEDButton>
+            ))}
+            <STYLEDButton width="100%" onClick={() => setSelectedChipsets([])}>
+              Tous
+            </STYLEDButton>
+          </STYLEDChipsetFilterContainer>
         </STYLEDCompareFilter>
         <STYLEDCompareResult>
           <DataTable
@@ -285,6 +334,8 @@ function CartesGraphique() {
             expandableRows
             expandableRowsComponent={ExpandedComponent}
             expandOnRowClicked
+            noDataComponent={<NoDataFound/>}
+            persistTableHead
             // dense
           />
         </STYLEDCompareResult>
@@ -295,7 +346,14 @@ function CartesGraphique() {
 
 export default CartesGraphique;
 
-const STYLEDMarqueFilterContainer = styled.div``;
+const STYLEDMarqueFilterContainer = styled.div`
+padding-top: 15%;
+text-align:center;
+`;
+const STYLEDChipsetFilterContainer = styled.div`
+padding-top: 15%;
+text-align:center;
+`;
 
 const STYLEDCompareContainer = styled.div`
   display: grid;
