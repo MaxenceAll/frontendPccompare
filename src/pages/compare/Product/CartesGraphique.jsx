@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useGetAllGpuDataQuery } from "../../../features/pccompareSlice";
@@ -14,8 +14,17 @@ import DataTable, { createTheme } from "react-data-table-component";
 
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery();
+  const [formattedData, setFormattedData] = useState([]);
 
   console.log(data);
+
+    // format the data and set the state
+    useEffect(() => {
+      if (data) {
+        const formatted = formatData(data.data);
+        setFormattedData(formatted);
+      }
+    }, [data]);
 
   // set title logic:
   useEffect(() => {
@@ -73,7 +82,7 @@ function CartesGraphique() {
     });
   };
 
-  const formattedData = formatData(data?.data);
+  // const formattedData = formatData(data?.data);
 
   const columns = [
     // {
