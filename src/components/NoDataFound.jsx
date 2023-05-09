@@ -10,7 +10,7 @@ function NoDataFound() {
         {/* <img src={noDataFound}/>         */}
         <iframe src="https://embed.lottiefiles.com/animation/97179"></iframe>
         {/* <img src='https://lottiefiles.com/97179-no-data-found' /> */}
-        Changez les filtres à gauche ;-).
+        Vérifiez vos filtres !
     </STYLEDNoDataFoundContainer>
   )
 }

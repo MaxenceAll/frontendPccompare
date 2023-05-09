@@ -8,7 +8,7 @@ import {
   STYLEDContainerBox,
 } from "../../../components/styles/genericContainer";
 import { STYLEDErrorMessage } from "../../../components/styles/genericParagraphError";
-import { NavLink, redirect } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { STYLEDButton } from "../../../components/styles/genericButton";
 import { STYLEDSelect } from "../../../components/styles/genericSelect";
 import DataTable, { createTheme } from "react-data-table-component";
@@ -17,6 +17,26 @@ import NoDataFound from "../../../components/NoDataFound";
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery();
 
+  // trouver les filtres en fonction des url params :
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // get current URL params
+  const searchParams = new URLSearchParams(location.search);
+
+  // Parse the "marques" and "category" filters from the URL
+  const initialMarques = searchParams.get("marques")
+    ? searchParams.get("marques").split(",")
+    : [];
+  const initialChipsets = searchParams.get("chipsets")
+    ? searchParams.get("chipsets").split(",")
+    : [];
+  const initialCouleurs = searchParams.get("couleurs")
+    ? searchParams.get("couleurs").split(",")
+    : [];
+
+  console.log(data);
+
   // set title logic:
   useEffect(() => {
     document.title = `${
@@ -24,6 +44,7 @@ function CartesGraphique() {
     } | Page de recherche | Cartes graphique`;
   }, []);
 
+  // Table logic:
   const columns = [
     {
       cell: (row) => (
@@ -31,8 +52,8 @@ function CartesGraphique() {
           <img
             height="auto"
             width="56px"
-            alt={row.img_alt}
-            src={`https://picsum.photos/id/${row.Id_article}/5000/3333`}
+            // alt={row.img_alt}
+            src={row.img_src}
           ></img>
         </>
       ),
@@ -65,48 +86,73 @@ function CartesGraphique() {
       reorder: true,
     },
     {
-      name: "VRAM",
+      name: (
+        <>
+          VRAM
+          <br />
+          (GB)
+        </>
+      ),
       selector: (row) => row.memory_vram,
       sortable: true,
-      width: "72px",
+      width: "70px",
       reorder: true,
       hide: "md",
     },
     {
-      name: "Clock",
+      name: (
+        <>
+          Freq.
+          <br />
+          (mHz)
+        </>
+      ),
       selector: (row) => row.gpu_clock,
       sortable: true,
-      width: "79px",
+      width: "76px",
       hide: "lg",
       reorder: true,
     },
     {
-      name: "Boost",
+      name: (
+        <>
+          Boost
+          <br />
+          (mHz)
+        </>
+      ),
       selector: (row) => row.boost_clock,
       sortable: true,
-      width: "79px",
+      width: "77px",
       hide: "lg",
       reorder: true,
     },
     {
-      name: "Couleur",
-      selector: (row) => row.color,
-      sortable: true,
-      width: "94px",
-      hide: "lg",
-      reorder: true,
-    },
-    {
-      name: "Taille",
+      name: (
+        <>
+          Longueur
+          <br />
+          (mm)
+        </>
+      ),
       selector: (row) => row.length,
       sortable: true,
-      width: "86px",
+      width: "100px",
+      hide: "lg",
+      reorder: true,
+    },
+    {
+      name: <>Couleur</>,
+      selector: (row) => row.color,
+      sortable: true,
+      width: "92px",
       hide: "lg",
       reorder: true,
     },
     {
       name: "Prix",
-      selector: (row) => row.latest_price,
+      selector: (row) =>
+        row.latest_price != null ? row.latest_price + "€" : "",
       sortable: true,
       width: "90px",
       right: true,
@@ -127,53 +173,6 @@ function CartesGraphique() {
   const ExpandedComponent = ({ data }) => (
     <pre>{JSON.stringify(data, null, 2)}</pre>
   );
-
-  // "copie" de data pour manipulations
-  const [filteredData, setFilteredData] = useState(data?.data);
-  // filter marque logic:
-  const [selectedMarques, setSelectedMarques] = useState([]);
-  const [marques, setMarques] = useState([]);
-  // Trouver toutes les marques uniques :
-  useEffect(() => {
-    const uniqueMarques = [...new Set(data?.data?.map((item) => item.marque))];
-    setMarques(uniqueMarques);
-  }, [data]);
-  function handleButtonClickMarque(marque) {
-    // déjà click ?
-    if (selectedMarques.includes(marque)) {
-      // oui: on supprime
-      setSelectedMarques((prev) =>
-        prev.filter((selected) => selected !== marque)
-      );
-    } else {
-      // non on ajoute
-      setSelectedMarques((prev) => [...prev, marque]);
-    }
-  }
-
-  // filter chipset logic:
-  const [selectedChipsets, setSelectedChipsets] = useState([]);
-  const [chipsets, setChipsets] = useState([]);
-  // console.log("selectedChipsets : ",selectedChipsets)
-  // console.log("chipsets:",chipsets)
-  // Trouver tous les chipsets uniques :
-  useEffect(() => {
-    const uniqueChipsets = [...new Set(data?.data?.map((item) => item.chipset))];
-    setChipsets(uniqueChipsets);
-  }, [data]);
-  function handleButtonClickChipset(chipset) {
-    // déjà click ?
-    if (selectedChipsets.includes(chipset)) {
-      // oui: on supprime
-      setSelectedChipsets((prev) =>
-        prev.filter((selected) => selected !== chipset)
-      );
-    } else {
-      // non on ajoute
-      setSelectedChipsets((prev) => [...prev, chipset]);
-    }
-  }
-
 
   // table options :
   const paginationOptions = {
@@ -238,10 +237,101 @@ function CartesGraphique() {
     },
   };
 
+  // "copie" de data pour manipulations
+  const [filteredData, setFilteredData] = useState(data?.data);
+
+  // filter marque logic:
+  const [selectedMarques, setSelectedMarques] = useState(initialMarques);
+  const [marques, setMarques] = useState([]);
+  // Trouver toutes les marques uniques :
+  useEffect(() => {
+    const uniqueMarques = [...new Set(data?.data?.map((item) => item.marque))];
+    setMarques(uniqueMarques);
+  }, [data]);
+  function handleButtonClickMarque(marque) {
+    // déjà click ?
+    if (selectedMarques.includes(marque)) {
+      // oui: on supprime
+      setSelectedMarques((prev) =>
+        prev.filter((selected) => selected !== marque)
+      );
+    } else {
+      // non on ajoute
+      setSelectedMarques((prev) => [...prev, marque]);
+    }
+  }
+
+  // filter chipset logic:
+  const [selectedChipsets, setSelectedChipsets] = useState(initialChipsets);
+  const [chipsets, setChipsets] = useState([]);
+  // Trouver tous les chipsets uniques :
+  useEffect(() => {
+    const uniqueChipsets = [
+      ...new Set(data?.data?.map((item) => item.chipset)),
+    ];
+    setChipsets(uniqueChipsets);
+  }, [data]);
+  function handleButtonClickChipset(chipset) {
+    // déjà click ?
+    if (selectedChipsets.includes(chipset)) {
+      // oui: on supprime
+      setSelectedChipsets((prev) =>
+        prev.filter((selected) => selected !== chipset)
+      );
+    } else {
+      // non on ajoute
+      setSelectedChipsets((prev) => [...prev, chipset]);
+    }
+  }
+
+  // filter couleurs logic :
+  const [selectedCouleurs, setSelectedCouleurs] = useState(initialCouleurs);
+  const [couleurs, setCouleurs] = useState([]);
+  // Trouver toutes les couleurs uniques :
+  useEffect(() => {
+    const uniqueCouleurs = [...new Set(data?.data?.map((item) => item.color))];
+    setCouleurs(uniqueCouleurs);
+  }, [data]);
+  function handleButtonClickCouleur(couleur) {
+    // déjà click ?
+    if (selectedCouleurs.includes(couleur)) {
+      // oui: on supprime
+      setSelectedCouleurs((prev) =>
+        prev.filter((selected) => selected !== couleur)
+      );
+    } else {
+      // non on ajoute
+      setSelectedCouleurs((prev) => [...prev, couleur]);
+    }
+  }
+
+  // filter price logic :
+  const minPrice = Math.min(...data.data.map((item) => item.latest_price));
+  const maxPrice = Math.max(...data.data.map((item) => item.latest_price));
+  const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
+  console.log(priceRange);
+
+  // On maj les url params en fonction des filtres
+  useEffect(() => {
+    // get current URL params
+    const searchParams = new URLSearchParams(location.search);
+    // update the selected chipsets filter
+    searchParams.set("chipsets", selectedChipsets.join(","));
+    // update the selected marques filter
+    searchParams.set("marques", selectedMarques.join(","));
+    // update the selected couleur filter
+    searchParams.set("couleurs", selectedCouleurs.join(","));
+    // update the URL with the new params
+    navigate(`${location.pathname}?${searchParams.toString()}`);
+  }, [selectedChipsets, selectedMarques, selectedCouleurs]);
 
   // On maj ici tous les filtres actifs.
   useEffect(() => {
-    if (selectedMarques.length > 0 || selectedChipsets.length > 0) {
+    if (
+      selectedMarques.length > 0 ||
+      selectedChipsets.length > 0 ||
+      selectedCouleurs.length > 0
+    ) {
       let filtered = data?.data;
       if (selectedMarques.length > 0) {
         filtered = filtered?.filter((item) =>
@@ -253,13 +343,16 @@ function CartesGraphique() {
           selectedChipsets.includes(item.chipset)
         );
       }
+      if (selectedCouleurs.length > 0) {
+        filtered = filtered?.filter((item) =>
+          selectedCouleurs.includes(item.color)
+        );
+      }
       setFilteredData(filtered);
     } else {
       setFilteredData(data?.data);
     }
-  }, [selectedMarques, selectedChipsets, data]);
-  
-  
+  }, [selectedMarques, selectedChipsets, selectedCouleurs, data]);
 
   if (isLoading) {
     return (
@@ -318,6 +411,48 @@ function CartesGraphique() {
               Tous
             </STYLEDButton>
           </STYLEDChipsetFilterContainer>
+          <STYLEDColorFilterContainer>
+            Couleur :
+            <hr />
+            {couleurs.map((couleur, index) => (
+              <STYLEDButton
+                key={index}
+                onClick={() => handleButtonClickCouleur(couleur)}
+                className={selectedCouleurs.includes(couleur) ? "active" : ""}
+              >
+                {couleur}
+              </STYLEDButton>
+            ))}
+            <STYLEDButton width="100%" onClick={() => setSelectedCouleurs([])}>
+              Toutes
+            </STYLEDButton>
+            <STYLEDPriceFilterContainer>
+              Prix :
+              <hr />
+              <div>
+                <span>{priceRange[0]}</span>
+                <input
+                  type="range"
+                  min={minPrice}
+                  max={maxPrice}
+                  value={priceRange[0]}
+                  onChange={(e) =>
+                    setPriceRange([Number(e.target.value), priceRange[1]])
+                  }
+                />
+                <span>{priceRange[1]}</span>
+                <input
+                  type="range"
+                  min={minPrice}
+                  max={maxPrice}
+                  value={priceRange[1]}
+                  onChange={(e) =>
+                    setPriceRange([priceRange[0], Number(e.target.value)])
+                  }
+                />
+              </div>
+            </STYLEDPriceFilterContainer>
+          </STYLEDColorFilterContainer>
         </STYLEDCompareFilter>
         <STYLEDCompareResult>
           <DataTable
@@ -334,7 +469,7 @@ function CartesGraphique() {
             expandableRows
             expandableRowsComponent={ExpandedComponent}
             expandOnRowClicked
-            noDataComponent={<NoDataFound/>}
+            noDataComponent={<NoDataFound />}
             persistTableHead
             // dense
           />
@@ -347,12 +482,20 @@ function CartesGraphique() {
 export default CartesGraphique;
 
 const STYLEDMarqueFilterContainer = styled.div`
-padding-top: 15%;
-text-align:center;
+  padding-top: 15%;
+  text-align: center;
 `;
 const STYLEDChipsetFilterContainer = styled.div`
-padding-top: 15%;
-text-align:center;
+  padding-top: 15%;
+  text-align: center;
+`;
+const STYLEDColorFilterContainer = styled.div`
+  padding-top: 15%;
+  text-align: center;
+`;
+const STYLEDPriceFilterContainer = styled.div`
+  padding-top: 15%;
+  text-align: center;
 `;
 
 const STYLEDCompareContainer = styled.div`
