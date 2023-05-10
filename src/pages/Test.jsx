@@ -1,16 +1,14 @@
-import React, { useEffect } from "react";
-import useLocalStorage from "../Hooks/useLocalStorage";
+import React from "react";
+import MultiRangeSlider from "../components/Product/MultiRangeSlider";
 
 function Test() {
-  const [myValue, setMyValue] = useLocalStorage("myValue", "default");
-
-  useEffect(() => {
-    console.log(myValue);
-  }, [myValue]);
-
   return (
     <div>
-      <button onClick={() => setMyValue("new value")}>Update value</button>
+      <MultiRangeSlider
+        min={0}
+        max={1850}
+        onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
+      />
     </div>
   );
 }

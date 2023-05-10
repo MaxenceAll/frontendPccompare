@@ -21,6 +21,7 @@ export const AuthContextProvider = ({ children }) => {
           console.log("Réception d'un accessToken via le refreshToken.");
           setAuthCookie(tryingWithRefreshToken.accessToken ?? null, {
             "max-age": `${60 * 60 * 24 * 10}`,
+            "path": "/"
           });
           const secondAuthTry = await fetcher.get("auth");
           console.log("accessToken est ok, authentification OK !");

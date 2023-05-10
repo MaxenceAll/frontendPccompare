@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useGetAllGpuDataQuery } from "../../../features/pccompareSlice";
@@ -13,6 +13,7 @@ import { STYLEDButton } from "../../../components/styles/genericButton";
 import { STYLEDSelect } from "../../../components/styles/genericSelect";
 import DataTable, { createTheme } from "react-data-table-component";
 import NoDataFound from "../../../components/NoDataFound";
+import MultiRangeSlider from "../../../components/Product/MultiRangeSlider";
 
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery();
@@ -35,7 +36,7 @@ function CartesGraphique() {
     ? searchParams.get("couleurs").split(",")
     : [];
 
-  console.log(data);
+  // console.log(data);
 
   // set title logic:
   useEffect(() => {
@@ -306,10 +307,23 @@ function CartesGraphique() {
   }
 
   // filter price logic :
-  const minPrice = Math.min(...data.data.map((item) => item.latest_price));
-  const maxPrice = Math.max(...data.data.map((item) => item.latest_price));
-  const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
-  console.log(priceRange);
+  const [priceRange, setPriceRange] = useState([]);
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
+  useEffect(() => {
+    const prices = data?.data.map((item) => item.latest_price);
+    if (prices) {
+      setMinPrice(Math.min(...prices));
+      setMaxPrice(Math.max(...prices));
+    }
+  }, [data]);
+  const handlePriceChange = useCallback(({ min, max }) => {
+    if (min !== priceRange[0] || max !== priceRange[1]) {
+      setPriceRange([min, max]);
+    }
+  }, [priceRange]);
+  // console.log(priceRange)
+
 
   // On maj les url params en fonction des filtres
   useEffect(() => {
@@ -330,7 +344,8 @@ function CartesGraphique() {
     if (
       selectedMarques.length > 0 ||
       selectedChipsets.length > 0 ||
-      selectedCouleurs.length > 0
+      selectedCouleurs.length > 0 ||
+      (priceRange[0] !== null && priceRange[1] !== null)
     ) {
       let filtered = data?.data;
       if (selectedMarques.length > 0) {
@@ -348,11 +363,18 @@ function CartesGraphique() {
           selectedCouleurs.includes(item.color)
         );
       }
+      if (priceRange[0] !== null && priceRange[1] !== null) {
+        filtered = filtered?.filter((item) => {
+          const latestPrice = item.latest_price;
+          return latestPrice >= priceRange[0] && latestPrice <= priceRange[1];
+        });
+      }
       setFilteredData(filtered);
     } else {
       setFilteredData(data?.data);
     }
-  }, [selectedMarques, selectedChipsets, selectedCouleurs, data]);
+  }, [selectedMarques, selectedChipsets, selectedCouleurs, data, priceRange]);
+  
 
   if (isLoading) {
     return (
@@ -375,8 +397,10 @@ function CartesGraphique() {
     <>
       <STYLEDCompareContainer>
         <STYLEDCompareTitle>
-          <h1>Cherchez votre carte graphique</h1>({filteredData?.length}/
-          {data?.data?.length} trouvées)
+          <h1>Cherchez votre carte graphique</h1>
+          <h5>
+            ({filteredData?.length}/{data?.data?.length} trouvées)
+          </h5>
         </STYLEDCompareTitle>
         <STYLEDCompareFilter>
           <STYLEDMarqueFilterContainer>
@@ -426,33 +450,18 @@ function CartesGraphique() {
             <STYLEDButton width="100%" onClick={() => setSelectedCouleurs([])}>
               Toutes
             </STYLEDButton>
-            <STYLEDPriceFilterContainer>
-              Prix :
-              <hr />
-              <div>
-                <span>{priceRange[0]}</span>
-                <input
-                  type="range"
-                  min={minPrice}
-                  max={maxPrice}
-                  value={priceRange[0]}
-                  onChange={(e) =>
-                    setPriceRange([Number(e.target.value), priceRange[1]])
-                  }
-                />
-                <span>{priceRange[1]}</span>
-                <input
-                  type="range"
-                  min={minPrice}
-                  max={maxPrice}
-                  value={priceRange[1]}
-                  onChange={(e) =>
-                    setPriceRange([priceRange[0], Number(e.target.value)])
-                  }
-                />
-              </div>
-            </STYLEDPriceFilterContainer>
           </STYLEDColorFilterContainer>
+          <STYLEDPriceFilterContainer>
+            Prix :
+            <hr />
+            {minPrice !== undefined && maxPrice !== undefined && (
+              <MultiRangeSlider
+                min={minPrice}
+                max={maxPrice}
+                onChange={handlePriceChange}
+              />
+            )}
+          </STYLEDPriceFilterContainer>
         </STYLEDCompareFilter>
         <STYLEDCompareResult>
           <DataTable
@@ -526,7 +535,7 @@ const STYLEDCompareTitle = styled.div`
   text-align: center;
 
   border-top: 1px solid var(--secondary-color-300);
-  height: 130px;
+  height: auto;
 `;
 
 const STYLEDCompareFilter = styled.div`
