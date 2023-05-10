@@ -14,6 +14,7 @@ import { STYLEDSelect } from "../../../components/styles/genericSelect";
 import DataTable, { createTheme } from "react-data-table-component";
 import NoDataFound from "../../../components/NoDataFound";
 import MultiRangeSlider from "../../../components/Product/MultiRangeSlider";
+import ExpandableRows from "../../../components/Product/expandableRows";
 
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery();
@@ -36,7 +37,7 @@ function CartesGraphique() {
     ? searchParams.get("couleurs").split(",")
     : [];
 
-  // console.log(data);
+  console.log(data);
 
   // set title logic:
   useEffect(() => {
@@ -173,6 +174,8 @@ function CartesGraphique() {
   ];
   const ExpandedComponent = ({ data }) => (
     <pre>{JSON.stringify(data, null, 2)}</pre>
+    // console.log(data)
+    // return <ExpandableRows data={data} />;
   );
 
   // table options :

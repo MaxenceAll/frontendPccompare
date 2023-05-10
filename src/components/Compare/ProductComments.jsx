@@ -6,6 +6,9 @@ import { formatDistanceToNow, format } from "date-fns";
 import { fr } from "date-fns/locale";
 
 const ProductComments = ({ comments }) => {
+
+  console.log(comments)
+  
   let options = {
     weekday: "long",
     year: "numeric",

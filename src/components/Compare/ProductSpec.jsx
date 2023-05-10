@@ -4,9 +4,9 @@ import { STYLEDhr } from "../styles/genericHR";
 
 function ProductSpec(props) {
   const { spec } = props;
-  console.log(spec);
+  // console.log(spec);
   const specs = Object.entries(spec).map(([key, value]) => {
-    if (key === "Id_gpu" || key === "Id_article") {
+    if (ignoreKeys_gpu.includes(key)) {
       return null;
     } else {
       const friendlyName = getFriendlyName(key);
@@ -24,7 +24,7 @@ function ProductSpec(props) {
 
   return (
     <STYLED_Spec_content>
-      <STYLED_Spec_title>Specifications:</STYLED_Spec_title>
+      <STYLED_Spec_title><h3>Specifications:</h3></STYLED_Spec_title>
       <div>{specs}</div>
     </STYLED_Spec_content>
   );
@@ -32,8 +32,26 @@ function ProductSpec(props) {
 
 export default ProductSpec;
 
+// Keys a ignore
+const ignoreKeys_gpu = [
+  "img_src",
+  "img_alt",
+  "Id_model",
+  "Id_category",
+  "Id_article",
+  "code",
+  "img_src_category",
+  "img_alt_category",
+  "Id_gpu",
+];
+
 // Map pour affichage userfriendly
 const friendlyNames = {
+  product_number: "Référence produit",
+  designation: "Nom du produit",
+  model_name: "Modèle",
+  marque: "Marque",
+  category_name: "Type",
   ean: "Numéro [EAN]",
   upc: "Numéro [UPC]",
   chipset: "Chipset",
@@ -94,7 +112,6 @@ const suffixTable = {
   tensor_cores: "",
   rt_cores: "",
 };
-
 
 // Function to get the user-friendly name of a key
 const getFriendlyName = (key) => {

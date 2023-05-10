@@ -1,307 +1,172 @@
-import React from "react";
+import { useParams } from "react-router-dom";
+import {
+  useGetCommentsQuery,
+  useGetHistoriqueDetailsQuery,
+  useGetProductDetailsQuery,
+  useGetSHADetailsQuery,
+  useGetSellerDetailsQuery,
+} from "../../../features/pccompareSlice";
+import {
+  STYLEDContainer,
+  STYLEDContainerBox,
+} from "../../../components/styles/genericContainer";
+import Loader from "../../../components/Tools/Loader";
+import { STYLEDErrorMessage } from "../../../components/styles/genericParagraphError";
 import styled from "styled-components";
-import ProductSpec from "../../../components/Compare/ProductSpec";
 import ProductHeader from "../../../components/Compare/ProductHeader";
-import ProductPrices from "../../../components/Compare/ProductPrices";
-import ProductComments from "../../../components/Compare/ProductComments";
 import ProductImage from "../../../components/Compare/ProductImage";
+import ProductSpec from "../../../components/Compare/ProductSpec";
+import ProductPrices from "../../../components/Compare/ProductPrices";
 import ProductTest from "../../../components/Compare/ProductTest";
+import ProductTest2 from "../../../components/Compare/ProductTest2";
+import NoDataFound from "../../../components/NoDataFound";
+import ProductComments from "../../../components/Compare/ProductComments";
+import { STYLEDhr } from "../../../components/styles/genericHR";
 
-function Product() {
-  // fake data :
-  const article = {
-    Id_article: 1,
-    product_number: "24G-P5-4999-KR",
-    designation: "EVGA RTX 3090 Ti FTW3 KINGPIN",
-    marque: "EVGA",
-    img_src: "https://tpucdn.com/gpu-specs/images/b/9743-front.jpg",
-    img_alt: "EVGA RTX 3090 Ti FTW3 KINGPIN",
-    Id_model: 2,
-  };
-  const model = {
-    Id_model: 2,
-    name: "RTX 3000",
-    Id_category: 1,
-  };
-  const category = {
-    Id_category: 1,
-    name: "Cartes Graphique",
-    code: "cg",
-    img_src: null,
-    img_alt: "Cartes Graphique",
-  };
-  const gpu = {
-    Id_gpu: 147,
-    ean: null,
-    upc: null,
-    chipset: "3090Ti",
-    color: "Black",
-    gpu_clock: 1560,
-    boost_clock: 1905,
-    memory_clock: 1313,
-    bus_interface: "4.0 x16",
-    bus_width: 384,
-    memory_vram: 24,
-    slot_width: 3,
-    length: 331,
-    width: 150,
-    height: 70,
-    tdp: 450,
-    psu_needed: 850,
-    nb_hdmi: 1,
-    nb_dp: 3,
-    nb_usbc: 0,
-    power_connector: "1 x 16 Pin ",
-    pixel_rate: 213,
-    texture_rate: 640,
-    fp32: 41,
-    shader: 10752,
-    tmu: 336,
-    rop: 112,
-    sm_cu: 874,
-    tensor_cores: 336,
-    rt_cores: 84,
-    Id_article: 147,
-  };
-  const comments = [
-    {
-      Id_comment: 1,
-      content:
-        "This GPU is amazing! I was able to play all my favorite games at max settings with no issues.",
-      note: 5,
-      createdBy: "Secutor",
-      deletedBy: null,
-      modifiedBy: null,
-      createdAt: "2023-04-01",
-      deletedAt: null,
-      modifiedAt: null,
-      Id_customer: 6,
-      Id_article: 1,
-    },
-    {
-      Id_comment: 2,
-      content:
-        "I'm disappointed with this GPU. It's not as powerful as I expected and I've had some stability issues.",
-      note: 2,
-      createdBy: "TestPseudo_100",
-      deletedBy: null,
-      modifiedBy: null,
-      createdAt: "2023-04-03",
-      deletedAt: null,
-      modifiedAt: null,
-      Id_customer: 7,
-      Id_article: 1,
-    },
-    {
-      Id_comment: 3,
-      content: "Good GPU for the price. I've had no issues so far.",
-      note: 4,
-      createdBy: "TestPseudo_2",
-      deletedBy: null,
-      modifiedBy: null,
-      createdAt: "2023-04-05",
-      deletedAt: null,
-      modifiedAt: null,
-      Id_customer: 8,
-      Id_article: 1,
-    },
-  ];
+export default function Product() {
+  const { Id_article_to_find } = useParams();
 
-  const seller = [
-    {
-      Id_seller: 1,
-      name: "LDLC",
-      img_src: "https://upload.wikimedia.org/wikipedia/fr/c/c7/LDLC_logo.jpg",
-      img_alt: "LDLC logo",
-    },
-    {
-      Id_seller: 2,
-      name: "Amazon",
-      img_src:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/langfr-1920px-Amazon_logo.svg.png",
-      img_alt: "Amazon logo",
-    },
-    {
-      Id_seller: 3,
-      name: "TopAchat",
-      img_src:
-        "https://upload.wikimedia.org/wikipedia/fr/1/14/Logo-topachat_200.jpg",
-      img_alt: "TopAchat logo",
-    },
-  ];
+  const {
+    data: productData,
+    isLoading: productIsLoading,
+    isError: productIsError,
+    error: productError,
+  } = useGetProductDetailsQuery(Id_article_to_find);
+  const {
+    data: SHAData,
+    isLoading: SHAIsLoading,
+    isError: SHAIsError,
+    error: SHAError,
+  } = useGetSHADetailsQuery(Id_article_to_find);
+  const {
+    data: historiqueData,
+    isLoading: historiqueIsLoading,
+    isError: historiqueIsError,
+    error: historiqueError,
+  } = useGetHistoriqueDetailsQuery(Id_article_to_find);
+  const {
+    data: sellerData,
+    isLoading: sellerIsLoading,
+    isError: sellerIsError,
+    error: sellerError,
+  } = useGetSellerDetailsQuery(Id_article_to_find);
+  const {
+    data: commentsData,
+    isLoading: commentsIsLoading,
+    isError: commentsIsError,
+    error: commentsError,
+  } = useGetCommentsQuery(Id_article_to_find);
 
-  const historique_prix = [
-    { Id_historique_prix: 1, price: 450, date: "2023-05-02" },
-    { Id_historique_prix: 2, price: 550, date: "2023-05-04" },
-    { Id_historique_prix: 3, price: 430, date: "2023-05-05" },
-    { Id_historique_prix: 4, price: 480, date: "2023-05-01" },
-    { Id_historique_prix: 5, price: 520, date: "2023-05-03" },
-    { Id_historique_prix: 6, price: 850, date: "2023-04-01" },
-    { Id_historique_prix: 7, price: 740, date: "2023-04-02" },
-    { Id_historique_prix: 8, price: 820, date: "2023-04-03" },
-    { Id_historique_prix: 9, price: 480, date: "2023-04-04" },
-    { Id_historique_prix: 10, price: 810, date: "2023-04-05" },
-    { Id_historique_prix: 11, price: 810, date: "2023-02-01" },
-    { Id_historique_prix: 12, price: 735, date: "2023-02-02" },
-    { Id_historique_prix: 13, price: 725, date: "2023-02-03" },
-    { Id_historique_prix: 14, price: 638, date: "2023-02-04" },
-    { Id_historique_prix: 15, price: 520, date: "2023-02-08" },
-    { Id_historique_prix: 50, price: 520, date: "2023-03-05" },
-    { Id_historique_prix: 51, price: 520, date: "2023-05-01" },
-    { Id_historique_prix: 52, price: 520, date: "2023-01-22" },
-    { Id_historique_prix: 53, price: 520, date: "2023-03-11" },
-    { Id_historique_prix: 54, price: 520, date: "2023-02-08" },
-  ];
+  // console.log(productData);
+  // console.log(SHAData);
+  // console.log(historiqueData);
+  // console.log(sellerData);
+  // console.log(commentsData);
 
-  const seller_historique_article = [
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 1,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 2,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 3,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 4,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 5,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 2,
-      Id_historique_prix: 6,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 2,
-      Id_historique_prix: 7,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 2,
-      Id_historique_prix: 8,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 2,
-      Id_historique_prix: 9,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 2,
-      Id_historique_prix: 10,
-    },
+  if (
+    productIsLoading ||
+    SHAIsLoading ||
+    historiqueIsLoading ||
+    sellerIsLoading ||
+    commentsIsLoading
+  ) {
+    return (
+      <STYLEDContainer>
+        <STYLEDContainerBox>
+          <Loader />
+        </STYLEDContainerBox>
+      </STYLEDContainer>
+    );
+  }
 
-
-    {
-      Id_article: 1,
-      Id_seller: 3,
-      Id_historique_prix: 11,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 3,
-      Id_historique_prix: 12,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 3,
-      Id_historique_prix: 13,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 3,
-      Id_historique_prix: 14,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 3,
-      Id_historique_prix: 15,
-    },
-
-
-
-
-
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 50,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 51,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 52,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 53,
-    },
-    {
-      Id_article: 1,
-      Id_seller: 1,
-      Id_historique_prix: 54,
-    },
-
-
-
-
-  ];
+  if (productIsError) {
+    return (
+      <STYLEDErrorMessage>
+        Erreur lors de la recherche des infos produit:{" "}
+        {JSON.stringify(productError)}
+      </STYLEDErrorMessage>
+    );
+  }
+  if (SHAIsError) {
+    return (
+      <STYLEDErrorMessage>
+        Erreur lors de la recherche des infos SHA: {JSON.stringify(SHAError)}
+      </STYLEDErrorMessage>
+    );
+  }
+  if (historiqueIsError) {
+    return (
+      <STYLEDErrorMessage>
+        Erreur lors de la recherche des infos historique:{" "}
+        {JSON.stringify(historiqueError)}
+      </STYLEDErrorMessage>
+    );
+  }
+  if (sellerIsError) {
+    return (
+      <STYLEDErrorMessage>
+        Erreur lors de la recherche des infos vendeur:{" "}
+        {JSON.stringify(commentsError)}
+      </STYLEDErrorMessage>
+    );
+  }
+  if (commentsIsError) {
+    return (
+      <STYLEDErrorMessage>
+        Erreur lors de la recherche des commentaires :{" "}
+        {JSON.stringify(commentsError)}
+      </STYLEDErrorMessage>
+    );
+  }
 
   return (
     <STYLEDProductDetailsContainer>
       <Product_Header_Container>
-        <ProductHeader model={model} article={article} category={category} />
+        <ProductHeader
+          article={[productData.data[0]]}
+          model={[productData.data[0].model_name]}
+          category={[productData.data[0].category_name]}
+        />
       </Product_Header_Container>
 
       <Product_Image_Container>
-        <ProductImage article={article} />
+        <ProductImage article={[productData.data[0]]} />
       </Product_Image_Container>
 
       <Product_Spec_Container>
-        <ProductSpec spec={gpu} />
+        <ProductSpec spec={productData.data[0]} />
       </Product_Spec_Container>
 
       <Product_Prices_Container>
-        <ProductPrices
-          seller={seller}
-          historique_prix={historique_prix}
-          seller_historique_article={seller_historique_article}
-        />
-        <ProductTest
-          seller={seller}
-          historique_prix={historique_prix}
-          seller_historique_article={seller_historique_article}
-        />
+        {historiqueData.data.length > 0 ? (
+          <>
+              <StyledHeader>Les meilleurs prix :</StyledHeader>
+    <STYLEDhr />
+            <ProductTest
+              seller={sellerData.data}
+              historique_prix={historiqueData.data}
+              seller_historique_article={SHAData.data}
+            />
+          </>
+        ) : (
+          <>
+              <StyledHeader>Les meilleurs prix :</StyledHeader>
+    <STYLEDhr />
+            <NoDataFound />
+          </>
+        )}
       </Product_Prices_Container>
 
       <Product_Comments_Container>
-        <ProductComments comments={comments} />
+        <ProductComments comments={commentsData.data} />
       </Product_Comments_Container>
     </STYLEDProductDetailsContainer>
   );
 }
 
-export default Product;
+const StyledHeader = styled.h1`
+  text-align: center;
+`;
 
 const STYLEDProductDetailsContainer = styled.div`
   display: grid;

@@ -2,11 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 function ProductImage(props) {
+
   const { article } = props;
+
   return (
     <>
       <STYLED_Img_container>
-        <img src={article.img_src} />
+        <img src={article[0].img_src} />
       </STYLED_Img_container>
     </>
   );

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import config from "../../config"; 
+import config from "../../config";
 
 export const pccompareApi = createApi({
   reducerPath: "pccompareApi",
@@ -13,11 +13,10 @@ export const pccompareApi = createApi({
       return headers;
     },
     credentials: "include",
-    tagTypes: ["Customer", "Account", "Users", "Roles","Category"],
+    tagTypes: ["Customer", "Account", "Users", "Roles", "Category", "Product", "Comments"],
   }),
-  
-  endpoints: (builder) => ({
 
+  endpoints: (builder) => ({
     // DASHBOARD ADMIN ENDPOINTS logic:
     getAllUserData: builder.query({
       query: () => "alluserdata",
@@ -27,7 +26,6 @@ export const pccompareApi = createApi({
       query: () => "allroledata",
       providesTags: ["Roles"],
     }),
-    
 
     // CUSTOMER ENDPOINTS LOGIC:
     getCurrentCustomer: builder.query({
@@ -42,10 +40,30 @@ export const pccompareApi = createApi({
       providesTags: ["Users"],
     }),
     updateCustomer: builder.mutation({
-      query: ({ Id_customer, pseudo, firstname, lastname, email, last_connection ,createdBy , createdAt , img_src}) => ({
+      query: ({
+        Id_customer,
+        pseudo,
+        firstname,
+        lastname,
+        email,
+        last_connection,
+        createdBy,
+        createdAt,
+        img_src,
+      }) => ({
         url: `customer/${Id_customer}`,
         method: "PUT",
-        body: { Id_customer, pseudo, firstname, lastname, email, last_connection ,createdBy , createdAt, img_src },
+        body: {
+          Id_customer,
+          pseudo,
+          firstname,
+          lastname,
+          email,
+          last_connection,
+          createdBy,
+          createdAt,
+          img_src,
+        },
       }),
       invalidatesTags: ["Users"],
     }),
@@ -56,15 +74,43 @@ export const pccompareApi = createApi({
       providesTags: ["Category"],
     }),
 
-
     // COMPARE DATA logic :
     getAllGpuData: builder.query({
       query: () => "compare/gpu",
       providesTags: ["gpu"],
     }),
+    // PRODUCT DETAILED VIEW logic :
+    getProductDetails: builder.query({
+      query: (id) => `compare/product/${id}`,
+      providesTags: ["Product"],
+    }),
+    // get seller_historique_article corresponding table based on article id:
+    getSHADetails: builder.query({
+      query: (id) => `compare/sha/${id}`,
+      providesTags: ["Product"],
+    }),
+    // get historique price corresponding table based on article id:
+    getHistoriqueDetails: builder.query({
+      query: (id) => `compare/historique/${id}`,
+      providesTags: ["Product"],
+    }),
+    // get sellers corresponding table based on article id:
+    getSellerDetails: builder.query({
+      query: (id) => `compare/seller/${id}`,
+      providesTags: ["Product"],
+    }),
+    // get comments with given Id_article :
+    getComments: builder.query({
+      query: (id) => `compare/comments/${id}`,
+      providesTags: ["Comments"],
+    }),
 
 
 
+
+
+
+    
   }),
 });
 
@@ -73,8 +119,15 @@ export const {
   useGetAllRoleDataQuery,
   useGetCurrentCustomerQuery,
   useUpdateCustomerMutation,
-
+  //
   useGetAllCategoryDataQuery,
-
+  //
   useGetAllGpuDataQuery,
+  //
+  useGetProductDetailsQuery,
+  useGetSHADetailsQuery,
+  useGetHistoriqueDetailsQuery,
+  useGetSellerDetailsQuery,
+  //
+  useGetCommentsQuery,
 } = pccompareApi;

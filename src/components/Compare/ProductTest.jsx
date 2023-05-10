@@ -11,9 +11,20 @@ import {
   Area,
 } from "recharts";
 import styled from "styled-components";
+import { STYLEDhr } from "../styles/genericHR";
+import { STYLEDButton } from "../styles/genericButton";
 
 function ProductTest({ seller, historique_prix, seller_historique_article }) {
 
+
+console.log(seller);
+
+  let options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   //setup charts:
   const colors = [
     "#8884d8",
@@ -41,11 +52,11 @@ function ProductTest({ seller, historique_prix, seller_historique_article }) {
         const historiquePrixObj = historique_prix.find(
           (prix) => prix.Id_historique_prix === item.Id_historique_prix
         );
-        return { date: historiquePrixObj.date, price: historiquePrixObj.price };
+        return { date: new Date(historiquePrixObj._date).toLocaleDateString(), price: historiquePrixObj.price };
       })
       .sort((a, b) => new Date(a.date) - new Date(b.date));
     // Return an object containing the seller's name and price history data
-    return { name: sellerObj.name, data: sellerHistoriquePrix };
+    return { name: sellerObj.seller_name, data: sellerHistoriquePrix };
   });
   // console.log(sellerData)
 
@@ -66,12 +77,60 @@ function ProductTest({ seller, historique_prix, seller_historique_article }) {
 
   // console.log(sellerData)
 
-  return (
+  return (<>
+
+    <StyledTable>
+      <thead>
+        <tr>
+          <StyledTh>Vendeur :</StyledTh>
+          {/* <StyledTh>Vendeur:</StyledTh> */}
+          <StyledTh>Date(dernière mise à jour) :</StyledTh>
+          <StyledTh>Prix:</StyledTh>
+          <StyledTh>Lien:</StyledTh>
+        </tr>
+      </thead>
+      <tbody>
+        {seller.map((seller) => {
+          // Get the most recent historical price ID for this seller
+          const sellerhistorique_prixIds = seller_historique_article
+            .filter((sha) => sha.Id_seller === seller.Id_seller)
+            .map((sha) => sha.Id_historique_prix);
+          const mostRecenthistorique_prixId =
+            sellerhistorique_prixIds[sellerhistorique_prixIds.length - 1];
+
+          // Get the most recent historical price object for this seller
+          const mostRecenthistorique_prix = historique_prix.find(
+            (hp) => hp.Id_historique_prix === mostRecenthistorique_prixId
+          );
+
+          // Render the seller's row
+          return (
+            <StyledTr key={seller.Id_seller}>
+              <StyledTd>
+                <StyledImg src={seller.img_src_seller} alt={seller.img_alt_seller} />
+              </StyledTd>
+              {/* <StyledTd>{seller.name}</StyledTd> */}
+              <StyledTd>
+                {new Date(mostRecenthistorique_prix._date).toLocaleString(
+                  "fr-FR",
+                  options
+                )}
+              </StyledTd>
+              <StyledTd>{mostRecenthistorique_prix.price} €</StyledTd>
+              <StyledTd>
+                <STYLEDButton>Acheter!</STYLEDButton>
+              </StyledTd>
+            </StyledTr>
+          );
+        })}
+      </tbody>
+    </StyledTable>
+
     <StyledBigContainer_div> 
         {sellerData.map((seller, index) => (
           <div key={seller.name}>
             <h2>{seller.name}</h2>
-            <ResponsiveContainer width={250} height={250}>
+            <ResponsiveContainer  minWidth={400} minHeight={300}>
               <AreaChart width={800} height={400} data={seller.data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
@@ -90,7 +149,7 @@ function ProductTest({ seller, historique_prix, seller_historique_article }) {
           </div>
         ))}
     </StyledBigContainer_div>
-  );
+    </>);
 }
 
 export default ProductTest;
@@ -108,5 +167,42 @@ background-color: var(--background-color-200);
 color:var(--main-color-100);
 font-size: 1rem;
 border: 1px solid var(--background-color-400)
-
 `
+
+
+const StyledHeader = styled.h1`
+  text-align: center;
+`;
+
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 5%;
+`;
+
+const StyledTh = styled.th`
+  /* background-color: var(--background-color-200); */
+  border-bottom: 1px solid var(--secondary-color-200);
+  padding: 8px;
+  text-align: left;
+  font-weight: bold;
+`;
+
+const StyledTr = styled.tr`
+  border-bottom: 1px solid var(--secondary-color-100);
+  padding: 8px;
+  text-align: left;
+  /* height:50px; */
+`;
+
+const StyledTd = styled.td`
+  /* border: 1px solid var(--secondary-color-100); */
+  padding: 8px;
+  text-align: center;
+`;
+
+const StyledImg = styled.img`
+  width: 50px;
+  display: block;
+  margin: auto;
+`;
