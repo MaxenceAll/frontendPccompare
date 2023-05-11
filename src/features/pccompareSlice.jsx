@@ -99,7 +99,7 @@ export const pccompareApi = createApi({
 
     // PRODUCT DETAILED VIEW logic :
     getProductDetails: builder.query({
-      query: (id) => `compare/product/${id}`,
+      query: (Id_article_to_find,Category_to_find) => `compare/product/${Category_to_find}/${Id_article_to_find}`,
       providesTags: ["Product"],
     }),
     // get seller_historique_article corresponding table based on article id:

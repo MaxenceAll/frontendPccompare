@@ -25,14 +25,16 @@ import { STYLEDhr } from "../../../components/styles/genericHR";
 import Test from "../../Test";
 
 export default function Product() {
-  const { Id_article_to_find } = useParams();
+  const { Id_article_to_find, Category_to_find  } = useParams();
+  console.log(Category_to_find)
+  console.log(Id_article_to_find)
 
   const {
     data: productData,
     isLoading: productIsLoading,
     isError: productIsError,
     error: productError,
-  } = useGetProductDetailsQuery(Id_article_to_find);
+  } = useGetProductDetailsQuery(Id_article_to_find,Category_to_find);
   const {
     data: SHAData,
     isLoading: SHAIsLoading,
@@ -58,11 +60,11 @@ export default function Product() {
     error: commentsError,
   } = useGetCommentsQuery(Id_article_to_find);
 
-  // console.log(productData);
-  // console.log(SHAData);
-  // console.log(historiqueData);
-  // console.log(sellerData);
-  // console.log(commentsData);
+  console.log(productData);
+  console.log(SHAData);
+  console.log(historiqueData);
+  console.log(sellerData);
+  console.log(commentsData);
 
   if (
     productIsLoading ||
@@ -83,7 +85,7 @@ export default function Product() {
   if (productIsError) {
     return (
       <STYLEDErrorMessage>
-        Erreur lors de la recherche des infos produit:{" "}
+        Erreur lors de la recherche des infos produit:
         {JSON.stringify(productError)}
       </STYLEDErrorMessage>
     );
@@ -98,7 +100,7 @@ export default function Product() {
   if (historiqueIsError) {
     return (
       <STYLEDErrorMessage>
-        Erreur lors de la recherche des infos historique:{" "}
+        Erreur lors de la recherche des infos historique:
         {JSON.stringify(historiqueError)}
       </STYLEDErrorMessage>
     );
@@ -106,7 +108,7 @@ export default function Product() {
   if (sellerIsError) {
     return (
       <STYLEDErrorMessage>
-        Erreur lors de la recherche des infos vendeur:{" "}
+        Erreur lors de la recherche des infos vendeur:
         {JSON.stringify(commentsError)}
       </STYLEDErrorMessage>
     );
@@ -114,7 +116,7 @@ export default function Product() {
   if (commentsIsError) {
     return (
       <STYLEDErrorMessage>
-        Erreur lors de la recherche des commentaires :{" "}
+        Erreur lors de la recherche des commentaires :
         {JSON.stringify(commentsError)}
       </STYLEDErrorMessage>
     );
@@ -124,18 +126,18 @@ export default function Product() {
     <STYLEDProductDetailsContainer>
       <Product_Header_Container>
         <ProductHeader
-          article={[productData.data[0]]}
-          model={[productData.data[0].model_name]}
-          category={[productData.data[0].category_name]}
+          article={[productData?.data[0]]}
+          model={[productData?.data[0]?.model_name]}
+          category={[productData?.data[0]?.category_name]}
         />
       </Product_Header_Container>
 
       <Product_Image_Container>
-        <ProductImage article={[productData.data[0]]} />
+        <ProductImage article={[productData?.data[0]]} />
       </Product_Image_Container>
 
       <Product_Spec_Container>
-        <ProductSpec spec={productData.data[0]} />
+        <ProductSpec spec={productData?.data[0]} />
       </Product_Spec_Container>
 
       <Product_Prices_Container>

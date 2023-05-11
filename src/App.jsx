@@ -44,7 +44,7 @@ const router = createBrowserRouter(
       <Route path="compare/ram" element={<Memoires />} />
       <Route path="compare/mb" element={<Cartesmere />} />
 
-      <Route path="compare/product/:Id_article_to_find" element={<Product />} />
+      <Route path="compare/product/:Category_to_find/:Id_article_to_find" element={<Product />} />
 
       {/*  TEST COMPONENT */}
       <Route path="test" element={<Test />} />

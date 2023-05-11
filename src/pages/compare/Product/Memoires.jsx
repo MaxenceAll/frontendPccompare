@@ -33,8 +33,8 @@ function CartesGraphique() {
   const initialMarques = searchParams.get("marques")
     ? searchParams.get("marques").split(",")
     : [];
-  const initialChipsets = searchParams.get("chipsets")
-    ? searchParams.get("chipsets").split(",")
+  const initialTypes = searchParams.get("types")
+    ? searchParams.get("types").split(",")
     : [];
   const initialCouleurs = searchParams.get("couleurs")
     ? searchParams.get("couleurs").split(",")
@@ -126,7 +126,7 @@ function CartesGraphique() {
     {
       name: (
         <>
-          Fréq.
+          Capa.
           <br />
           (Go)
         </>
@@ -312,25 +312,25 @@ function CartesGraphique() {
   }
 
   // filter chipset logic:
-  const [selectedChipsets, setSelectedChipsets] = useState(initialChipsets);
-  const [chipsets, setChipsets] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState(initialTypes);
+  const [types, setTypes] = useState([]);
   // Trouver tous les chipsets uniques :
   useEffect(() => {
-    const uniqueChipsets = [
-      ...new Set(data?.data?.map((item) => item.chipset)),
+    const uniqueTypes = [
+      ...new Set(data?.data?.map((item) => item.model_name)),
     ];
-    setChipsets(uniqueChipsets);
+    setTypes(uniqueTypes);
   }, [data]);
-  function handleButtonClickChipset(chipset) {
+  function handleButtonClickType(type) {
     // déjà click ?
-    if (selectedChipsets.includes(chipset)) {
+    if (selectedTypes.includes(type)) {
       // oui: on supprime
-      setSelectedChipsets((prev) =>
-        prev.filter((selected) => selected !== chipset)
+      setSelectedTypes((prev) =>
+        prev.filter((selected) => selected !== type)
       );
     } else {
       // non on ajoute
-      setSelectedChipsets((prev) => [...prev, chipset]);
+      setSelectedTypes((prev) => [...prev, type]);
     }
   }
 
@@ -376,27 +376,95 @@ function CartesGraphique() {
   );
   // console.log(priceRange)
 
+  // filter freq logic :
+  const [freqRange, setFreqRange] = useState([]);
+  const [minFreq, setMinFreq] = useState();
+  const [maxFreq, setMaxFreq] = useState();
+  useEffect(() => {
+    const freqs = data?.data?.map((item) => item.frequency);
+    if (freqs) {
+      setMinFreq(Math.min(...freqs));
+      setMaxFreq(Math.max(...freqs));
+    }
+  }, [data]);
+  const handleFreqChange = useCallback(
+    ({ min, max }) => {
+      if (min !== freqRange[0] || max !== freqRange[1]) {
+        setFreqRange([min, max]);
+      }
+    },
+    [freqRange]
+  );
+  // console.log(freqRange)
+
+  // filter capa logic :
+  const [capaRange, setCapaRange] = useState([]);
+  const [minCapa, setMinCapa] = useState();
+  const [maxCapa, setMaxCapa] = useState();
+  useEffect(() => {
+    const capas = data?.data?.map((item) => item.capacity);
+    if (capas) {
+      setMinCapa(Math.min(...capas));
+      setMaxCapa(Math.max(...capas));
+    }
+  }, [data]);
+  const handleCapaChange = useCallback(
+    ({ min, max }) => {
+      if (min !== capaRange[0] || max !== capaRange[1]) {
+        setCapaRange([min, max]);
+      }
+    },
+    [capaRange]
+  );
+  // console.log(capaRange)
+
+  // filter cas logic :
+  const [casRange, setCasRange] = useState([]);
+  const [minCas, setMinCas] = useState();
+  const [maxCas, setMaxCas] = useState();
+  useEffect(() => {
+    const cass = data?.data?.map((item) => item.cl);
+    if (cass) {
+      setMinCas(Math.min(...cass));
+      setMaxCas(Math.max(...cass));
+    }
+  }, [data]);
+  const handleCasChange = useCallback(
+    ({ min, max }) => {
+      if (min !== casRange[0] || max !== casRange[1]) {
+        setCasRange([min, max]);
+      }
+    },
+    [casRange]
+  );
+  // console.log(casRange)
+
+
+
   // On maj les url params en fonction des filtres
   useEffect(() => {
     // get current URL params
     const searchParams = new URLSearchParams(location.search);
-    // update the selected chipsets filter
-    searchParams.set("chipsets", selectedChipsets.join(","));
+    // update the selected types filter
+    searchParams.set("types", selectedTypes.join(","));
     // update the selected marques filter
     searchParams.set("marques", selectedMarques.join(","));
     // update the selected couleur filter
     searchParams.set("couleurs", selectedCouleurs.join(","));
     // update the URL with the new params
     navigate(`${location.pathname}?${searchParams.toString()}`);
-  }, [selectedChipsets, selectedMarques, selectedCouleurs]);
+  }, [selectedTypes, selectedMarques, selectedCouleurs]);
 
   // On maj ici tous les filtres actifs.
   useEffect(() => {
     if (
       selectedMarques.length > 0 ||
-      selectedChipsets.length > 0 ||
+      selectedTypes.length > 0 ||
       selectedCouleurs.length > 0 ||
-      (priceRange[0] !== null && priceRange[1] !== null)
+      (priceRange[0] !== null && priceRange[1] !== null) ||
+      (freqRange[0] !== null && freqRange[1] !== null) ||
+      (capaRange[0] !== null && capaRange[1] !== null) ||
+      (casRange[0] !== null && casRange[1] !== null) 
     ) {
       let filtered = data?.data;
       if (selectedMarques.length > 0) {
@@ -404,9 +472,9 @@ function CartesGraphique() {
           selectedMarques.includes(item.marque)
         );
       }
-      if (selectedChipsets.length > 0) {
+      if (selectedTypes.length > 0) {
         filtered = filtered?.filter((item) =>
-          selectedChipsets.includes(item.chipset)
+          selectedTypes.includes(item.model_name)
         );
       }
       if (selectedCouleurs.length > 0) {
@@ -420,11 +488,29 @@ function CartesGraphique() {
           return latestPrice >= priceRange[0] && latestPrice <= priceRange[1];
         });
       }
+      if (freqRange[0] !== null && freqRange[1] !== null) {
+        filtered = filtered?.filter((item) => {
+          const latestFreq = item.frequency;
+          return latestFreq >= freqRange[0] && latestFreq <= freqRange[1];
+        });
+      }
+      if (capaRange[0] !== null && capaRange[1] !== null) {
+        filtered = filtered?.filter((item) => {
+          const latestCapa = item.capacity;
+          return latestCapa >= capaRange[0] && latestCapa <= capaRange[1];
+        });
+      }
+      if (casRange[0] !== null && casRange[1] !== null) {
+        filtered = filtered?.filter((item) => {
+          const latestCas = item.cl;
+          return latestCas >= casRange[0] && latestCas <= casRange[1];
+        });
+      }
       setFilteredData(filtered);
     } else {
       setFilteredData(data?.data);
     }
-  }, [selectedMarques, selectedChipsets, selectedCouleurs, data, priceRange]);
+  }, [selectedMarques, selectedTypes, selectedCouleurs, data, priceRange, freqRange, capaRange, casRange]);
 
   if (isLoading) {
     return (
@@ -469,22 +555,22 @@ function CartesGraphique() {
               Toutes
             </STYLEDButton>
           </STYLEDMarqueFilterContainer>
-          <STYLEDChipsetFilterContainer>
-            Chipsets:
+          <STYLEDTypeFilterContainer>
+            Type:
             <hr />
-            {chipsets.map((chipset, index) => (
+            {types.map((type, index) => (
               <STYLEDButton
                 key={index}
-                onClick={() => handleButtonClickChipset(chipset)}
-                className={selectedChipsets.includes(chipset) ? "active" : ""}
+                onClick={() => handleButtonClickType(type)}
+                className={selectedTypes.includes(type) ? "active" : ""}
               >
-                {chipset}
+                {type}
               </STYLEDButton>
             ))}
-            <STYLEDButton width="100%" onClick={() => setSelectedChipsets([])}>
+            <STYLEDButton width="100%" onClick={() => setSelectedTypes([])}>
               Tous
             </STYLEDButton>
-          </STYLEDChipsetFilterContainer>
+          </STYLEDTypeFilterContainer>
           <STYLEDColorFilterContainer>
             Couleur :
             <hr />
@@ -512,6 +598,39 @@ function CartesGraphique() {
               />
             )}
           </STYLEDPriceFilterContainer>
+          <STYLEDFreqFilterContainer>
+            Fréquences :
+            <hr />
+            {minFreq !== undefined && maxFreq !== undefined && (
+              <MultiRangeSlider
+                min={minFreq}
+                max={maxFreq}
+                onChange={handleFreqChange}
+              />
+            )}
+          </STYLEDFreqFilterContainer>
+          <STYLEDCapaFilterContainer>
+            Capacité max :
+            <hr />
+            {minCapa !== undefined && maxCapa !== undefined && (
+              <MultiRangeSlider
+                min={minCapa}
+                max={maxCapa}
+                onChange={handleCapaChange}
+              />
+            )}
+          </STYLEDCapaFilterContainer>
+          <STYLEDCasFilterContainer>
+            Cas :
+            <hr />
+            {minCas !== undefined && maxCas !== undefined && (
+              <MultiRangeSlider
+                min={minCas}
+                max={maxCas}
+                onChange={handleCasChange}
+              />
+            )}
+          </STYLEDCasFilterContainer>
         </STYLEDCompareFilter>
         <STYLEDCompareResult>
           <DataTable
@@ -544,7 +663,7 @@ const STYLEDMarqueFilterContainer = styled.div`
   padding-top: 15%;
   text-align: center;
 `;
-const STYLEDChipsetFilterContainer = styled.div`
+const STYLEDTypeFilterContainer = styled.div`
   padding-top: 15%;
   text-align: center;
 `;
@@ -553,6 +672,18 @@ const STYLEDColorFilterContainer = styled.div`
   text-align: center;
 `;
 const STYLEDPriceFilterContainer = styled.div`
+  padding-top: 15%;
+  text-align: center;
+`;
+const STYLEDFreqFilterContainer = styled.div`
+  padding-top: 15%;
+  text-align: center;
+`;
+const STYLEDCapaFilterContainer = styled.div`
+  padding-top: 15%;
+  text-align: center;
+`;
+const STYLEDCasFilterContainer = styled.div`
   padding-top: 15%;
   text-align: center;
 `;

@@ -126,7 +126,7 @@ function Cartesmere() {
         <>
           Max DDR
           <br />
-          (GB)
+          (Mb)
         </>
       ),
       selector: (row) => row.memory_max_supported,
