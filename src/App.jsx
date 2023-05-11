@@ -47,7 +47,7 @@ const router = createBrowserRouter(
       <Route path="compare/product/:Id_article_to_find" element={<Product />} />
 
       {/*  TEST COMPONENT */}
-      <Route path="test" element={<Test minPrice={0} maxPrice={1850}/>} />
+      <Route path="test" element={<Test />} />
 
       <Route element={<PrivateRoutes />}>
         <Route path="dashboard" element={<Dashboard />} />

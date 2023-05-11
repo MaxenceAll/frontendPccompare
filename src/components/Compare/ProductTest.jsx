@@ -131,10 +131,10 @@ console.log(seller);
           <div key={seller.name}>
             <h2>{seller.name}</h2>
             <ResponsiveContainer  minWidth={400} minHeight={300}>
-              <AreaChart width={800} height={400} data={seller.data}>
-                <CartesianGrid strokeDasharray="3 3" />
+              <AreaChart width={600} height={200} data={seller.data}>
+                {/* <CartesianGrid strokeDasharray="3 3" /> */}
                 <XAxis dataKey="date" />
-                <YAxis domain={["dataMin", "dataMax"]} />
+                <YAxis domain={[0, "dataMax"]} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend dataKey="price" />
                 <Area

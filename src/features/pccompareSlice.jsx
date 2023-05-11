@@ -76,9 +76,27 @@ export const pccompareApi = createApi({
 
     // COMPARE DATA logic :
     getAllGpuData: builder.query({
-      query: () => "compare/gpu",
+      query: (cat) => `compare/${cat}`,
       providesTags: ["gpu"],
     }),
+    // COMPARE DATA logic :
+    getAllCpuData: builder.query({
+      query: (cat) => `compare/${cat}`,
+      providesTags: ["cpu"],
+    }),
+    // COMPARE DATA logic :
+    getAllMbData: builder.query({
+      query: (cat) => `compare/${cat}`,
+      providesTags: ["mb"],
+    }),
+    // COMPARE DATA logic :
+    getAllRamData: builder.query({
+      query: (cat) => `compare/${cat}`,
+      providesTags: ["ram"],
+    }),
+
+
+
     // PRODUCT DETAILED VIEW logic :
     getProductDetails: builder.query({
       query: (id) => `compare/product/${id}`,
@@ -104,8 +122,11 @@ export const pccompareApi = createApi({
       query: (id) => `compare/comments/${id}`,
       providesTags: ["Comments"],
     }),
-
-
+    // get avatar with given Id_comment :
+    getAvatarComment: builder.query({
+      query: (id) => `compare/comments/avatar/${id}`,
+      providesTags: ["Comments"],
+    }),
 
 
 
@@ -123,6 +144,9 @@ export const {
   useGetAllCategoryDataQuery,
   //
   useGetAllGpuDataQuery,
+  useGetAllCpuDataQuery,
+  useGetAllMbDataQuery,
+  useGetAllRamDataQuery,
   //
   useGetProductDetailsQuery,
   useGetSHADetailsQuery,
@@ -130,4 +154,5 @@ export const {
   useGetSellerDetailsQuery,
   //
   useGetCommentsQuery,
+  useGetAvatarCommentQuery,
 } = pccompareApi;

@@ -22,6 +22,7 @@ import ProductTest2 from "../../../components/Compare/ProductTest2";
 import NoDataFound from "../../../components/NoDataFound";
 import ProductComments from "../../../components/Compare/ProductComments";
 import { STYLEDhr } from "../../../components/styles/genericHR";
+import Test from "../../Test";
 
 export default function Product() {
   const { Id_article_to_find } = useParams();
@@ -140,8 +141,8 @@ export default function Product() {
       <Product_Prices_Container>
         {historiqueData.data.length > 0 ? (
           <>
-              <StyledHeader>Les meilleurs prix :</StyledHeader>
-    <STYLEDhr />
+            <StyledHeader>Les meilleurs prix :</StyledHeader>
+            <STYLEDhr />
             <ProductTest
               seller={sellerData.data}
               historique_prix={historiqueData.data}
@@ -150,11 +151,19 @@ export default function Product() {
           </>
         ) : (
           <>
-              <StyledHeader>Les meilleurs prix :</StyledHeader>
-    <STYLEDhr />
-            <NoDataFound />
+            <StyledHeader>Les meilleurs prix :</StyledHeader>
+            <STYLEDhr />
+            <div>
+              <NoDataFound />
+            </div>
           </>
         )}
+        {/* test here :
+        <Test
+          seller={sellerData.data}
+          historique_prix={historiqueData.data}
+          seller_historique_article={SHAData.data}
+        /> */}
       </Product_Prices_Container>
 
       <Product_Comments_Container>

@@ -40,9 +40,9 @@ export default function HomeCarousel() {
         setIsLoading(false);
       }
     };
-    const timeout = setTimeout(() => {
+    // const timeout = setTimeout(() => {
       getData();
-    }, 2000);
+    // }, 2000);
 
     return () => {
       isMounted = false;

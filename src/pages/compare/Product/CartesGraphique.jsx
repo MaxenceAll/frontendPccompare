@@ -17,7 +17,7 @@ import MultiRangeSlider from "../../../components/Product/MultiRangeSlider";
 import ExpandableRows from "../../../components/Product/expandableRows";
 
 function CartesGraphique() {
-  const { data, isLoading, isError } = useGetAllGpuDataQuery();
+  const { data, isLoading, isError } = useGetAllGpuDataQuery("gpu");
 
   // trouver les filtres en fonction des url params :
   const location = useLocation();

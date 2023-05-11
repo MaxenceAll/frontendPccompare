@@ -8,6 +8,9 @@ function AvatarImage({ userId, filename }) {
   if (!filename) {
     return null;
   }
+  if (!userId) {
+    return null;
+  }
 
 //   console.log(userId);
 //   console.log(filename)

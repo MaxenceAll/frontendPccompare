@@ -1,0 +1,8 @@
+﻿INSERT INTO ram (Id_ram,form_factor,capacity,frequency,modules_number,module_capacity,rgb,color,cl,trcd,trp,tras,voltage,Id_article) VALUES (1,'DIMM 288 pins (DDR5)',8,4800,1,8,'Sans','Noir',38,38,38,null,1250,182);
+INSERT INTO ram (Id_ram,form_factor,capacity,frequency,modules_number,module_capacity,rgb,color,cl,trcd,trp,tras,voltage,Id_article) VALUES (2,'DIMM 288 pins (DDR5)',32,5600,2,16,'Sans','Noir',40,40,40,null,1250,183);
+INSERT INTO ram (Id_ram,form_factor,capacity,frequency,modules_number,module_capacity,rgb,color,cl,trcd,trp,tras,voltage,Id_article) VALUES (3,'SO-DIMM 262 pins (DDR5)',64,4800,2,32,'Sans','Noir',40,39,39,null,1100,184);
+INSERT INTO ram (Id_ram,form_factor,capacity,frequency,modules_number,module_capacity,rgb,color,cl,trcd,trp,tras,voltage,Id_article) VALUES (4,'DIMM 288 pins (DDR5)',32,5600,2,16,'Avec','Blanc',36,36,36,76,1250,185);
+INSERT INTO ram (Id_ram,form_factor,capacity,frequency,modules_number,module_capacity,rgb,color,cl,trcd,trp,tras,voltage,Id_article) VALUES (5,'SO-DIMM 260 pins (DDR4)',16,2666,2,8,'Sans','Noir',18,18,18,43,1200,186);
+INSERT INTO ram (Id_ram,form_factor,capacity,frequency,modules_number,module_capacity,rgb,color,cl,trcd,trp,tras,voltage,Id_article) VALUES (6,'DIMM 288 pins (DDR4)',16,3600,2,8,'Avec','Noir',18,22,22,42,1350,187);
+INSERT INTO ram (Id_ram,form_factor,capacity,frequency,modules_number,module_capacity,rgb,color,cl,trcd,trp,tras,voltage,Id_article) VALUES (7,'DIMM 288 pins (DDR4)',16,2133,1,16,'Sans','Rouge',15,15,15,36,1200,188);
+INSERT INTO ram (Id_ram,form_factor,capacity,frequency,modules_number,module_capacity,rgb,color,cl,trcd,trp,tras,voltage,Id_article) VALUES (8,'DIMM 288 pins (DDR4)',16,3600,2,8,'Avec','Blanc',17,21,21,null,1350,189);
