@@ -65,7 +65,7 @@ function Processeurs() {
     {
       name: "Nom",
       selector: (row) => (
-        <NavLink to={`/compare/product/${row.Id_article}`}>
+        <NavLink to={`/compare/product/cpu/${row.Id_article}`}>
           {row.designation}
         </NavLink>
       ),
@@ -244,7 +244,7 @@ function Processeurs() {
     },
     {
       cell: (row) => (
-        <NavLink to={`/compare/product/${row.Id_article}`}>
+        <NavLink to={`/compare/product/cpu/${row.Id_article}`}>
           <STYLEDButton>Voir la fiche</STYLEDButton>
         </NavLink>
       ),

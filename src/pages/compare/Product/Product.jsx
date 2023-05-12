@@ -34,7 +34,7 @@ export default function Product() {
     isLoading: productIsLoading,
     isError: productIsError,
     error: productError,
-  } = useGetProductDetailsQuery(Id_article_to_find,Category_to_find);
+  } = useGetProductDetailsQuery({Category_to_find,Id_article_to_find});
   const {
     data: SHAData,
     isLoading: SHAIsLoading,
@@ -60,11 +60,11 @@ export default function Product() {
     error: commentsError,
   } = useGetCommentsQuery(Id_article_to_find);
 
-  console.log(productData);
-  console.log(SHAData);
-  console.log(historiqueData);
-  console.log(sellerData);
-  console.log(commentsData);
+  // console.log(productData);
+  // console.log(SHAData);
+  // console.log(historiqueData);
+  // console.log(sellerData);
+  // console.log(commentsData);
 
   if (
     productIsLoading ||
@@ -150,6 +150,7 @@ export default function Product() {
               historique_prix={historiqueData.data}
               seller_historique_article={SHAData.data}
             />
+
           </>
         ) : (
           <>
@@ -181,8 +182,8 @@ const StyledHeader = styled.h1`
 
 const STYLEDProductDetailsContainer = styled.div`
   display: grid;
-  grid-template-columns: auto auto auto 2fr;
-  grid-template-rows: auto auto auto auto 2fr;
+  grid-template-columns: 1fr auto auto 3.5fr;
+  grid-template-rows: 1fr 1fr auto auto auto;
   gap: 0px 0px;
   grid-auto-flow: column;
   grid-template-areas:

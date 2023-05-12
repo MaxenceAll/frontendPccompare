@@ -51,12 +51,13 @@ function CartesGraphique() {
     {
       cell: (row) => (
         <>
-          <img
-            height="auto"
-            width="56px"
-            // alt={row.img_alt}
-            src={row.img_src}
-          ></img>
+            <img
+              style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+              height="auto"
+              width="56px"
+              alt={row.img_alt}
+              src={row.img_src}
+            />
         </>
       ),
       width: "60px",
@@ -64,7 +65,7 @@ function CartesGraphique() {
     {
       name: "Nom",
       selector: (row) => (
-        <NavLink to={`/compare/product/${row.Id_article}`}>
+        <NavLink to={`/compare/product/gpu/${row.Id_article}`}>
           {row.designation}
         </NavLink>
       ),
@@ -153,16 +154,21 @@ function CartesGraphique() {
     },
     {
       name: "Prix",
+      cell: (row) => (
+        <>
+        {row.latest_price != null ? row.latest_price + "€" : ""}
+        </>
+      ),
       selector: (row) =>
-        row.latest_price != null ? row.latest_price + "€" : "",
+        row.latest_price,
       sortable: true,
-      width: "90px",
+      width: "95px",
       right: true,
       reorder: true,
     },
     {
       cell: (row) => (
-        <NavLink to={`/compare/product/${row.Id_article}`}>
+        <NavLink to={`/compare/product/gpu/${row.Id_article}`}>
           <STYLEDButton>Voir la fiche</STYLEDButton>
         </NavLink>
       ),

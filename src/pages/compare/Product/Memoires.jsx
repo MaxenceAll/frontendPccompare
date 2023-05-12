@@ -67,7 +67,7 @@ function CartesGraphique() {
     {
       name: "Nom",
       selector: (row) => (
-        <NavLink to={`/compare/product/${row.Id_article}`}>
+        <NavLink to={`/compare/product/ram/${row.Id_article}`}>
           {row.designation}
         </NavLink>
       ),
@@ -208,7 +208,7 @@ function CartesGraphique() {
     },
     {
       cell: (row) => (
-        <NavLink to={`/compare/product/${row.Id_article}`}>
+        <NavLink to={`/compare/product/ram/${row.Id_article}`}>
           <STYLEDButton>Voir la fiche</STYLEDButton>
         </NavLink>
       ),

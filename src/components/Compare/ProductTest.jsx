@@ -134,7 +134,24 @@ console.log(seller);
               <AreaChart width={600} height={200} data={seller.data}>
                 {/* <CartesianGrid strokeDasharray="3 3" /> */}
                 <XAxis dataKey="date" />
-                <YAxis domain={[0, "dataMax"]} />
+                <YAxis 
+                  tick={
+                    ({ x, y, payload }) => (
+                      <text
+                        x={x}
+                        y={y}
+                        dx={-0}
+                        dy={4}
+                        fill="var(--main-color-100)"
+                        fontSize={12}
+                        textAnchor="end"
+                        // transform="rotate(-90)"  
+                      >
+                        {payload.value}
+                      </text>
+                    )
+                  }
+                domain={[0, "dataMax"]} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend dataKey="price" />
                 <Area

@@ -98,7 +98,7 @@ const CommentContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const CommentContent = styled.p`
+const CommentContent = styled.div`
   font-weight: bold;
   margin-bottom: 5px;
 `;
