@@ -15,9 +15,12 @@ import DataTable, { createTheme } from "react-data-table-component";
 import NoDataFound from "../../../components/NoDataFound";
 import MultiRangeSlider from "../../../components/Product/MultiRangeSlider";
 import ExpandableRows from "../../../components/Product/expandableRows";
+import { RatingStars } from "../../../components/Notes/RatingStars";
 
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery("gpu");
+
+  console.log(data)
 
   // trouver les filtres en fonction des url params :
   const location = useLocation();
@@ -45,6 +48,24 @@ function CartesGraphique() {
       import.meta.env.VITE_APP_NAME
     } | Page de recherche | Cartes graphique`;
   }, []);
+
+  // Helper function to convert nb_note to stars
+const getStars = (nb_note) => {
+  switch (nb_note) {
+    case 1:
+      return "⭐";
+    case 2:
+      return "⭐⭐";
+    case 3:
+      return "⭐⭐⭐";
+    case 4:
+      return "⭐⭐⭐⭐";
+    case 5:
+      return "⭐⭐⭐⭐⭐";
+    default:
+      return "";
+  }
+};
 
   // Table logic:
   const columns = [
@@ -165,6 +186,15 @@ function CartesGraphique() {
       width: "95px",
       right: true,
       reorder: true,
+    },
+    {
+      cell: (row) => (
+        <RatingStars rating={(row.nb_note_1 + row.nb_note_2*2 + row.nb_note_3*3 + row.nb_note_4*4 + row.nb_note_5*5) / (row.nb_note_1 + row.nb_note_2 + row.nb_note_3 + row.nb_note_4 + row.nb_note_5)} />
+      ),
+      name: "Note",
+      sortable: true,
+      width: "100px",
+      center: true,
     },
     {
       cell: (row) => (
