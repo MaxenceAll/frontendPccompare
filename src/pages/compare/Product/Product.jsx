@@ -208,6 +208,7 @@ const STYLEDProductDetailsContainer = styled.div`
       "Image Image Image Image"
       "Price Price Price Price"
       "Spec Spec Spec Spec"
+      "Notes Notes Notes Notes" 
       "Comments Comments Comments Comments";
   }
 `;
@@ -216,7 +217,7 @@ const STYLEDProductDetailsContainer = styled.div`
 
 const Product_Notes_Container = styled.div`
   grid-area: Notes;
-  background-color: var(--background-color-300);
+  background-color: var(--background-color-100);
   border-top-left-radius: 5px;
   border-left: 1px solid var(--secondary-color-100);
   border-top: 1px solid var(--secondary-color-100);

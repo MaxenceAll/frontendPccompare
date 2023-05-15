@@ -95,6 +95,8 @@ body {
   justify-content: center;
   font-family: 'Oxygen Mono', monospace;
   color: var(--main-color-100);
+
+  overflow-x: hidden;
 }
 
 

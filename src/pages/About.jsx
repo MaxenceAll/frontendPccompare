@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import ContactLinks from "../components/About/ContactLinks";
 import ContactForm from "../components/About/ContactForm";
+import { STYLEDContainer } from "../components/styles/genericContainer";
 
 
 function About() {
@@ -13,11 +14,12 @@ function About() {
     }, []);
 
   return (
-    <div>
+    <STYLEDContainer>
       <ContactLinks />
       <ContactForm />
-    </div>
+    </STYLEDContainer>
   );
 }
 
 export default About;
+

@@ -20,6 +20,8 @@ export default function Layout() {
 const DIV_AppContainer = styled.div`
   background-color: var(--background-color-100);
   /* min-width: 100dvw; */
+
+  min-width: 100vw;
   /* min-width: 100vw; */
-  /* scrollbar-width: none; */
+
 `;
