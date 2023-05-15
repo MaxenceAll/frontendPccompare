@@ -23,18 +23,18 @@ import NoDataFound from "../../../components/NoDataFound";
 import ProductComments from "../../../components/Compare/ProductComments";
 import { STYLEDhr } from "../../../components/styles/genericHR";
 import Test from "../../Test";
+import ProductNotes from "../../../components/Compare/ProductNotes";
 
 export default function Product() {
-  const { Id_article_to_find, Category_to_find  } = useParams();
-  console.log(Category_to_find)
-  console.log(Id_article_to_find)
+  const { Id_article_to_find, Category_to_find } = useParams();
 
   const {
     data: productData,
     isLoading: productIsLoading,
     isError: productIsError,
     error: productError,
-  } = useGetProductDetailsQuery({Category_to_find,Id_article_to_find});
+  } = useGetProductDetailsQuery({ Category_to_find, Id_article_to_find });
+  // console.log(productData)
   const {
     data: SHAData,
     isLoading: SHAIsLoading,
@@ -124,6 +124,17 @@ export default function Product() {
 
   return (
     <STYLEDProductDetailsContainer>
+      <Product_Notes_Container>
+        <ProductNotes
+          nb_note_1={productData.data[0].nb_note_1}
+          nb_note_2={productData.data[0].nb_note_2}
+          nb_note_3={productData.data[0].nb_note_3}
+          nb_note_4={productData.data[0].nb_note_4}
+          nb_note_5={productData.data[0].nb_note_5}
+          nb_note={productData.data[0].nb_note}
+        />
+      </Product_Notes_Container>
+
       <Product_Header_Container>
         <ProductHeader
           article={[productData?.data[0]]}
@@ -150,7 +161,6 @@ export default function Product() {
               historique_prix={historiqueData.data}
               seller_historique_article={SHAData.data}
             />
-
           </>
         ) : (
           <>
@@ -189,7 +199,7 @@ const STYLEDProductDetailsContainer = styled.div`
   grid-template-areas:
     "Header Header Header Header"
     "Image Image Image Image"
-    "Spec Spec Price Price"
+    "Notes Notes Price Price"
     "Spec Spec Price Price"
     "Spec Spec Comments Comments";
   @media only screen and (max-width: 1000px) {
@@ -203,6 +213,16 @@ const STYLEDProductDetailsContainer = styled.div`
 `;
 
 // TODO fix les border en fonction du media QUERY.
+
+const Product_Notes_Container = styled.div`
+  grid-area: Notes;
+  background-color: var(--background-color-300);
+  border-top-left-radius: 5px;
+  border-left: 1px solid var(--secondary-color-100);
+  border-top: 1px solid var(--secondary-color-100);
+
+  padding: 5%;
+`;
 
 const Product_Header_Container = styled.div`
   /* max-height: 400px; */
@@ -233,10 +253,10 @@ const Product_Spec_Container = styled.div`
   background-color: var(--background-color-100);
   padding: 5%;
 
-  border-top-left-radius: 5px;
+  /* border-top-left-radius: 5px; */
   border-bottom-left-radius: 5px;
   border-left: 1px solid var(--secondary-color-100);
-  border-top: 1px solid var(--secondary-color-100);
+  /* border-top: 1px solid var(--secondary-color-100); */
   border-bottom: 1px solid var(--secondary-color-100);
 `;
 const Product_Prices_Container = styled.div`
