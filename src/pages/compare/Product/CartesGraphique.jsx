@@ -49,23 +49,6 @@ function CartesGraphique() {
     } | Page de recherche | Cartes graphique`;
   }, []);
 
-  // Helper function to convert nb_note to stars
-const getStars = (nb_note) => {
-  switch (nb_note) {
-    case 1:
-      return "⭐";
-    case 2:
-      return "⭐⭐";
-    case 3:
-      return "⭐⭐⭐";
-    case 4:
-      return "⭐⭐⭐⭐";
-    case 5:
-      return "⭐⭐⭐⭐⭐";
-    default:
-      return "";
-  }
-};
 
   // Table logic:
   const columns = [

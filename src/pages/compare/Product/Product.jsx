@@ -1,10 +1,12 @@
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import {
   useGetCommentsQuery,
+  useGetFavoriteStatusQuery,
   useGetHistoriqueDetailsQuery,
   useGetProductDetailsQuery,
   useGetSHADetailsQuery,
   useGetSellerDetailsQuery,
+  useRemoveFavoriteMutation,
 } from "../../../features/pccompareSlice";
 import {
   STYLEDContainer,
@@ -24,10 +26,32 @@ import ProductComments from "../../../components/Compare/ProductComments";
 import { STYLEDhr } from "../../../components/styles/genericHR";
 import Test from "../../Test";
 import ProductNotes from "../../../components/Compare/ProductNotes";
+import { STYLEDButton } from "../../../components/styles/genericButton";
+import { AuthContext } from "../../../Contexts/AuthContext";
+import { useContext } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Product() {
+  const { auth, setAuth } = useContext(AuthContext);
+  // console.log(auth);
+
   const { Id_article_to_find, Category_to_find } = useParams();
 
+
+  // FAVORITE QUERIES :
+  const {
+    data: favoriteData,
+    isLoading: favoriteIsLoading,
+    isError: favoriteIsError,
+    error: favoriteError,
+  } = useGetFavoriteStatusQuery({ Id_customer_to_find: auth?.data?.customer.Id_customer , Id_article_to_find })
+  // console.log("favoriteData=",favoriteData)
+  const [removeFavorite, { isLoading: removeFavoriteIsLoading }] =
+  useRemoveFavoriteMutation();
+
+
+  // DATA QUERIES :
   const {
     data: productData,
     isLoading: productIsLoading,
@@ -93,7 +117,8 @@ export default function Product() {
   if (SHAIsError) {
     return (
       <STYLEDErrorMessage>
-        Erreur lors de la recherche des infos SHA: {JSON.stringify(SHAError)}
+        Erreur lors de la recherche des infos vendeur_historique:{" "}
+        {JSON.stringify(SHAError)}
       </STYLEDErrorMessage>
     );
   }
@@ -122,6 +147,29 @@ export default function Product() {
     );
   }
 
+  const handleAddToFavorite = () => {
+    alert("toto");
+  };
+
+
+
+  const handleRemoveFromFavorite = () => {
+    removeFavorite({ Id_customer_to_find: auth?.data?.customer.Id_customer, Id_article_to_find: Id_article_to_find })
+      .then((response) => {
+        if (response.data.result) {
+          toast.success('Favoris supprimé avec succès.');
+        } else {
+          toast.error(`Erreur lors de la suppression des favoris : ${response.data.message}`);
+        }
+      })
+      .catch((error) => {
+        toast.error(`Une erreur s'est produite lors de la suppression des favoris : ${error.message}`);
+      });
+  };
+  
+  
+  
+
   return (
     <STYLEDProductDetailsContainer>
       <Product_Notes_Container>
@@ -133,6 +181,31 @@ export default function Product() {
           nb_note_5={productData.data[0].nb_note_5}
           nb_note={productData.data[0].nb_note}
         />
+
+<Product_Notes_Favorite>
+  {!auth?.data ? (
+    <>
+      <NavLink to={"/login"}>
+        <STYLEDButton width={"100%"}>
+          Il faut s'identifier pour ajouter aux favoris.
+        </STYLEDButton>
+      </NavLink>{" "}
+    </>
+  ) : (
+    <>
+      {favoriteData ? (
+        <STYLEDButton width={"100%"} onClick={handleRemoveFromFavorite}>
+         💔Retirer des favoris💔
+        </STYLEDButton>
+      ) : (
+        <STYLEDButton width={"100%"} onClick={handleAddToFavorite}>
+          ❤️Ajouter aux favoris❤️
+        </STYLEDButton>
+      )}
+    </>
+  )}
+</Product_Notes_Favorite>
+
       </Product_Notes_Container>
 
       <Product_Header_Container>
@@ -208,7 +281,7 @@ const STYLEDProductDetailsContainer = styled.div`
       "Image Image Image Image"
       "Price Price Price Price"
       "Spec Spec Spec Spec"
-      "Notes Notes Notes Notes" 
+      "Notes Notes Notes Notes"
       "Comments Comments Comments Comments";
   }
 `;
@@ -224,6 +297,7 @@ const Product_Notes_Container = styled.div`
 
   padding: 5%;
 `;
+const Product_Notes_Favorite = styled.div``;
 
 const Product_Header_Container = styled.div`
   /* max-height: 400px; */
@@ -248,7 +322,10 @@ const Product_Image_Container = styled.div`
   object-fit: cover;
 
   border-top: 1px solid var(--secondary-color-300);
+
+  position: relative;
 `;
+
 const Product_Spec_Container = styled.div`
   grid-area: Spec;
   background-color: var(--background-color-100);
@@ -269,7 +346,9 @@ const Product_Prices_Container = styled.div`
   border-top: 1px solid var(--secondary-color-100);
   padding: 2%;
   /* border-bottom: 1px solid var(--secondary-color-300); */
+  position: relative;
 `;
+
 const Product_Comments_Container = styled.div`
   grid-area: Comments;
   background-color: var(--background-color-100);

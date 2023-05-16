@@ -29,8 +29,11 @@ function ProductNotes(props) {
       <Notes_Title>Notes des utilisateurs :</Notes_Title>
       <RatingStars rating={moyenne} />
       <Notes_Header>
-        ({nb_note} notes), {moyenne.toFixed(2)}
-        &nbsp;de moyenne.
+        <Notes_Header>
+          {moyenne
+            ? `(${nb_note} notes), ${moyenne.toFixed(2)} de moyenne.`
+            : `Aucune donnée`}
+        </Notes_Header>
       </Notes_Header>
 
       <Note_wrapper>
@@ -39,7 +42,7 @@ function ProductNotes(props) {
           <ProgressBar progress={notePercentages.nb_note_5} />
         </ProgressBarWrapper>
         <Note_note_footer>
-          {notePercentages.nb_note_5.toFixed(0)}%
+          {notePercentages.nb_note_5.toFixed(0)}%({nb_note_5})
         </Note_note_footer>
       </Note_wrapper>
 
@@ -49,7 +52,7 @@ function ProductNotes(props) {
           <ProgressBar progress={notePercentages.nb_note_4} />
         </ProgressBarWrapper>
         <Note_note_footer>
-          {notePercentages.nb_note_4.toFixed(0)}%
+          {notePercentages.nb_note_4.toFixed(0)}%({nb_note_4})
         </Note_note_footer>
       </Note_wrapper>
 
@@ -59,7 +62,7 @@ function ProductNotes(props) {
           <ProgressBar progress={notePercentages.nb_note_3} />
         </ProgressBarWrapper>
         <Note_note_footer>
-          {notePercentages.nb_note_3.toFixed(0)}%
+          {notePercentages.nb_note_3.toFixed(0)}%({nb_note_3})
         </Note_note_footer>
       </Note_wrapper>
 
@@ -69,7 +72,7 @@ function ProductNotes(props) {
           <ProgressBar progress={notePercentages.nb_note_2} />
         </ProgressBarWrapper>
         <Note_note_footer>
-          {notePercentages.nb_note_2.toFixed(0)}%
+          {notePercentages.nb_note_2.toFixed(0)}%({nb_note_2})
         </Note_note_footer>
       </Note_wrapper>
 
@@ -79,7 +82,7 @@ function ProductNotes(props) {
           <ProgressBar progress={notePercentages.nb_note_1} />
         </ProgressBarWrapper>
         <Note_note_footer>
-          {notePercentages.nb_note_1.toFixed(0)}%
+          {notePercentages.nb_note_1.toFixed(0)}%({nb_note_1})
         </Note_note_footer>
       </Note_wrapper>
     </Notes_Content>
@@ -92,6 +95,7 @@ const Note_note_header = styled.div`
   padding-right: 5%;
 `;
 const Note_note_footer = styled.div`
+  font-size: 0.5rem;
   padding-left: 5%;
 `;
 

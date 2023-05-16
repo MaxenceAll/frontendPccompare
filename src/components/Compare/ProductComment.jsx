@@ -15,7 +15,7 @@ import AvatarImage from "../Header/AvatarImage";
 import { STYLEDErrorMessage } from "../styles/genericParagraphError";
 
 function ProductComment({ comment }) {
-  console.log(comment);
+  // console.log(comment);
 
   const {
     data: avatarData,
@@ -24,7 +24,7 @@ function ProductComment({ comment }) {
     error,
   } = useGetAvatarCommentQuery(comment.Id_comment);
 
-  console.log(avatarData?.data[0]?.img_src);
+  // console.log(avatarData?.data[0]?.img_src);
 
   if (isLoading) {
     return (

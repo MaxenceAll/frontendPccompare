@@ -13,7 +13,7 @@ export const pccompareApi = createApi({
       return headers;
     },
     credentials: "include",
-    tagTypes: ["Customer", "Account", "Users", "Roles", "Category", "Product", "Comments"],
+    tagTypes: ["Customer", "Account", "Users", "Roles", "Category", "Product", "Comments", "Favorite"],
   }),
 
   endpoints: (builder) => ({
@@ -98,6 +98,7 @@ export const pccompareApi = createApi({
 
 
     // PRODUCT DETAILED VIEW logic :
+    // get all product data based on article id and category
     getProductDetails: builder.query(
       {
       query: (Obj) => {
@@ -132,8 +133,29 @@ export const pccompareApi = createApi({
       providesTags: ["Comments"],
     }),
 
-
-
+    // FAVORITES LOGIC :
+    // check if its a favorite :
+    getFavoriteStatus: builder.query(
+      {
+      query: (Obj) => {
+        return `favorite/${Obj.Id_customer_to_find}/${Obj.Id_article_to_find}`
+      },
+      providesTags: ["Favorite"],
+    }),
+    // get all favorite given Id_customer :
+    getAllFavoriteByIdCustomer: builder.query({
+      query: (id) => `favorite/${id}`,
+      providesTags: ["Favorite"],
+    }),
+    // Remove a favorite given a Id_customer and Id_article :
+    removeFavorite: builder.mutation({
+      query: ({ Id_customer_to_find, Id_article_to_find }) => ({
+        url: `favorite/${Id_customer_to_find}`,
+        method: "DELETE",
+        body: { Id_article_to_find },
+      }),
+      invalidatesTags: ["Favorite"],
+    }),
 
     
   }),
@@ -159,4 +181,10 @@ export const {
   //
   useGetCommentsQuery,
   useGetAvatarCommentQuery,
+
+  //
+  useGetFavoriteStatusQuery,
+  useGetAllFavoriteByIdCustomerQuery,
+  useRemoveFavoriteMutation,
+
 } = pccompareApi;

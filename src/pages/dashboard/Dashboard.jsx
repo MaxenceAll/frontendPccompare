@@ -15,6 +15,7 @@ import ImageGallery from "../../components/Dashboard/ImageGallery";
 import CarouselBrowser2 from "../../components/Dashboard/CarouselBrowser2";
 import CarouselBrowser from "../../components/Dashboard/CarouselBrowser";
 import useCookie from "../../Hooks/useCookie";
+import UserFavorite from "../../components/Dashboard/UserFavorite";
 
 function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -148,7 +149,6 @@ function Dashboard() {
             Ma gallerie
           </STYLEDButton>
         </STYLEDOptionsButtons>
-
         <hr style={{ width: "80%" }} />
       </STYLEDContainer>
 
@@ -164,6 +164,8 @@ function Dashboard() {
         ) : null
       ) : null}
       {display === "Ma gallerie" ? <ImageGallery /> : null}
+      {display === "Mes favoris" ? <UserFavorite currentUser={currentUser?.data?.customer?.Id_customer} /> : null}
+
     </>
   );
 }
