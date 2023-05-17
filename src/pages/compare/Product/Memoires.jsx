@@ -515,9 +515,7 @@ function CartesGraphique() {
   if (isLoading) {
     return (
       <STYLEDContainer>
-        <STYLEDContainerBox>
           <Loader />
-        </STYLEDContainerBox>
       </STYLEDContainer>
     );
   }

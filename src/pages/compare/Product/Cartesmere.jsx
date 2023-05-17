@@ -427,9 +427,7 @@ function Cartesmere() {
   if (isLoading) {
     return (
       <STYLEDContainer>
-        <STYLEDContainerBox>
           <Loader />
-        </STYLEDContainerBox>
       </STYLEDContainer>
     );
   }

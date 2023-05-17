@@ -2,45 +2,29 @@ import styled, { keyframes } from "styled-components";
 import {
   HiUser,
   HiInformationCircle,
-  HiCog,
   HiAdjustments,
   HiHome,
 } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
-
 import { GiComputerFan } from "react-icons/gi";
 import { FaWrench, FaSearchDollar } from "react-icons/fa";
-
 import { useContext, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
-
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import CPU_IMAGE from "../assets/generics/CPU.jpg";
-import GPU_IMAGE from "../assets/generics/GPU.jpg";
-import MEMORY_IMAGE from "../assets/generics/MEMORY.jpg";
-import MB_IMAGE from "../assets/generics/MOTHERBOARD.jpg";
 import { ThemeContext } from "../Contexts/ThemeContext";
 import { STYLEDButton } from "./styles/genericButton";
 import { BsSun, BsMoon, BsEmojiSunglasses } from "react-icons/bs";
 import { AuthContext } from "../Contexts/AuthContext";
 import { useRef } from "react";
 import { useEffect } from "react";
-import GenericModal from "./Tools/GenericModal";
-import fetcher from "../helper/fetcher";
 import useCookie from "../Hooks/useCookie";
-import { useDisconnect } from "../Hooks/useDisconnect";
-import Image from "./Dashboard/Image/Image";
 import AvatarImage from "./Header/AvatarImage";
 import DropDownMenu from "./Header/DropDownMenu";
 
 function Header() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  // console.log(auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
-  // console.log(authCookie);
 
   //Theme logic:
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -65,8 +49,12 @@ function Header() {
   return (
     <>
       <HEADER_Container>
+
         <nav role="navigation">
+
           <DIV_TopHeader>
+
+
             <div>
               <NavLink to="/">
                 <GiComputerFan />
@@ -74,6 +62,8 @@ function Header() {
                 {import.meta.env.VITE_APP_NAME}</SPAN_HiddenMobile>
               </NavLink>
             </div>
+
+
             {auth?.data && (
               <>
                 <NavLink
@@ -107,17 +97,23 @@ function Header() {
                 </NavLink>
               </>
             )}
+
+
             <DIV_LinksContainer>
+
               <NavLink
                 to="/"
                 className={({ isActive }) => (isActive ? "active-link" : null)}
               >
+
                 <STYLEDHeaderLinkIcon>
                   <HiHome />
                 </STYLEDHeaderLinkIcon>
+
                 <SPAN_HiddenMobile className="hide-mobile">
                   Home
                 </SPAN_HiddenMobile>
+
               </NavLink>
 
               {!auth?.data && (
@@ -140,9 +136,11 @@ function Header() {
                 to="/themes"
                 className={({ isActive }) => (isActive ? "active-link" : null)}
               >
+
                 <STYLEDHeaderLinkIcon>
                   <HiAdjustments />
                 </STYLEDHeaderLinkIcon>
+
                 <SPAN_HiddenMobile className="hide-mobile">
                   Theme
                 </SPAN_HiddenMobile>
@@ -152,22 +150,27 @@ function Header() {
                 to="/about"
                 className={({ isActive }) => (isActive ? "active-link" : null)}
               >
+
                 <STYLEDHeaderLinkIcon>
                   <HiInformationCircle />
                 </STYLEDHeaderLinkIcon>
+
                 <SPAN_HiddenMobile className="hide-mobile">
                   Apropos
                 </SPAN_HiddenMobile>
               </NavLink>
+
               <STYLEDButton onClick={() => toggleTheme()}>
                 {theme === "dark" && <BsSun />}
                 {theme === "light" && <BsMoon />}
                 {theme === "custom" && <BsEmojiSunglasses />}
               </STYLEDButton>
+
             </DIV_LinksContainer>
           </DIV_TopHeader>
 
           <DIV_BotHeaderContainer>
+
             <DIV_BotHeader>
               <NavLink to="/builder">
                 <FaWrench />
@@ -184,12 +187,14 @@ function Header() {
                 <BsChevronDown onClick={toggleDropdown} />
               )}
             </DIV_BotHeader>
+
           </DIV_BotHeaderContainer>
 
 
           <DIV_DropdownMenuContainer>
             {showDropdown && <DropDownMenu />}
           </DIV_DropdownMenuContainer>
+          
         </nav>
         
       </HEADER_Container>

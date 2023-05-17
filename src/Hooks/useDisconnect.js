@@ -11,7 +11,7 @@ export function useDisconnect() {
   const [isDisconnecting, setIsDisconnecting] = useState(false);
 
   async function disconnect() {
-    setIsDisconnecting(true);
+    setIsDisconnecting(true); 
     try {
       const response = await fetcher.post("/login/logout");
       if (response.result === true) {

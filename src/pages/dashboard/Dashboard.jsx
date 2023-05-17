@@ -13,9 +13,10 @@ import UserInformations from "../../components/Dashboard/UserInformations";
 import { useGetCurrentCustomerQuery } from "../../features/pccompareSlice";
 import ImageGallery from "../../components/Dashboard/ImageGallery";
 import CarouselBrowser2 from "../../components/Dashboard/CarouselBrowser2";
-import CarouselBrowser from "../../components/Dashboard/CarouselBrowser";
+
 import useCookie from "../../Hooks/useCookie";
 import UserFavorite from "../../components/Dashboard/UserFavorite";
+import { useDisconnect } from "../../Hooks/useDisconnect";
 
 function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -38,25 +39,27 @@ function Dashboard() {
   // console.log(currentUser);
 
   // Disconnect logic:
+  const [disconnect, isDisconnecting] = useDisconnect();
   const [isModalOpenDisconnect, setIsModalOpenDisconnect] = useState(false);
   const openDisconnectModal = (e) => {
     setIsModalOpenDisconnect(true);
   };
   async function handleDisconnect(e) {
-    try {
-      const response = await fetcher.post("/login/logout");
-      console.log(response);
-      // Remove the access token cookie
-      document.cookie =
-        "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      setAuth(null);
-      setAuthCookie(null);
-      setIsModalOpenDisconnect(false);
-      toast.info(`Deconnexion avec succes.`);
-      setDisplay("login");
-    } catch (error) {
-      console.error("Oops une erreur apparait :", error);
-    }
+    // try {
+    //   const response = await fetcher.post("/login/logout");
+    //   console.log(response);
+    //   // Remove the access token cookie
+    //   document.cookie =
+    //     "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    //   setAuth(null);
+    //   setAuthCookie(null);
+    //   setIsModalOpenDisconnect(false);
+    //   toast.info(`Deconnexion avec succes.`);
+    //   setDisplay("login");
+    // } catch (error) {
+    //   console.error("Oops une erreur apparait :", error);
+    // }
+    disconnect();
   }
 
   const [display, setDisplay] = useState("Vos informations");

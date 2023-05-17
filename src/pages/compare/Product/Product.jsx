@@ -103,9 +103,7 @@ export default function Product() {
   ) {
     return (
       <STYLEDContainer>
-        <STYLEDContainerBox>
           <Loader />
-        </STYLEDContainerBox>
       </STYLEDContainer>
     );
   }

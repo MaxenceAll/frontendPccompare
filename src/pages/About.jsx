@@ -7,7 +7,7 @@ import { STYLEDContainer } from "../components/styles/genericContainer";
 function About() {
 
     // set title logic:
-    useEffett(() => {
+    useEffect(() => {
       document.title = `${
         import.meta.env.VITE_APP_NAME
       } | Page principale | A propos`;

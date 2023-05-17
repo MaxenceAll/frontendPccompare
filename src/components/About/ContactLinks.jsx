@@ -2,62 +2,49 @@ import React from "react";
 import styled from "styled-components";
 import { FaLinkedin, FaGithub, FaGlobe, FaFolderOpen } from "react-icons/fa";
 
-
 const ContactLinks = () => {
-
-
   return (
     <div>
-        <div>
-
-
+      <div>
         <h1>Bienvenue sur {import.meta.env.VITE_APP_NAME}</h1>
-      <p>Il s'agit d'un petit projet personnel qui me .... bla bla bla</p>
+        <p>A quoi sert ce site ? Il permet de trouver les meilleurs prix pour faire votre setup fixe de rêve !</p>
+        <p>toto</p>
 
+        <CardContainer>
+          <CardLink href="https://github.com/MaxenceAll?tab=repositories">
+            <CardIcon>
+              <FaGithub />
+            </CardIcon>
+            <p>Github</p>
+          </CardLink>
+        </CardContainer>
 
+        <CardContainer>
+          <CardLink href="www.linkedin.com/in/maxence-allart">
+            <CardIcon>
+              <FaLinkedin />
+            </CardIcon>
+            <p>LinkedIn</p>
+          </CardLink>
+        </CardContainer>
 
-      <CardContainer>
-        <CardLink href="https://github.com/MaxenceAll?tab=repositories">
-          <CardIcon>
-            <FaGithub />
-          </CardIcon>
-          <p>Github</p>
-        </CardLink>
-      </CardContainer>
+        <CardContainer>
+          <CardLink href="https://www.maxenceallart.fr/">
+            <CardIcon>
+              <FaGlobe />
+            </CardIcon>
+            <p>Site Perso</p>
+          </CardLink>
+        </CardContainer>
 
-
-      <CardContainer>
-        <CardLink
-          href="www.linkedin.com/in/maxence-allart"
-        >
-          <CardIcon>
-            <FaLinkedin />
-          </CardIcon>
-          <p>LinkedIn</p>
-        </CardLink>
-      </CardContainer>
-
-      <CardContainer>
-        <CardLink href="https://www.maxenceallart.fr/">
-          <CardIcon>
-            <FaGlobe />
-          </CardIcon>
-          <p>Site Perso</p>
-        </CardLink>
-      </CardContainer>
-
-      <CardContainer>
-        <CardLink href="https://maxenceall.github.io/ProjectCV/">
-          <CardIcon>
-            <FaFolderOpen />
-          </CardIcon>
-          <p>Lien vers mon CV</p>
-        </CardLink>
-      </CardContainer>
-
-
-
-
+        <CardContainer>
+          <CardLink href="https://maxenceall.github.io/ProjectCV/">
+            <CardIcon>
+              <FaFolderOpen />
+            </CardIcon>
+            <p>Lien vers mon CV</p>
+          </CardLink>
+        </CardContainer>
       </div>
     </div>
   );
@@ -65,15 +52,14 @@ const ContactLinks = () => {
 
 export default ContactLinks;
 
-
 const CardContainer = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-flex-direction: row;
-gap: 5%;
-padding-left: 2%;
-padding-right: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 5%;
+  padding-left: 2%;
+  padding-right: 2%;
 `;
 
 const CardLink = styled.a`

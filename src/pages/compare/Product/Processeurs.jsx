@@ -494,9 +494,7 @@ function Processeurs() {
   if (isLoading) {
     return (
       <STYLEDContainer>
-        <STYLEDContainerBox>
           <Loader />
-        </STYLEDContainerBox>
       </STYLEDContainer>
     );
   }
