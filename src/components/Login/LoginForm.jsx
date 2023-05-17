@@ -11,16 +11,15 @@ import GenericModal from "../Tools/GenericModal";
 import { STYLEDForm } from "../styles/genericForm";
 import { AuthContext } from "../../Contexts/AuthContext";
 import fetcher from "../../helper/fetcher";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { VscAccount } from "react-icons/vsc";
 
 function LoginForm() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  // console.log("authcontext:", auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
-  // console.log("authCookie:", authCookie);
 
   // set title logic:
   useEffect(() => {
@@ -46,7 +45,6 @@ function LoginForm() {
   // Login Logic :
   const onSubmitLogin = async (data) => {
     data.email = data.email.toLowerCase();
-    // console.log(data);
     const { email, password } = data;
     try {
       const response = await fetcher.post("/login", { email, password });
@@ -76,7 +74,6 @@ function LoginForm() {
 
   return (
     <>
-
       <GenericModal
         ariaLabelMessage="Modal de récupération de mot de passe"
         isOpen={isModalOpenForgottenPassword}
@@ -86,13 +83,16 @@ function LoginForm() {
       </GenericModal>
 
       <STYLEDForm onSubmit={handleSubmit(onSubmitLogin)}>
+        <div style={{ fontSize: "100px" }}>
+          <VscAccount />
+        </div>
         Se connecter :
         <STYLEDhr />
         <div>
           <label htmlFor="emailInputLogin">Adresse mail :</label>
           <STYLEDInput
             id="emailInputLogin"
-            autoComplete="username"
+            autoComplete="email"
             placeholder="Saisir votre adresse mail"
             type="text"
             name="email"
@@ -160,7 +160,11 @@ function LoginForm() {
         <STYLEDButton width="50%" type="submit">
           S'identifier
         </STYLEDButton>
-        <STYLEDButton width="50%" onClick={openForgottenPasswordModal}>
+        <STYLEDButton
+          width="50%"
+          onClick={openForgottenPasswordModal}
+          type="button"
+        >
           Mot de passe oublié ?
         </STYLEDButton>
         {errors.email && (

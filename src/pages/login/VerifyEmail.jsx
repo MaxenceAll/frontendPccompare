@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import fetcher from "../../helper/fetcher";
 import {
   STYLEDContainer,
@@ -8,9 +8,11 @@ import {
 } from "../../components/styles/genericContainer";
 import { STYLEDButton } from "../../components/styles/genericButton";
 import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function VerifyEmail() {
+
+  const navigate = useNavigate();
   // set title logic:
   useEffect(() => {
     document.title = `${
@@ -31,13 +33,9 @@ function VerifyEmail() {
       // console.log(resp);
       setRespResult(resp.result);
       if (resp.result === "success") {
-        toast.success(
-          <ButtonReturnToProps
-            msg="Validation de votre compte avec success !"
-            destinationUrl="login"
-            destinationMsg="de login"
-          />
+        toast.success("Validation de votre compte avec succès !"
         );
+        navigate("/login");
       } else {
         toast.error(`Oops erreur, retour de l'api : ${resp.message}`);
       }

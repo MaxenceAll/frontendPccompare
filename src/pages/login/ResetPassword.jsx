@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   STYLEDContainer,
   STYLEDContainerBox,
@@ -14,8 +14,14 @@ import { STYLEDErrorMessage } from "../../components/styles/genericParagraphErro
 import { STYLEDButton } from "../../components/styles/genericButton";
 import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
 import fetcher from "../../helper/fetcher";
+import { useEffect } from "react";
 
 function ResetPassword() {
+
+  const navigate = useNavigate();
+  
+  
+  let [searchParams] = useSearchParams();
   
   // set title logic:
   useEffect(() => {
@@ -23,9 +29,7 @@ function ResetPassword() {
       import.meta.env.VITE_APP_NAME
     } | Page principale | Modification de mot de passe`;
   }, []);
-
-  let [searchParams] = useSearchParams();
-
+  
   const {
     register,
     handleSubmit,
@@ -35,27 +39,18 @@ function ResetPassword() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     if (data.password1 !== data.password2) {
       toast.error(`Oooooops les mots de passe ne correspondent pas !`);
       return;
     }
     const token = searchParams.get("t");
     data.token = token;
-    console.log(token);
-    console.log(data.token);
     const resp = await fetcher.post("reset/newpassword", data);
     console.log(resp);
     if (resp.result) {
-      toast.success(
-        <ButtonReturnToProps
-          msg={"Modification de votre mot de passe avec succes !!"}
-          destinationMsg={"de login."}
-          destinationUrl={"/toto"}
-        />
+      toast.success("Changement de mot de passe avec succès !"
       );
-      // navigate("/login"); //TODO TROUVER UNE SOLUTION POUR AFFICHER LE MSG AVANT DE NAVIGATE Ou apres
+      navigate("/login");
     } else {
       toast.error(`Oops erreur, retour de l'api : ${resp.message}`);
     }
@@ -132,7 +127,6 @@ function ResetPassword() {
               <HiCheck style={{ color: "green" }} />
             )}
           </div>
-          <STYLEDhr />
 
           {errors.password2?.type === "matchPattern" && (
             <STYLEDErrorMessage>
@@ -150,6 +144,7 @@ function ResetPassword() {
               Le mot de passe doit être de 4 signes minimum, bah wé.
             </STYLEDErrorMessage>
           )}
+          <STYLEDhr />
           <STYLEDButton type="submit" width="40%">
             Valider
           </STYLEDButton>

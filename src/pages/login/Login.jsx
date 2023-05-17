@@ -15,9 +15,7 @@ import { useDisconnect } from "../../Hooks/useDisconnect";
 function Login() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  // console.log("authcontext:", auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
-  // console.log("authCookie:", authCookie);
 
   // Login or Register logic :
   const [display, setDisplay] = useState("login");
@@ -69,7 +67,7 @@ function Login() {
             </STYLEDButton>
             <ButtonReturnToProps
               destinationMsg={"d'acceuil."}
-              destinationUrl={"home"}
+              destinationUrl={"../"}
             />
           </>
         ) : (
@@ -137,6 +135,7 @@ const STYLEDLoginContainerBox = styled.div`
   border-radius: 15px;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.05) 0 6px 245px, rgba(0, 0, 0, 0.08) 0 0 0 5px;
+  
 `;
 
 const STYLEDLoginOptionsButtons = styled.button`

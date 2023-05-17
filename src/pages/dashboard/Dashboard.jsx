@@ -177,6 +177,7 @@ const STYLEDOptionsButtons = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  flex-wrap: wrap;
   .active {
     background-color: var(--background-color-300);
     color: var(--main-color-300);

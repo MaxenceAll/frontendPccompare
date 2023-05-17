@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { STYLEDInput } from "../styles/genericInput";
 import { STYLEDhr } from "../styles/genericHR";
@@ -8,16 +8,16 @@ import { HiBan, HiCheck } from "react-icons/hi";
 import useCookie from "../../Hooks/useCookie";
 import { STYLEDForm } from "../styles/genericForm";
 import { AuthContext } from "../../Contexts/AuthContext";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import fetcher from "../../helper/fetcher";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { HiOutlineUserAdd } from "react-icons/hi";
 
 function RegisterForm() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  // console.log("authcontext:", auth);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
-  // console.log("authCookie:", authCookie);
 
   // set title logic:
   useEffect(() => {
@@ -25,6 +25,12 @@ function RegisterForm() {
       import.meta.env.VITE_APP_NAME
     } | Page principale | Formulaire d'inscription`;
   }, []);
+
+  // Reveal Password logic:
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   // Form logic :
   const {
@@ -35,27 +41,20 @@ function RegisterForm() {
   } = useForm();
 
   // Register Logic :
-  // TODO hasher le password avant
   const onSubmitRegister = async (data) => {
     data.email = data.email.toLowerCase();
-    console.log(data);
     if (data.password !== data.password2) {
       toast.error(`Oooooops les mots de passe ne correspondent pas !`);
       return;
     } else {
       const resp = await fetcher.post(`/register/pseudo`, data);
-      console.log(resp);
       if (resp.result) {
         const response = await fetcher.post("/register", data);
-        console.log(response);
-        //TODO fix this: (voir les interceptors)
-        // console.log(`Request took ${response.duration}ms`);
         if (response.result === true) {
           toast.success(`${response.message}`);
           reset();
         }
       } else {
-        console.log("OK");
         toast.error(`Ce pseudo est déjà utilisé ! Changez`);
         reset();
         return;
@@ -65,8 +64,10 @@ function RegisterForm() {
 
   return (
     <>
-
       <STYLEDForm onSubmit={handleSubmit(onSubmitRegister)}>
+        <div style={{ fontSize: "100px" }}>
+          <HiOutlineUserAdd />
+        </div>
         Formulaire d'inscription :
         <STYLEDhr />
         <div>
@@ -159,13 +160,17 @@ function RegisterForm() {
           )}
         </div>
         <STYLEDhr />
-        <div>
+        <div
+          style={{
+            position: "relative",
+          }}
+        >
           <label htmlFor="password1">Mot de passe :</label>
           <STYLEDInput
             id="password1"
             placeholder="Saisir votre mot de passe"
             autoComplete="current-password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             {...register("password", {
               required: true,
@@ -178,19 +183,39 @@ function RegisterForm() {
               },
             })}
           />
+          <button
+            type="button"
+            onClick={handleTogglePassword}
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: 15,
+              transform: "translateY(-50%)",
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              outline: "none",
+            }}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
           {errors.password ? (
             <HiBan style={{ color: "red" }} />
           ) : (
             <HiCheck style={{ color: "green" }} />
           )}
         </div>
-        <div>
+        <div
+          style={{
+            position: "relative",
+          }}
+        >
           <label htmlFor="password2">------------ :</label>
           <STYLEDInput
             id="password2"
             placeholder="Valider votre mot de passe"
             autoComplete="current-password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password2"
             {...register("password2", {
               required: true,
@@ -203,6 +228,22 @@ function RegisterForm() {
               },
             })}
           />
+          <button
+            type="button"
+            onClick={handleTogglePassword}
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: 15,
+              transform: "translateY(-50%)",
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              outline: "none",
+            }}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
           {errors.password2 ? (
             <HiBan style={{ color: "red" }} />
           ) : (

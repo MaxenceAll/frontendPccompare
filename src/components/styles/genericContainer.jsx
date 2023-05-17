@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const STYLEDContainer = styled.div`
   display: flex;
@@ -16,8 +16,17 @@ export const STYLEDContainer = styled.div`
 
 
 
-export const STYLEDContainerBox = styled.div`
+const appearAnimation = keyframes`
+  from {
+    transform: scale(0%);
+  }
+  to {
+    transform: scale(100%);
+  }
+`;
 
+
+export const STYLEDContainerBox = styled.div`
 
   width: 90%;
   max-width: 1000px;
@@ -26,4 +35,6 @@ export const STYLEDContainerBox = styled.div`
   box-shadow: rgba(0, 0, 0, 0.05) 0 6px 245px, rgba(0, 0, 0, 0.08) 0 0 0 5px;
   
   padding:3%;
+
+  animation: ${appearAnimation} 0.5s linear;
 `;

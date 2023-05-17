@@ -156,7 +156,15 @@ export const pccompareApi = createApi({
       }),
       invalidatesTags: ["Favorite"],
     }),
-
+    // Add a favorite given a Id_customer and Id_article :
+    addFavorite: builder.mutation({
+      query: ({ Id_customer_to_find, Id_article_to_find }) => ({
+        url: `favorite/${Id_customer_to_find}`,
+        method: "PUT",
+        body: { Id_article_to_find },
+      }),
+      invalidatesTags: ["Favorite"],
+    }),
     
   }),
 });
@@ -186,5 +194,6 @@ export const {
   useGetFavoriteStatusQuery,
   useGetAllFavoriteByIdCustomerQuery,
   useRemoveFavoriteMutation,
+  useAddFavoriteMutation,
 
 } = pccompareApi;

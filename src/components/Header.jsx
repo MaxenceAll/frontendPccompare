@@ -70,7 +70,8 @@ function Header() {
             <div>
               <NavLink to="/">
                 <GiComputerFan />
-                {import.meta.env.VITE_APP_NAME}
+                <SPAN_HiddenMobile>
+                {import.meta.env.VITE_APP_NAME}</SPAN_HiddenMobile>
               </NavLink>
             </div>
             {auth?.data && (

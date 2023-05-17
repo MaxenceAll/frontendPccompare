@@ -4,6 +4,8 @@ import { STYLEDhr } from "../styles/genericHR";
 import { STYLEDInput } from "../styles/genericInput";
 import { STYLEDButton } from "../styles/genericButton";
 import fetcher from "../../helper/fetcher";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ForgottenPasswordModal() {
   // Mot de passe oublié logic:
@@ -17,24 +19,24 @@ function ForgottenPasswordModal() {
   const handleRenewPassword = async (e) => {
     e.preventDefault();
     const emailObject = { email };
-    console.log(emailObject);
+    // console.log(emailObject);
     const resp = await fetcher.post("reset", emailObject);
-    console.log(resp);
+    // console.log(resp);
     setIsModalOpenForgottenPassword(false);
     if (resp.result) {
       toast.success(
         `Envoi d'un e-mail à votre adresse : ${resp.data.accepted} ; vérifiez votre boite mail ! Vous avez 10 minutes pour ré-initialiser votre mot de passe.`
       );
+      setIsModalOpenForgottenPassword(true)
     } else {
       if (resp.message)
         toast.error(`Ooops erreur, retour de l'api : ${resp.data.message}`);
+        setIsModalOpenForgottenPassword(true)
     }
   };
 
   return (
     <>
-
-
       <STYLEDForm onSubmit={(e) => handleRenewPassword(e)}>
         <label htmlFor="renewPasswordEmail">
           Envoyer les instructions sur l'adresse mail suivante ?

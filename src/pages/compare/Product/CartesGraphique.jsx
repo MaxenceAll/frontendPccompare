@@ -20,7 +20,7 @@ import { RatingStars } from "../../../components/Notes/RatingStars";
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery("gpu");
 
-  console.log(data)
+  // console.log(data)
 
   // trouver les filtres en fonction des url params :
   const location = useLocation();
@@ -40,7 +40,6 @@ function CartesGraphique() {
     ? searchParams.get("couleurs").split(",")
     : [];
 
-  console.log(data);
 
   // set title logic:
   useEffect(() => {
@@ -344,7 +343,6 @@ function CartesGraphique() {
       setPriceRange([min, max]);
     }
   }, [priceRange]);
-  // console.log(priceRange)
 
 
   // On maj les url params en fonction des filtres

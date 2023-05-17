@@ -1,5 +1,6 @@
 import { NavLink, useParams } from "react-router-dom";
 import {
+  useAddFavoriteMutation,
   useGetCommentsQuery,
   useGetFavoriteStatusQuery,
   useGetHistoriqueDetailsQuery,
@@ -31,6 +32,7 @@ import { AuthContext } from "../../../Contexts/AuthContext";
 import { useContext } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProductAlerts from "../../../components/Compare/ProductAlerts";
 
 export default function Product() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -49,6 +51,8 @@ export default function Product() {
   // console.log("favoriteData=",favoriteData)
   const [removeFavorite, { isLoading: removeFavoriteIsLoading }] =
   useRemoveFavoriteMutation();
+  const [addFavorite, { isLoading: addFavoriteIsLoading }] =
+  useAddFavoriteMutation();
 
 
   // DATA QUERIES :
@@ -147,26 +151,29 @@ export default function Product() {
     );
   }
 
-  const handleAddToFavorite = () => {
-    alert("toto");
-  };
-
-
-
-  const handleRemoveFromFavorite = () => {
-    removeFavorite({ Id_customer_to_find: auth?.data?.customer.Id_customer, Id_article_to_find: Id_article_to_find })
+  const handleFavorite = (action) => {
+    const requestData = {
+      Id_customer_to_find: auth?.data?.customer.Id_customer,
+      Id_article_to_find: Id_article_to_find,
+    };
+  
+    const favoriteAction = action === 'add' ? addFavorite : removeFavorite;
+    const successMessage = action === 'add' ? '❤️Favoris ajouté avec succès.' : '💔Favoris supprimé avec succès.';
+    const errorMessage = action === 'add' ? 'Erreur lors de l\'ajout des favoris' : 'Erreur lors de la suppression des favoris';
+  
+    favoriteAction(requestData)
       .then((response) => {
         if (response.data.result) {
-          toast.success('Favoris supprimé avec succès.');
+          toast.success(successMessage);
         } else {
-          toast.error(`Erreur lors de la suppression des favoris : ${response.data.message}`);
+          toast.error(`${errorMessage}: ${response.data.message}`);
         }
       })
       .catch((error) => {
-        toast.error(`Une erreur s'est produite lors de la suppression des favoris : ${error.message}`);
+        toast.error(`${errorMessage}: ${error.message}`);
       });
   };
-  
+    
   
   
 
@@ -194,17 +201,18 @@ export default function Product() {
   ) : (
     <>
       {favoriteData ? (
-        <STYLEDButton width={"100%"} onClick={handleRemoveFromFavorite}>
-         💔Retirer des favoris💔
+        <STYLEDButton width={"100%"} onClick={() => handleFavorite('remove')}>
+          💔Retirer des favoris💔
         </STYLEDButton>
       ) : (
-        <STYLEDButton width={"100%"} onClick={handleAddToFavorite}>
+        <STYLEDButton width={"100%"} onClick={() => handleFavorite('add')}>
           ❤️Ajouter aux favoris❤️
         </STYLEDButton>
       )}
     </>
   )}
 </Product_Notes_Favorite>
+
 
       </Product_Notes_Container>
 
@@ -250,6 +258,9 @@ export default function Product() {
           historique_prix={historiqueData.data}
           seller_historique_article={SHAData.data}
         /> */}
+
+        <ProductAlerts/>
+        
       </Product_Prices_Container>
 
       <Product_Comments_Container>
