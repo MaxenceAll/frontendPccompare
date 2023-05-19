@@ -45,7 +45,7 @@ const fetcher = {};
 
 fetcher.get = async (endpoint, params = {}) => {
   try {
-    const response = await axiosInstance.get(endpoint, { params, responseType: 'blob' });
+    const response = await axiosInstance.get(endpoint, { params });
     return response.data;
   } catch (error) {
     console.error(error);

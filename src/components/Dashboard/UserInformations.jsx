@@ -18,8 +18,9 @@ import {
 import Loader from "../Tools/Loader";
 import { STYLEDErrorMessage } from "../styles/genericParagraphError";
 import useCookie from "../../Hooks/useCookie";
-import Image from "./Image/Image";
-import AvatarImage from "../Header/AvatarImage";
+import Avatar from "../Avatars/Avatar";
+import GenericModal from "../Tools/GenericModal";
+import AvatarUpload from "../Avatars/AvatarUpload";
 
 function UserInformations() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -53,6 +54,12 @@ function UserInformations() {
     reset,
   } = useForm();
 
+  // Modal upload new avatar:
+  const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
+  const openUploadModal = (e) => {
+    setIsModalOpenUpload(true);
+  };
+
   // redux slice pour la query update
   const [updateCustomer, { updateCustomerIsLoading }] =
     useUpdateCustomerMutation();
@@ -63,7 +70,7 @@ function UserInformations() {
   const handleDoubleClickNewNom = (e) => {
     e.stopPropagation();
     setEditNom(!editNom);
-    reset();
+    reset();    
   };
   const handleSubmitNewNom = async (data) => {
     data.Id_customer = auth?.data?.customer?.Id_customer;
@@ -73,6 +80,7 @@ function UserInformations() {
       // console.log("yo allo la resp est:",resp);
       if (resp?.result) {
         toast.success(`Changement de prénom avec succes !`);
+        window.location.reload();
       } else {
         toast.error(
           `Oops une erreur lors de la modification: ${resp?.message}`
@@ -97,9 +105,10 @@ function UserInformations() {
     // console.log(data);
     try {
       const resp = await updateCustomer(data);
-      console.log(resp);
+      // console.log(resp);
       if (resp?.result) {
         toast.success(`Changement de prénom avec succes !`);
+        window.location.reload();
       } else {
         toast.error(
           `Oops une erreur lors de la modification: ${resp?.message}`
@@ -121,20 +130,12 @@ function UserInformations() {
   };
   const handleSubmitNewPseudo = async (data) => {
     data.Id_customer = auth?.data?.customer?.Id_customer;
-    console.log(data);
     try {
       const resp = await updateCustomer(data);
-      console.log("yo allo la resp est:", resp);
       if (resp?.data?.result) {
-        // console.log("yo c'est ok ici");
-        // setAuthCookie(resp?.accessToken ?? null, {
-        //   "max-age": `${60 * 60 * 24 * 10}`,
-        // });
-        // const resp2 = await fetcher.get("auth");
-        // console.log(resp2);
-        // setAuth(resp2);
         setAuthCookie(null, { expires: new Date(0) });
         toast.success(`Changement de pseudo avec succes !`);
+        window.location.reload();
       } else {
         toast.error(
           `Oops une erreur lors de la modification: ${resp?.message}`
@@ -170,7 +171,7 @@ function UserInformations() {
       setEditPassword(false);
       reset();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(`Oops, error: ${error.message}`);
     }
   };
@@ -188,9 +189,10 @@ function UserInformations() {
     // console.log(data);
     try {
       const resp = await updateCustomer(data);
-      console.log(resp);
+      // console.log(resp);
       if (resp?.result) {
         toast.success(`Changement de prénom avec succes !`);
+        window.location.reload();
       } else {
         toast.error(
           `Oops une erreur lors de la modification: ${resp?.message}`
@@ -206,15 +208,22 @@ function UserInformations() {
   if (currentUserIsLoading) {
     return (
       <STYLEDContainer>
-        <>
-          <Loader />
-        </>
+        <Loader />
       </STYLEDContainer>
     );
   }
 
   return (
     <>
+      {/* Modal d'upload avatar */}
+      <GenericModal
+        ariaLabelMessage="Modal d'upload d'avatar"
+        isOpen={isModalOpenUpload}
+        onClose={() => setIsModalOpenUpload(false)}
+      >
+        <AvatarUpload Id_customer={auth?.data?.customer?.Id_customer} />
+      </GenericModal>
+
       <STYLEDContainer>
         <>
           <STYLEDContainerBox>
@@ -459,11 +468,12 @@ function UserInformations() {
                     <td>Photo de profil :</td>
                     <td>
                       <STYLEDAvatarContainer>
-                        <AvatarImage
-                          key={auth?.data?.customer?.img_src}
-                          userId={auth?.data?.customer?.Id_customer}
-                          filename={auth?.data?.customer?.img_src}
+                        <Avatar
+                          Id_customer={auth?.data?.customer?.Id_customer}
                         />
+                        <STYLEDButton onClick={openUploadModal}>
+                          Edit
+                        </STYLEDButton>
                       </STYLEDAvatarContainer>
                     </td>
                   </tr>

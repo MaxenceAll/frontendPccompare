@@ -35,7 +35,7 @@ export const STYLEDContainerBox = styled.div`
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.05) 0 6px 245px, rgba(0, 0, 0, 0.08) 0 0 0 5px;
   
-  padding:3%;
+  padding:2%;
 
   animation: ${appearAnimation} 0.5s linear;
 `;

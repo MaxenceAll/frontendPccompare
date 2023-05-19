@@ -18,8 +18,8 @@ import { AuthContext } from "../Contexts/AuthContext";
 import { useRef } from "react";
 import { useEffect } from "react";
 import useCookie from "../Hooks/useCookie";
-import AvatarImage from "./Header/AvatarImage";
 import DropDownMenu from "./Header/DropDownMenu";
+import Avatar from "./Avatars/Avatar";
 
 function Header() {
   // Context Logic :
@@ -74,11 +74,7 @@ function Header() {
                 >
                   <DIV_AvatarContainer>
                     {auth?.data?.customer?.img_src ? (
-                      <AvatarImage
-                        key={auth?.data?.customer?.img_src}
-                        userId={auth?.data?.customer?.Id_customer}
-                        filename={auth?.data?.customer?.img_src}
-                      />
+                      <Avatar key={auth?.data?.customer?.img_src} Id_customer={auth?.data?.customer?.Id_customer} />
                     ) : (
                       <HiUser />
                     )}

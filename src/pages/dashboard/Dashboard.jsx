@@ -11,7 +11,6 @@ import GenericModal from "../../components/Tools/GenericModal";
 import UserBrowser from "../../components/Dashboard/UserBrowser";
 import UserInformations from "../../components/Dashboard/UserInformations";
 import { useGetCurrentCustomerQuery } from "../../features/pccompareSlice";
-import ImageGallery from "../../components/Dashboard/ImageGallery";
 import CarouselBrowser2 from "../../components/Dashboard/CarouselBrowser2";
 
 import useCookie from "../../Hooks/useCookie";
@@ -48,13 +47,7 @@ function Dashboard() {
   const [display, setDisplay] = useState("Vos informations");
 
   if (currentUserIsLoading) {
-    return (
-      <STYLEDContainer>
-        <>
-          <Loader />
-        </>
-      </STYLEDContainer>
-    );
+    return (<STYLEDContainer><Loader /></STYLEDContainer>);
   }
 
   return (
@@ -65,11 +58,7 @@ function Dashboard() {
         onClose={() => setIsModalOpenDisconnect(false)}
       >
         <label>Voulez-vous vraiment vous déconnecter ?</label>
-        <STYLEDButton
-          onClick={() => disconnect()}
-          width="40%"
-          type="button"
-        >
+        <STYLEDButton onClick={() => disconnect()} width="40%" type="button">
           Oui
         </STYLEDButton>
         <STYLEDButton
@@ -128,12 +117,6 @@ function Dashboard() {
           >
             Mes commentaires
           </STYLEDButton>
-          <STYLEDButton
-            onClick={() => setDisplay("Ma gallerie")}
-            className={display === "Ma gallerie" ? "active" : ""}
-          >
-            Ma gallerie
-          </STYLEDButton>
         </STYLEDOptionsButtons>
         <hr style={{ width: "80%" }} />
       </STYLEDContainer>
@@ -149,9 +132,9 @@ function Dashboard() {
           <CarouselBrowser2 />
         ) : null
       ) : null}
-      {display === "Ma gallerie" ? <ImageGallery /> : null}
-      {display === "Mes favoris" ? <UserFavorite currentUser={currentUser?.data?.customer?.Id_customer} /> : null}
-
+      {display === "Mes favoris" ? (
+        <UserFavorite currentUser={currentUser?.data?.customer?.Id_customer} />
+      ) : null}
     </>
   );
 }

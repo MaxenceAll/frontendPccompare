@@ -165,6 +165,15 @@ export const pccompareApi = createApi({
       }),
       invalidatesTags: ["Favorite"],
     }),
+
+
+    // Avatars LOGIC:
+    getAvatar: builder.query({
+      transformResponse: (response) => response.blob(),
+      query: (Id_customer) => `avatar/download/${Id_customer}`,
+      providesTags: ["Customer"],
+    }),
+
     
   }),
 });
@@ -195,5 +204,6 @@ export const {
   useGetAllFavoriteByIdCustomerQuery,
   useRemoveFavoriteMutation,
   useAddFavoriteMutation,
+
 
 } = pccompareApi;

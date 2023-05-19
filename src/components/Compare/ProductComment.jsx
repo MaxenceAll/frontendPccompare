@@ -10,9 +10,8 @@ import {
   STYLEDContainerBox,
 } from "../styles/genericContainer";
 import Loader from "../Tools/Loader";
-import Image from "../Dashboard/Image/Image";
-import AvatarImage from "../Header/AvatarImage";
 import { STYLEDErrorMessage } from "../styles/genericParagraphError";
+import Avatar from "../Avatars/Avatar";
 
 function ProductComment({ comment }) {
   // console.log(comment);
@@ -24,6 +23,7 @@ function ProductComment({ comment }) {
     error,
   } = useGetAvatarCommentQuery(comment.Id_comment);
 
+  console.log(avatarData);
   // console.log(avatarData?.data[0]?.img_src);
 
   if (isLoading) {
@@ -49,10 +49,7 @@ function ProductComment({ comment }) {
         <CommentContent>
           <span>
             {avatarData?.data && avatarData?.data[0]?.img_src ? (
-              <AvatarImage
-                filename={avatarData?.data[0]?.img_src}
-                userId={avatarData?.data[0]?.Id_customer}
-              />
+              <Avatar Id_customer={avatarData?.data[0]?.Id_customer} />
             ) : (
               <GiComputerFan />
             )}

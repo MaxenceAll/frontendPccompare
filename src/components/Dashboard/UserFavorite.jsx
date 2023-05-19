@@ -80,7 +80,7 @@ const Table = styled.table`
 `;
 
 const TableHeader = styled.th`
-  background-color: var(--background-color-200);
+  background-color: var(--background-color-300);
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid var(--background-color-200);
@@ -88,7 +88,7 @@ const TableHeader = styled.th`
 
 const TableRow = styled.tr`
   &:nth-child(even) {
-    background-color: var(--background-color-300);
+    background-color: var(--background-color-200);
   }
 `;
 

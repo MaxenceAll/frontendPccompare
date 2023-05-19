@@ -5,18 +5,19 @@ import styled from "styled-components";
 function ProductHeader(props) {
 
   // console.log(props);
-
   const { model } = props;
   const { article } = props;
   const { category } = props;
+  
+  console.log(article[0].code)
 
   return (
     <>
       <STYLED_Category>
-        <NavLink to={"/compare/gpu"}>{category}</NavLink>
+        <NavLink to={`/compare/${article[0].code}`}>{category}</NavLink>
       </STYLED_Category>
       <STYLED_Model>
-        <NavLink to={"/compare/gpu"}>{model}</NavLink>
+        <NavLink to={`/compare/${article[0].code}`}>{model}</NavLink>
       </STYLED_Model>
       <STYLED_Article>
         <h1>{article[0].designation}</h1>
