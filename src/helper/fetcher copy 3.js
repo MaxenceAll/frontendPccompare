@@ -45,14 +45,13 @@ const fetcher = {};
 
 fetcher.get = async (endpoint, params = {}) => {
   try {
-    const response = await axiosInstance.get(endpoint, { params, responseType: 'blob' });
+    const response = await axiosInstance.get(endpoint, { params });
     return response.data;
   } catch (error) {
     console.error(error);
     return { data: null, result: false, message: error.message };
   }
 };
-
 
 fetcher.post = async (endpoint, body = {}, params = {}) => {
   try {

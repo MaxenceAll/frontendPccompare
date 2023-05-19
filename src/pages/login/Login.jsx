@@ -29,7 +29,6 @@ function Login() {
   async function handleDisconnect(e) {
     disconnect();
     setIsModalOpenDisconnect(false);
-    toast.info(`Deconnexion avec succes.`);
   }
 
   return (

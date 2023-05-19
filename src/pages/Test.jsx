@@ -1,67 +1,90 @@
-import React, { useEffect, useState } from "react";
-import { Chart } from "react-google-charts";
-import { STYLEDSelect } from "../components/styles/genericSelect";
+import React, { useState } from "react";
+import { STYLEDContainer, STYLEDContainerBox } from "../components/styles/genericContainer";
+import { STYLEDInput } from "../components/styles/genericInput";
+import { STYLEDButton } from "../components/styles/genericButton";
+import styled from "styled-components";
+import fetcher from "../helper/fetcher";
+import axios from "axios";
+import config from "../../config";
 
-function Test({ seller, historique_prix, seller_historique_article }) {
-  console.log(seller);
-  console.log(historique_prix);
-  console.log(seller_historique_article);
+function Test() {
+  const Id_customer = "6";
 
-  const sellerIds = [
-    ...new Set(seller_historique_article.map((item) => item.Id_seller)),
-  ];
-  console.log(sellerIds);
+  //UPLOAD Logic :
+  const [selectedFile, setSelectedFile] = useState(null);
+  function handleFileInputChange(event) {
+    setSelectedFile(event.target.files[0]);
+  }
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("avatar", selectedFile);
+    // console.log(formData);
+    try {
+      const response = await fetcher.post(`avatar/upload/${Id_customer}`, formData);
+      // console.log(response);
+    } catch (error) {
+      console.error("erreur dans le handleSubmit:", error);
+    }
+  }
+  //DOWNLOAD Logic :
+  const [avatarURL, setAvatarURL] = useState(null);
+  async function handleDownload() {
 
-  const [days, setDays] = useState(30);
-  const [data, setData] = useState([]);
-  const handleDaysChange = (event) => {
-    setDays(event.target.value);
-  };
-  console.log(days)
-
-  useEffect(() => {
-    // Generate data array based on selected days option
-    const currentDate = new Date();
-    const dates = Array.from({ length: days }, (_, i) => {
-      const date = new Date();
-      date.setDate(currentDate.getDate() - i);
-      return date.toLocaleDateString();
-    });
-
-    const sellers = ['Seller 1', 'Seller 2', 'Seller 3'];
-
-    const newData = [
-      ['Date', ...sellers],
-      ...dates.map((date) => [date, ...sellers.map(() => Math.random() * 10)]),
-    ];
-
-    setData(newData);
-  }, [days]);
-
-  const options = {
-    title: "Price Comparison Chart",
-    curveType: "function",
-    legend: { position: "right" },
-  };
+    //TODO THIS FUCKING DOESNT WORK NO FUCKING IDEA WHY :
+    // try {
+    //   const response = await fetcher.get(`avatar/download/${Id_customer}`, { responseType: 'blob' });
+    //   // console.log(response)
+    //   // console.log(response.headers);
+    //   const blob = new Blob([response.data], { type: response.headers["content-type"] });
+    //   console.log(blob)
+    //   setAvatarURL(URL.createObjectURL(blob));
+    // } catch (error) {
+    //   console.error("Error in handleDownload:", error);
+    // }
+    try {
+      const url = `${config.api.url}avatar/download/${Id_customer}`;
+      const options = {
+        withCredentials: true,
+        responseType: "blob"
+      };
+      const response = await axios.get(url, options);
+      // console.log(response)
+      const blob = new Blob([response.data], { type: response.headers["content-type"] });
+      setAvatarURL(URL.createObjectURL(blob));
+    } catch (error) {
+      console.error("Error in handleDownload:", error);
+    }
+  }
 
   return (
     <>
-          <label htmlFor="days-select">Number of days:</label>
-      <STYLEDSelect id="days-select" value={days} onChange={handleDaysChange}>
-        <option value="30">30</option>
-        <option value="60">60</option>
-        <option value="120">120</option>
-        <option value="150">150</option>
-      </STYLEDSelect>
-      <Chart
-        chartType="LineChart"
-        data={data}
-        options={options}
-        width="100%"
-        height="400px"
-      />
+      <STYLEDContainer>
+        <STYLEDContainerBox>
+          {/* encType for including the necessary file acceptance headers */}
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <STYLEDInput type="file" onChange={handleFileInputChange} />
+            <STYLEDButton type="submit">Upload</STYLEDButton>
+          </form>
+          {selectedFile && (
+            <>
+              <STYLEDImgPreview src={URL.createObjectURL(selectedFile)} alt="Uploaded Image" />
+            </>
+          )}
+        </STYLEDContainerBox>
+
+          <STYLEDContainerBox>
+            <STYLEDButton onClick={handleDownload}>Download Avatar</STYLEDButton>
+            {avatarURL && <STYLEDImgPreview src={avatarURL} alt="Downloaded Avatar" />}
+          </STYLEDContainerBox>
+
+      </STYLEDContainer>
     </>
   );
 }
 
 export default Test;
+
+const STYLEDImgPreview = styled.img`
+  width: 300px;
+`;

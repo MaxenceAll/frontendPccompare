@@ -12,6 +12,7 @@ export const STYLEDContainer = styled.div`
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 0px;
+  padding: 2%;
 `;
 
 

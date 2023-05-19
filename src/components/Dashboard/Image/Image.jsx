@@ -22,7 +22,8 @@ function Image({ userId, filename }) {
           withCredentials: true,
           responseType: "arraybuffer"
         };
-        const response = await axios.get(url, options);        // const response = await fetcher.get(`uploads/${userId}/${filename}`,{ responseType: "arraybuffer" });
+        const response = await axios.get(url, options);        
+        // const response = await fetcher.get(`uploads/${userId}/${filename}`,{ responseType: "arraybuffer" });
         // console.log(response)
         const blob = new Blob([response.data], { type: response.headers["content-type"] });
         setImageData(URL.createObjectURL(blob));

@@ -3,12 +3,15 @@ import { toast } from "react-toastify";
 import fetcher from "../helper/fetcher";
 import { AuthContext } from "../Contexts/AuthContext";
 import useCookie from "./useCookie";
+import { useNavigate } from "react-router-dom";
 
 export function useDisconnect() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
   const [authCookie, setAuthCookie] = useCookie("accessToken");
   const [isDisconnecting, setIsDisconnecting] = useState(false);
+
+  const navigate = useNavigate();
 
   async function disconnect() {
     setIsDisconnecting(true); 
@@ -20,6 +23,7 @@ export function useDisconnect() {
         setAuth(null);
         setAuthCookie(null);
         toast.success(`Déconnection avec succès !`)
+        navigate("/login");
       } else {
         console.error(
           `Oops une erreur lors de la déconnection, retour de l'api ${response?.message}:`

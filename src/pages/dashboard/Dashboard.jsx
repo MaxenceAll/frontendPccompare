@@ -17,6 +17,7 @@ import CarouselBrowser2 from "../../components/Dashboard/CarouselBrowser2";
 import useCookie from "../../Hooks/useCookie";
 import UserFavorite from "../../components/Dashboard/UserFavorite";
 import { useDisconnect } from "../../Hooks/useDisconnect";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -36,32 +37,14 @@ function Dashboard() {
     isSuccess: currentUserIsSuccess,
   } = currentUserQuery;
 
-  // console.log(currentUser);
-
   // Disconnect logic:
   const [disconnect, isDisconnecting] = useDisconnect();
   const [isModalOpenDisconnect, setIsModalOpenDisconnect] = useState(false);
   const openDisconnectModal = (e) => {
     setIsModalOpenDisconnect(true);
   };
-  async function handleDisconnect(e) {
-    // try {
-    //   const response = await fetcher.post("/login/logout");
-    //   console.log(response);
-    //   // Remove the access token cookie
-    //   document.cookie =
-    //     "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    //   setAuth(null);
-    //   setAuthCookie(null);
-    //   setIsModalOpenDisconnect(false);
-    //   toast.info(`Deconnexion avec succes.`);
-    //   setDisplay("login");
-    // } catch (error) {
-    //   console.error("Oops une erreur apparait :", error);
-    // }
-    disconnect();
-  }
 
+  // State du choix par button
   const [display, setDisplay] = useState("Vos informations");
 
   if (currentUserIsLoading) {
@@ -83,7 +66,7 @@ function Dashboard() {
       >
         <label>Voulez-vous vraiment vous déconnecter ?</label>
         <STYLEDButton
-          onClick={(e) => handleDisconnect(e)}
+          onClick={() => disconnect()}
           width="40%"
           type="button"
         >
