@@ -66,6 +66,7 @@ const ModalWrapper = styled.div`
   right: 0;
   background-color: rgba(0, 0, 0, 0.85);
   animation: ${fadeIn} 0.8s ease-in-out;
+  z-index: 99999999;
 `;
 
 const ModalContent = styled.div`
