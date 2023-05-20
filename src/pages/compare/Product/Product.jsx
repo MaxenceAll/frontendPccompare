@@ -40,20 +40,21 @@ export default function Product() {
 
   const { Id_article_to_find, Category_to_find } = useParams();
 
-
   // FAVORITE QUERIES :
   const {
     data: favoriteData,
     isLoading: favoriteIsLoading,
     isError: favoriteIsError,
     error: favoriteError,
-  } = useGetFavoriteStatusQuery({ Id_customer_to_find: auth?.data?.customer.Id_customer , Id_article_to_find })
+  } = useGetFavoriteStatusQuery({
+    Id_customer_to_find: auth?.data?.customer.Id_customer,
+    Id_article_to_find,
+  });
   // console.log("favoriteData=",favoriteData)
   const [removeFavorite, { isLoading: removeFavoriteIsLoading }] =
-  useRemoveFavoriteMutation();
+    useRemoveFavoriteMutation();
   const [addFavorite, { isLoading: addFavoriteIsLoading }] =
-  useAddFavoriteMutation();
-
+    useAddFavoriteMutation();
 
   // DATA QUERIES :
   const {
@@ -103,7 +104,7 @@ export default function Product() {
   ) {
     return (
       <STYLEDContainer>
-          <Loader />
+        <Loader />
       </STYLEDContainer>
     );
   }
@@ -154,11 +155,17 @@ export default function Product() {
       Id_customer_to_find: auth?.data?.customer.Id_customer,
       Id_article_to_find: Id_article_to_find,
     };
-  
-    const favoriteAction = action === 'add' ? addFavorite : removeFavorite;
-    const successMessage = action === 'add' ? '❤️Favoris ajouté avec succès.' : '💔Favoris supprimé avec succès.';
-    const errorMessage = action === 'add' ? 'Erreur lors de l\'ajout des favoris' : 'Erreur lors de la suppression des favoris';
-  
+
+    const favoriteAction = action === "add" ? addFavorite : removeFavorite;
+    const successMessage =
+      action === "add"
+        ? "❤️Favoris ajouté avec succès."
+        : "💔Favoris supprimé avec succès.";
+    const errorMessage =
+      action === "add"
+        ? "Erreur lors de l'ajout des favoris"
+        : "Erreur lors de la suppression des favoris";
+
     favoriteAction(requestData)
       .then((response) => {
         if (response.data.result) {
@@ -171,9 +178,6 @@ export default function Product() {
         toast.error(`${errorMessage}: ${error.message}`);
       });
   };
-    
-  
-  
 
   return (
     <STYLEDProductDetailsContainer>
@@ -187,31 +191,35 @@ export default function Product() {
           nb_note={productData.data[0].nb_note}
         />
 
-<Product_Notes_Favorite>
-  {!auth?.data ? (
-    <>
-      <NavLink to={"/login"}>
-        <STYLEDButton width={"100%"}>
-          Il faut s'identifier pour ajouter aux favoris.
-        </STYLEDButton>
-      </NavLink>{" "}
-    </>
-  ) : (
-    <>
-      {favoriteData ? (
-        <STYLEDButton width={"100%"} onClick={() => handleFavorite('remove')}>
-          💔Retirer des favoris💔
-        </STYLEDButton>
-      ) : (
-        <STYLEDButton width={"100%"} onClick={() => handleFavorite('add')}>
-          ❤️Ajouter aux favoris❤️
-        </STYLEDButton>
-      )}
-    </>
-  )}
-</Product_Notes_Favorite>
-
-
+        <Product_Notes_Favorite>
+          {!auth?.data ? (
+            <>
+              <NavLink to={"/login"}>
+                <STYLEDButton width={"100%"}>
+                  Il faut s'identifier pour ajouter aux favoris.
+                </STYLEDButton>
+              </NavLink>{" "}
+            </>
+          ) : (
+            <>
+              {favoriteData ? (
+                <STYLEDButton
+                  width={"100%"}
+                  onClick={() => handleFavorite("remove")}
+                >
+                  💔Retirer des favoris💔
+                </STYLEDButton>
+              ) : (
+                <STYLEDButton
+                  width={"100%"}
+                  onClick={() => handleFavorite("add")}
+                >
+                  ❤️Ajouter aux favoris❤️
+                </STYLEDButton>
+              )}
+            </>
+          )}
+        </Product_Notes_Favorite>
       </Product_Notes_Container>
 
       <Product_Header_Container>
@@ -256,14 +264,16 @@ export default function Product() {
           historique_prix={historiqueData.data}
           seller_historique_article={SHAData.data}
         /> */}
-
-        <ProductAlerts/>
-        
+        <StyledHeader>Définir une alerte</StyledHeader>
+        <ProductAlerts />
       </Product_Prices_Container>
 
       <Product_Comments_Container>
+        <StyledHeader>Commentaires :</StyledHeader>
+        <STYLEDhr />
         <ProductComments comments={commentsData.data} />
       </Product_Comments_Container>
+      
     </STYLEDProductDetailsContainer>
   );
 }
@@ -305,6 +315,7 @@ const Product_Notes_Container = styled.div`
   border-top: 1px solid var(--secondary-color-100);
 
   padding: 5%;
+  
 `;
 const Product_Notes_Favorite = styled.div``;
 

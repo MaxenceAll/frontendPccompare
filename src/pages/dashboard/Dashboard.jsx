@@ -122,19 +122,23 @@ function Dashboard() {
       </STYLEDContainer>
 
       {display === "Vos informations" ? <UserInformations /> : null}
+
       {display === "Gérer les utilisateurs" ? (
         auth?.data?.role === "Administrateur" ? (
           <UserBrowser />
         ) : null
       ) : null}
+
       {display === "Gérer le carousel" ? (
         auth?.data?.role === "Administrateur" ? (
           <CarouselBrowser2 />
         ) : null
       ) : null}
+
       {display === "Mes favoris" ? (
         <UserFavorite currentUser={currentUser?.data?.customer?.Id_customer} />
       ) : null}
+      
     </>
   );
 }

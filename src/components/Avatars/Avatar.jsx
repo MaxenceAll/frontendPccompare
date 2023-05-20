@@ -3,6 +3,7 @@ import styled from "styled-components";
 import config from "../../../config";
 import Loader from "../Tools/Loader";
 import axios from "axios";
+import fallbackImage  from '../../assets/generics/ACCOUNT.png'
 
 function Avatar({ Id_customer }) {
     
@@ -13,6 +14,8 @@ function Avatar({ Id_customer }) {
   //DOWNLOAD Logic :
   const [avatarURL, setAvatarURL] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // console.log(avatarURL)
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -25,10 +28,15 @@ function Avatar({ Id_customer }) {
         };
         const response = await axios.get(url, options);
         // console.log(response)
-        const blob = new Blob([response.data], {
-          type: response.headers["content-type"],
-        });
-        setAvatarURL(URL.createObjectURL(blob));
+        if (response?.status===200){
+          const blob = new Blob([response.data], {
+            type: response.headers["content-type"],
+          });
+          setAvatarURL(URL.createObjectURL(blob));
+        } else{
+          setAvatarURL(null)
+        }
+
       } catch (error) {
         console.error("Error in handleDownload:", error);
       } finally {
@@ -39,14 +47,14 @@ function Avatar({ Id_customer }) {
     fetchImage();
   }, [Id_customer]);
 
-  if (!avatarURL) {
-    return null;
-  }
+  // if (!avatarURL) {
+  //   return null;
+  // }
 
   return (
     <ImageContainer>
       {isLoading && <Loader />}
-      {!isLoading && (<img src={avatarURL} alt="Avatar" crossOrigin="anonymous" />)}
+      {!isLoading && (<img src={avatarURL || fallbackImage} alt="Avatar" crossOrigin="anonymous" />)}
     </ImageContainer>
   );
 }

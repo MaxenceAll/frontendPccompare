@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { RatingStars } from "../Notes/RatingStars";
 
 function ProductNotes(props) {
-  console.log(props);
+  // console.log(props);
   const { nb_note_1, nb_note_2, nb_note_3, nb_note_4, nb_note_5, nb_note } =
     props;
   const moyenne =
@@ -22,7 +22,7 @@ function ProductNotes(props) {
     nb_note_5: (nb_note_5 / nb_note) * 100,
   };
 
-  console.log(notePercentages);
+  // console.log(notePercentages);
 
   return (
     <Notes_Content>
@@ -105,6 +105,9 @@ const Notes_Content = styled.div`
   border: 1px solid var(--main-color-300);
   background-color: var(--background-color-200);
   padding: 2%;
+
+  box-shadow: -32px 0px 70px -13px rgba(0,0,0,0.5),inset 20px 20px 15px 0px rgba(0,0,0,0.1),inset -20px -20px 15px -3px rgba(0,0,0,0.1),inset -20px 20px 15px 0px rgba(0,0,0,0.1);  border-radius: 15px;
+
 `;
 
 const Notes_Title = styled.div`

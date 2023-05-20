@@ -13,6 +13,8 @@ export const STYLEDContainer = styled.div`
     margin-inline-end: 0px;
     padding-inline-start: 0px;
   padding: 2%;
+
+  
 `;
 
 
@@ -38,4 +40,6 @@ export const STYLEDContainerBox = styled.div`
   padding:2%;
 
   animation: ${appearAnimation} 0.5s linear;
+
+
 `;

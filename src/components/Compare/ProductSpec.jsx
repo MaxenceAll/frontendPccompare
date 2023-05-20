@@ -16,7 +16,7 @@ function ProductSpec(props) {
         <div key={key}>
           <STYLED_Spec_key>{friendlyName}:</STYLED_Spec_key>
           <STYLED_Spec_value>{displayValue}</STYLED_Spec_value>
-          <hr />
+          <STYLEDhr />
         </div>
       );
     }
@@ -51,10 +51,18 @@ const ignoreKeys_gpu = [
   "Id_cpu",
   "Id_mb",
   "Id_ram",
+  "nb_note",
+  "nb_note_1",
+  "nb_note_2",
+  "nb_note_3",
+  "nb_note_4",
+  "nb_note_5",
 ];
 
 // Map pour affichage userfriendly
 const friendlyNames = {
+  // ALL
+  latest_price: "Dernier prix ajouté",
   // GPU
   product_number: "Référence produit",
   designation: "Nom du produit",
@@ -243,7 +251,9 @@ const suffixTable = {
 
 
 const STYLED_Spec_content = styled.div`
+text-align: center;
   font-size: 0.8rem;
+  box-shadow: -32px 0px 70px -13px rgba(0,0,0,0.5),inset 20px 20px 15px 0px rgba(0,0,0,0.1),inset -20px -20px 15px -3px rgba(0,0,0,0.1),inset -20px 20px 15px 0px rgba(0,0,0,0.1);  border-radius: 15px;
 `;
 
 const STYLED_Spec_title = styled.div`

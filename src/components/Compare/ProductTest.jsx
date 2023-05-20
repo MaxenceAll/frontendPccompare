@@ -17,7 +17,7 @@ import { STYLEDButton } from "../styles/genericButton";
 function ProductTest({ seller, historique_prix, seller_historique_article }) {
 
 
-console.log(seller);
+// console.log(seller);
 
   let options = {
     weekday: "long",

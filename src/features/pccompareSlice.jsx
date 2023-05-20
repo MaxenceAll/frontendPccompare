@@ -127,11 +127,6 @@ export const pccompareApi = createApi({
       query: (id) => `compare/comments/${id}`,
       providesTags: ["Comments"],
     }),
-    // get avatar with given Id_comment :
-    getAvatarComment: builder.query({
-      query: (id) => `compare/comments/avatar/${id}`,
-      providesTags: ["Comments"],
-    }),
 
     // FAVORITES LOGIC :
     // check if its a favorite :
@@ -197,7 +192,6 @@ export const {
   useGetSellerDetailsQuery,
   //
   useGetCommentsQuery,
-  useGetAvatarCommentQuery,
 
   //
   useGetFavoriteStatusQuery,

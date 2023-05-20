@@ -59,6 +59,19 @@ function UserInformations() {
   const openUploadModal = (e) => {
     setIsModalOpenUpload(true);
   };
+  // Handle no avatar :
+  const handleDeleteAvatar = async (Id_customer) => {
+    try {
+      const response = await fetcher.delete(`avatar/delete/${Id_customer}`);
+      console.log(response)
+      toast.success(`Suppression de votre avatar avec succès !`);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      console.error("Erreur dans le handleDeleteAvatar:", error);
+    }
+  };
 
   // redux slice pour la query update
   const [updateCustomer, { updateCustomerIsLoading }] =
@@ -70,7 +83,7 @@ function UserInformations() {
   const handleDoubleClickNewNom = (e) => {
     e.stopPropagation();
     setEditNom(!editNom);
-    reset();    
+    reset();
   };
   const handleSubmitNewNom = async (data) => {
     data.Id_customer = auth?.data?.customer?.Id_customer;
@@ -78,9 +91,11 @@ function UserInformations() {
     try {
       const resp = await updateCustomer(data);
       // console.log("yo allo la resp est:",resp);
-      if (resp?.result) {
+      if (resp?.data?.result) {
         toast.success(`Changement de prénom avec succes !`);
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         toast.error(
           `Oops une erreur lors de la modification: ${resp?.message}`
@@ -106,9 +121,11 @@ function UserInformations() {
     try {
       const resp = await updateCustomer(data);
       // console.log(resp);
-      if (resp?.result) {
+      if (resp?.data?.result) {
         toast.success(`Changement de prénom avec succes !`);
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         toast.error(
           `Oops une erreur lors de la modification: ${resp?.message}`
@@ -135,7 +152,9 @@ function UserInformations() {
       if (resp?.data?.result) {
         setAuthCookie(null, { expires: new Date(0) });
         toast.success(`Changement de pseudo avec succes !`);
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         toast.error(
           `Oops une erreur lors de la modification: ${resp?.message}`
@@ -190,9 +209,11 @@ function UserInformations() {
     try {
       const resp = await updateCustomer(data);
       // console.log(resp);
-      if (resp?.result) {
+      if (resp?.data?.result) {
         toast.success(`Changement de prénom avec succes !`);
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         toast.error(
           `Oops une erreur lors de la modification: ${resp?.message}`
@@ -267,7 +288,7 @@ function UserInformations() {
                     </td>
                     <td>
                       <STYLEDButton onClick={handleDoubleClickNewNom}>
-                        Edit
+                        Editer
                       </STYLEDButton>
                     </td>
                   </tr>
@@ -306,7 +327,7 @@ function UserInformations() {
                     </td>
                     <td>
                       <STYLEDButton onClick={handleDoubleClickNewPrenom}>
-                        Edit
+                        Editer
                       </STYLEDButton>
                     </td>
                   </tr>
@@ -341,7 +362,7 @@ function UserInformations() {
                     </td>
                     <td>
                       <STYLEDButton onClick={handleDoubleClickNewPseudo}>
-                        Edit
+                        Editer
                       </STYLEDButton>
                     </td>
                   </tr>
@@ -374,7 +395,7 @@ function UserInformations() {
                     </td>
                     <td>
                       <STYLEDButton onClick={handleDoubleClickNewPassword}>
-                        Edit
+                        Editer
                       </STYLEDButton>
                     </td>
                   </tr>
@@ -418,7 +439,7 @@ function UserInformations() {
                         onClick={handleDoubleClickNewEmail}
                         disabled={auth?.data?.role !== "Administrateur"}
                       >
-                        Edit
+                        Editer
                       </STYLEDButton>
                     </td>
                   </tr>
@@ -472,7 +493,16 @@ function UserInformations() {
                           Id_customer={auth?.data?.customer?.Id_customer}
                         />
                         <STYLEDButton onClick={openUploadModal}>
-                          Edit
+                          Editer
+                        </STYLEDButton>
+                        <STYLEDButton
+                          onClick={() =>
+                            handleDeleteAvatar(
+                              auth?.data?.customer?.Id_customer
+                            )
+                          }
+                        >
+                          Supprimer
                         </STYLEDButton>
                       </STYLEDAvatarContainer>
                     </td>

@@ -1,123 +1,115 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { GiComputerFan } from "react-icons/gi";
 import { formatDistanceToNow, format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { STYLEDhr } from "../styles/genericHR";
-import { useGetAvatarCommentQuery } from "../../features/pccompareSlice";
-import {
-  STYLEDContainer,
-  STYLEDContainerBox,
-} from "../styles/genericContainer";
-import Loader from "../Tools/Loader";
-import { STYLEDErrorMessage } from "../styles/genericParagraphError";
 import Avatar from "../Avatars/Avatar";
+import { RatingStars } from "../Notes/RatingStars";
+import { AuthContext } from "../../Contexts/AuthContext";
+import { STYLEDButton } from "../styles/genericButton";
+import { FcEditImage, FcDeleteRow } from "react-icons/fc";
 
 function ProductComment({ comment }) {
+  // Context Logic :
+  const { auth, setAuth } = useContext(AuthContext);
+  // console.log(auth?.data?.customer.Id_customer);
   // console.log(comment);
-
-  const {
-    data: avatarData,
-    isLoading,
-    isError,
-    error,
-  } = useGetAvatarCommentQuery(comment.Id_comment);
-
-  console.log(avatarData);
-  // console.log(avatarData?.data[0]?.img_src);
-
-  if (isLoading) {
-    return (
-      <STYLEDContainer>
-        <STYLEDContainerBox>
-          <Loader />
-        </STYLEDContainerBox>
-      </STYLEDContainer>
-    );
-  }
-  if (isError) {
-    return (
-      <STYLEDErrorMessage>
-        Erreur lors de la recherche des infos produit: {JSON.stringify(error)}
-      </STYLEDErrorMessage>
-    );
-  }
 
   return (
     <CommentContainer>
-      <div>
-        <CommentContent>
-          <span>
-            {avatarData?.data && avatarData?.data[0]?.img_src ? (
-              <Avatar Id_customer={avatarData?.data[0]?.Id_customer} />
-            ) : (
-              <GiComputerFan />
-            )}
-            {comment.createdBy}
-          </span>
-          <CommentTimeAgo>
-            (
-            {formatDistanceToNow(new Date(comment.createdAt), {
-              addSuffix: true,
-              locale: fr,
-            })}
-            )
-          </CommentTimeAgo>
-        </CommentContent>
-        <span>{comment.content}</span>
-      </div>
 
+      {auth?.data?.customer?.Id_customer === comment?.Id_customer && (
+        <CommentOptions>
+          <STYLEDButton><FcEditImage/>Editer</STYLEDButton>
+          <STYLEDButton><FcDeleteRow/>Supprimer</STYLEDButton>
+        </CommentOptions>
+      )}
+
+      <CommentCreator>
+        <Avatar Id_customer={comment?.Id_customer} />
+        &nbsp;
+        {comment.createdBy}
+        &nbsp;
+        <CommentRating>
+          <em>
+            <RatingStars rating={comment.note} />
+          </em>
+        </CommentRating>
+      </CommentCreator>
+
+      <CommentSeparator />
+        <CommentContent>
+          <em>{comment.content}</em>
+        </CommentContent>
       <CommentSeparator />
 
       <CommentDate>
-        <em>
-          Posté le : &nbsp;
-          {format(new Date(comment.createdAt), "PPPP", { locale: fr })}
-        </em>
+        Posté le : &nbsp;
+        {format(new Date(comment.createdAt), "PPPP", { locale: fr })}{" "}
+        <CommentTimeAgo>
+          (
+          {formatDistanceToNow(new Date(comment.createdAt), {
+            addSuffix: true,
+            locale: fr,
+          })}
+          )
+        </CommentTimeAgo>
       </CommentDate>
 
-      <CommentRating>
-        <em>Note: {comment.note}/5</em>
-      </CommentRating>
+
+
+
+
     </CommentContainer>
   );
 }
 
 export default ProductComment;
 
-const StyledHeader = styled.h1`
-  text-align: center;
+const CommentContainer = styled.div`
+  background-color: var(--background-color-200);
+  border: 1px solid var(--secondary-color-200);
+  border-radius: 15px;
+  padding: 2%;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.5),
+    inset 20px 20px 15px 0px rgba(0, 0, 0, 0.1),
+    inset -20px -20px 15px -3px rgba(0, 0, 0, 0.1),
+    -20px 20px 15px -3px rgba(0, 0, 0, 0.1);
+  position: relative;
 `;
 
-const CommentContainer = styled.div`
-  border: 1px solid var(--secondary-color-200);
-  padding: 10px;
-  margin-bottom: 10px;
+const CommentOptions = styled.div`
+  position: absolute;
+  top: 5%;
+  right: 1%;
 `;
 
 const CommentContent = styled.div`
-  font-weight: bold;
   margin-bottom: 5px;
+`;
+
+const CommentCreator = styled.div`
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
 `;
 
 const CommentDate = styled.p`
   font-size: 0.8rem;
 `;
 
-const CommentRating = styled.p`
-  font-size: 0.5rem;
+const CommentRating = styled.div`
+  font-size: 1.5rem;
 `;
 
 const CommentSeparator = styled.hr`
   margin-top: 10px;
 `;
 
-const CommentsContainer = styled.div`
-  margin: 20px;
-`;
-
 const CommentTimeAgo = styled.span`
   margin-left: 10px;
-  font-size: 0.5em;
+  font-size: 0.7em;
   color: var(--main-color-200);
 `;

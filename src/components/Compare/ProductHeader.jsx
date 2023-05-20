@@ -9,7 +9,7 @@ function ProductHeader(props) {
   const { article } = props;
   const { category } = props;
   
-  console.log(article[0].code)
+  // console.log(article[0].code)
 
   return (
     <>
