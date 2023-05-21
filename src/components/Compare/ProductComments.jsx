@@ -9,12 +9,14 @@ import {
   STYLEDContainer,
   STYLEDContainerBox,
 } from "../styles/genericContainer";
+import { STYLEDErrorMessage } from "../styles/genericParagraphError";
 import ProductAddComment from "./ProductAddComment";
 
-const ProductComments = ({ comments , Id_article}) => {
+const ProductComments = ({ comments, Id_article }) => {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
   // console.log(auth);
+  // console.log(auth?.data?.role);
   // console.log(comments)
   // console.log(comments[0]?.Id_article);
 
@@ -49,10 +51,11 @@ const ProductComments = ({ comments , Id_article}) => {
         />
       </GenericModal>
 
+      {/* Présence de commentaire! */}
       {comments.length > 0 ? (
         <CommentsContainer>
           <Comments_new_container>
-            {!hasComment ? (
+            {!hasComment && auth?.data?.role !== "Banni" ? (
               <>
                 Voulez-vous commenter ce produit ?
                 <STYLEDButton width={"40%"} onClick={openCommentModal}>
@@ -60,23 +63,46 @@ const ProductComments = ({ comments , Id_article}) => {
                 </STYLEDButton>
               </>
             ) : (
-              <i>Vous avez déjà commenté ce produit.</i>
+              <>
+                {auth?.data?.role !== "Banni" ? (
+                  <i>Vous avez déjà commenté ce produit.</i>
+                ) : (
+                  <STYLEDErrorMessage>
+                    Vous n'avez plus le droit d'agir sur les commentaires :
+                    contactez les admins.
+                  </STYLEDErrorMessage>
+                )}
+              </>
             )}
           </Comments_new_container>
           {comments.map((comment) => (
             <ProductComment key={comment.Id_comment} comment={comment} />
           ))}
         </CommentsContainer>
+      // Pas de commentaire !
       ) : (
-        <CommentsContainer>
-          <Comments_new_container>
-            Voulez-vous commenter ce produit ?
-            <STYLEDButton width={"40%"} onClick={openCommentModal}>
-              Ajouter
-            </STYLEDButton>
-            <NoDataFound />
-          </Comments_new_container>
-        </CommentsContainer>
+        <>
+          {auth?.data?.role !== "Banni" ? (
+            <CommentsContainer>
+              <Comments_new_container>
+                Voulez-vous commenter ce produit ?
+                <STYLEDButton width={"40%"} onClick={openCommentModal}>
+                  Ajouter
+                </STYLEDButton>
+                <NoDataFound />
+              </Comments_new_container>
+            </CommentsContainer>
+          ) : (
+            <CommentsContainer>
+              <Comments_new_container>
+                <STYLEDErrorMessage>
+                  Vous n'avez plus le droit d'agir sur les commentaires :
+                  contactez les admins.
+                </STYLEDErrorMessage>
+              </Comments_new_container>
+            </CommentsContainer>
+          )}
+        </>
       )}
     </>
   );

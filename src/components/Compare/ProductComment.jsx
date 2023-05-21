@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { formatDistanceToNow, format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -6,44 +6,87 @@ import Avatar from "../Avatars/Avatar";
 import { RatingStars } from "../Notes/RatingStars";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { STYLEDButton } from "../styles/genericButton";
-import { FcEditImage, FcDeleteRow } from "react-icons/fc";
+import { FcEditImage, FcDeleteRow , FcFullTrash} from "react-icons/fc";
 import { useRemoveCommentMutation } from "../../features/pccompareSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import GenericModal from "../Tools/GenericModal";
+import ProductModifyComment from "../Compare/ProductModifyComment";
 
 function ProductComment({ comment }) {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
   // console.log(auth?.data?.customer.Id_customer);
-  console.log(comment);
+  // console.log(comment);
 
   const [removeComment, { isLoading: removeCommentIsLoading }] =
     useRemoveCommentMutation();
   const handleRemoveComment = async () => {
-    console.log(comment?.Id_comment)
+    // console.log(comment?.Id_comment);
     try {
-    if (removeCommentIsLoading) { return }
-    const resp = await removeComment({  Id_comment_to_find: comment?.Id_comment  })
-    if (resp?.data?.result){
-      toast.success("Commentaire supprimé avec succès!"); 
-    }else {
-      toast.error("Erreur lors de la suppression de votre commentaire, ressayez !");
+      if (removeCommentIsLoading) {
+        return;
+      }
+      const resp = await removeComment({
+        Id_comment_to_find: comment?.Id_comment,
+      });
+      if (resp?.data?.result) {
+        toast.success("Commentaire supprimé avec succès!");
+      } else if (resp?.error?.data?.isBanned) {
+        toast.error("Vous n'avez plus le droit de supprimer vos commentaires !");
+      } else {
+        toast.error("Erreur lors de la suppression de votre commentaire, réessayez !");
+      } 
+    } catch (error) {
+      console.error("Erreur lors de la suppression du commentaire :", error);
+      toast.error(
+        "Erreur lors de la suppression de votre commentaire, ressayez !"
+      );
     }
-  } catch (error) {
-    console.error("Erreur lors de la suppression du commentaire :", error);
-    toast.error("Erreur lors de la suppression de votre commentaire, ressayez !");
-  }
-  }
+  };
+
+  // Modal pour ajouter comment logic :
+  const [isModalOpenModifyComment, setIsModalOpenModifyComment] =
+    useState(false);
+  const openModifyCommentModal = (e) => {
+    setIsModalOpenModifyComment(true);
+  };
 
   return (
     <CommentContainer>
+      <GenericModal
+        ariaLabelMessage="Modal de modification de commentaire"
+        isOpen={isModalOpenModifyComment}
+        onClose={() => setIsModalOpenModifyComment(false)}
+      >
+        <ProductModifyComment
+          setIsModalOpenModifyComment={setIsModalOpenModifyComment}
+          comment={comment}
+          customer={auth?.data?.customer}
+        />
+      </GenericModal>
 
       {auth?.data?.customer?.Id_customer === comment?.Id_customer && (
         <CommentOptions>
-          <STYLEDButton><FcEditImage/>Editer</STYLEDButton>
-          <STYLEDButton onClick={handleRemoveComment}><FcDeleteRow/>Supprimer</STYLEDButton>
+          <STYLEDButton onClick={openModifyCommentModal} disabled={auth?.data?.role === "Banni"}>
+            <FcEditImage />
+            Editer
+          </STYLEDButton>
+          <STYLEDButton onClick={handleRemoveComment} disabled={auth?.data?.role === "Banni"}>
+            <FcDeleteRow />
+            Supprimer
+          </STYLEDButton>
         </CommentOptions>
       )}
+
+        {auth?.data?.role === "Modérateur" || auth?.data?.role === "Administrateur" && (
+        <CommentModerate>
+        <STYLEDButton onClick={handleRemoveComment}>
+          <FcFullTrash />
+          Modérer
+        </STYLEDButton>
+      </CommentModerate>
+        )}
 
       <CommentCreator>
         <Avatar Id_customer={comment?.Id_customer} />
@@ -58,14 +101,14 @@ function ProductComment({ comment }) {
       </CommentCreator>
 
       <CommentSeparator />
-        <CommentContent>
-          <em>{comment.content}</em>
-        </CommentContent>
+      <CommentContent>
+        <em>{comment.content}</em>
+      </CommentContent>
       <CommentSeparator />
 
       <CommentDate>
         Posté le : &nbsp;
-        {format(new Date(comment.createdAt), "PPPP", { locale: fr })}{" "}
+        {format(new Date(comment.createdAt), "PPPP", { locale: fr })}
         <CommentTimeAgo>
           (
           {formatDistanceToNow(new Date(comment.createdAt), {
@@ -76,6 +119,22 @@ function ProductComment({ comment }) {
         </CommentTimeAgo>
       </CommentDate>
 
+      <Comment_Modified_At>
+        {comment.modifiedAt ? (
+          <i>
+            Modi. le : &nbsp;
+            {format(new Date(comment.modifiedAt), "PPPP", { locale: fr })}
+            <CommentTimeAgo>
+              (
+              {formatDistanceToNow(new Date(comment.modifiedAt), {
+                addSuffix: true,
+                locale: fr,
+              })}
+              )
+            </CommentTimeAgo>
+          </i>
+        ) : null}
+      </Comment_Modified_At>
     </CommentContainer>
   );
 }
@@ -100,6 +159,11 @@ const CommentOptions = styled.div`
   top: 5%;
   right: 1%;
 `;
+const CommentModerate = styled.div`
+  position: absolute;
+  bottom: 5%;
+  right: 1%;
+`;
 
 const CommentContent = styled.div`
   margin-bottom: 5px;
@@ -115,6 +179,11 @@ const CommentCreator = styled.div`
 
 const CommentDate = styled.p`
   font-size: 0.8rem;
+`;
+const Comment_Modified_At = styled.div`
+  font-size: 0.8rem;
+  text-align: left;
+  display: flex;
 `;
 
 const CommentRating = styled.div`

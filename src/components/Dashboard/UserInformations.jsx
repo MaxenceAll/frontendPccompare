@@ -150,7 +150,7 @@ function UserInformations() {
     try {
       const resp = await updateCustomer(data);
       if (resp?.data?.result) {
-        setAuthCookie(null, { expires: new Date(0) });
+        setAuthCookie(null, { expires: new Date(0) , path: "/"});
         toast.success(`Changement de pseudo avec succes !`);
         setTimeout(() => {
           window.location.reload();

@@ -3,44 +3,52 @@ import styled from "styled-components";
 import { DateDuJour } from "../../components/Tools/DateDuJour";
 import { STYLEDButton } from "../../components/styles/genericButton";
 import Avatar from "../Avatars/Avatar";
+import { FaStar } from "react-icons/fa";
 import RatingSelector from "./ProductRatingSelector";
-import { useAddCommentMutation } from "../../features/pccompareSlice";
+import {
+  useAddCommentMutation,
+  useModifyCommentMutation,
+} from "../../features/pccompareSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
-function ProductAddComment({ customer, Id_article , setIsModalOpenComment }) {
+function ProductAddComment({ setIsModalOpenModifyComment, comment, customer }) {
+//   console.log(comment);
+//   console.log(customer);
 
-  // console.log(Id_article)
-
-  const [addComment, { isLoading: addCommentIsLoading }] =
-    useAddCommentMutation();
+  const [modifyComment, { isLoading: modifyCommentIsLoading }] =
+    useModifyCommentMutation();
   const [note, setNote] = useState(5);
   const [content, setContent] = useState("");
 
-  const handlePublish = async () => {
+  const handleModify = async () => {
     try {
-      if (addCommentIsLoading) { return }  
+      if (modifyCommentIsLoading) {
+        return;
+      }
       if (!content) {
         toast.error("Contenu vide, ajoutez votre commentaire !");
         return;
       }
-      const resp = await addComment({
+      const resp = await modifyComment({
+        Id_comment_to_find: comment?.Id_comment,
         Id_customer: customer?.Id_customer,
-        Id_article,
         note,
         content,
-      })
+      });
       if (resp?.data?.result) {
-        toast.success("Commentaire ajouté avec succès!");
+        toast.success("Commentaire modifié avec succès!");
       } else if (resp?.error?.data?.isBanned) {
-        toast.error("Vous n'avez plus le droit d'ajouter des commentaires !");
+        toast.error("Vous n'avez plus le droit de modifier vos commentaires !");
       } else {
-        toast.error("Erreur lors de l'ajout' de votre commentaire, réessayez !");
-      }   
-      setIsModalOpenComment(false);
+        toast.error("Erreur lors de la modification de votre commentaire, réessayez !");
+      }          
+      setIsModalOpenModifyComment(false);
     } catch (error) {
-      console.error("Erreur lors de l'ajout du commentaire :", error);
-      toast.error("Erreur lors de la publication de votre commentaire, ressayez !");
+      console.error("Erreur lors de la modification du commentaire :", error);
+      toast.error("Erreur lors de la modification de votre commentaire, ressayez !");
     }
   };
 
@@ -59,7 +67,7 @@ function ProductAddComment({ customer, Id_article , setIsModalOpenComment }) {
 
       <CommentRating>
         <div>
-          <i> Votre note:</i> &nbsp;
+          <i> Votre nouvelle note:</i> &nbsp;
           <RatingSelector note={note} setNote={setNote} />
         </div>
       </CommentRating>
@@ -69,19 +77,26 @@ function ProductAddComment({ customer, Id_article , setIsModalOpenComment }) {
         <textarea
           name="text"
           placeholder="Ajoutez votre commentaire ici"
+          defaultValue={comment.content}
           onChange={handleTextareaChange}
         ></textarea>
       </CommentContent>
-      <STYLEDButton width={"100%"} onClick={handlePublish}>
+      <STYLEDButton width={"100%"} onClick={handleModify}>
         Publier
       </STYLEDButton>
       <CommentSeparator />
 
       <CommentDate>
         Posté le : &nbsp;
-        <DateDuJour />
+        {format(new Date(comment.createdAt), "dd MMMM yyyy, HH:mm:ss", {
+          locale: fr,
+        })}
       </CommentDate>
 
+      <Comment_Modified_At>
+        Modi. le : &nbsp;
+        <DateDuJour />
+      </Comment_Modified_At>
     </CommentContainer>
   );
 }
@@ -130,6 +145,11 @@ const CommentDate = styled.div`
   text-align: left;
   display: flex;
 `;
+const Comment_Modified_At = styled.div`
+  font-size: 0.8rem;
+  text-align: left;
+  display: flex;
+`;
 
 const CommentRating = styled.div`
   font-size: 1.5rem;
@@ -140,4 +160,3 @@ const CommentRating = styled.div`
 const CommentSeparator = styled.hr`
   margin-top: 10px;
 `;
-

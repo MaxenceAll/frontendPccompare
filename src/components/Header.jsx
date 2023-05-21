@@ -21,6 +21,8 @@ import useCookie from "../Hooks/useCookie";
 import DropDownMenu from "./Header/DropDownMenu";
 import Avatar from "./Avatars/Avatar";
 
+import LOGO from "../assets/generics/LOGO.svg"
+
 function Header() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
@@ -57,7 +59,8 @@ function Header() {
 
             <div>
               <NavLink to="/">
-                <GiComputerFan />
+                <img src={LOGO} width={"20px"}></img>
+                {/* <GiComputerFan /> */}
                 <SPAN_HiddenMobile>
                 {import.meta.env.VITE_APP_NAME}</SPAN_HiddenMobile>
               </NavLink>

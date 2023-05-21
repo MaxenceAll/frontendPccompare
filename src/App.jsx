@@ -117,7 +117,7 @@ display: none;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: var(--background-color-400);
+  background-color: var(--background-color-300);
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
   padding: 10px;
   justify-content: center;

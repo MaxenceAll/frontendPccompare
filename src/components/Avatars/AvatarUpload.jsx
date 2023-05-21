@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Avatar from "./Avatar";
 
 function AvatarUpload({ Id_customer }) {
-  console.log(Id_customer);
+  // console.log(Id_customer);
 
   //UPLOAD Logic :
   const [selectedFile, setSelectedFile] = useState(null);
