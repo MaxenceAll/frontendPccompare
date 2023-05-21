@@ -1,39 +1,90 @@
-import React from 'react'
-import styled from 'styled-components';
-import { DateDuJour } from '../../components/Tools/DateDuJour'
-import Avatar from '../Avatars/Avatar';
-import { STYLEDContainer, STYLEDContainerBox } from '../styles/genericContainer';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { DateDuJour } from "../../components/Tools/DateDuJour";
+import { STYLEDButton } from "../../components/styles/genericButton";
+import Avatar from "../Avatars/Avatar";
+import { FaStar } from "react-icons/fa";
+import RatingSelector from "./ProductRatingSelector";
+import { useAddCommentMutation } from "../../features/pccompareSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function ProductAddComment({customer}) {
-  console.log(customer)
+function ProductAddComment({ customer, Id_article , setIsModalOpenComment }) {
+
+  console.log(Id_article)
+
+  const [addComment, { isLoading: addCommentIsLoading }] =
+    useAddCommentMutation();
+  const [note, setNote] = useState(5);
+  const [content, setContent] = useState("");
+
+  const handlePublish = async () => {
+    try {
+      if (addCommentIsLoading) { return }  
+      if (!content) {
+        toast.error("Contenu vide, ajoutez votre commentaire !");
+        return;
+      }
+      const resp = await addComment({
+        Id_customer: customer?.Id_customer,
+        Id_article,
+        note,
+        content,
+      })
+      if (resp?.data?.result){
+        toast.success("Commentaire ajouté avec succès!"); 
+      }else {
+        toast.error("Erreur lors de la publication de votre commentaire, ressayez !");
+      }
+      setIsModalOpenComment(false);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du commentaire :", error);
+      toast.error("Erreur lors de la publication de votre commentaire, ressayez !");
+    }
+  };
+
+  const handleTextareaChange = (event) => {
+    setContent(event.target.value);
+  };
+
   return (
     <CommentContainer>
-
       <CommentCreator>
-        <Avatar Id_customer={customer?.Id_customer}/>
+        <Avatar Id_customer={customer?.Id_customer} />
+        &nbsp;
         {customer?.pseudo}
-        <CommentRating>
-          ***
-        </CommentRating>
+        &nbsp;
       </CommentCreator>
 
+      <CommentRating>
+        <div>
+          <i> Votre note:</i> &nbsp;
+          <RatingSelector note={note} setNote={setNote} />
+        </div>
+      </CommentRating>
+
       <CommentSeparator />
-        <CommentContent>
-          <textarea name="text" placeholder='Ajoutez votre commentaire ici'></textarea>
-        </CommentContent>
+      <CommentContent>
+        <textarea
+          name="text"
+          placeholder="Ajoutez votre commentaire ici"
+          onChange={handleTextareaChange}
+        ></textarea>
+      </CommentContent>
+      <STYLEDButton width={"100%"} onClick={handlePublish}>
+        Publier
+      </STYLEDButton>
       <CommentSeparator />
 
       <CommentDate>
         Posté le : &nbsp;
-        <DateDuJour/>        
+        <DateDuJour />
       </CommentDate>
-
-
     </CommentContainer>
-  )
+  );
 }
 
-export default ProductAddComment
+export default ProductAddComment;
 
 const CommentContainer = styled.div`
   background-color: var(--background-color-200);
@@ -46,21 +97,15 @@ const CommentContainer = styled.div`
     inset -20px -20px 15px -3px rgba(0, 0, 0, 0.1),
     -20px 20px 15px -3px rgba(0, 0, 0, 0.1);
   /* position: relative; */
-  width: 100vw;
-  height: 50vh;
-`;
-
-const CommentOptions = styled.div`
-  position: absolute;
-  top: 5%;
-  right: 1%;
+  width: 70vw;
+  /* height: 50vh; */
 `;
 
 const CommentContent = styled.div`
   margin-bottom: 5px;
   & textarea {
     padding: 1%;
-    width: 50%;
+    width: 50vw;
     height: 50%;
     resize: vertical;
     border: none;
@@ -80,20 +125,17 @@ const CommentCreator = styled.div`
 
 const CommentDate = styled.div`
   font-size: 0.8rem;
-  text-align:left;
-  display:flex;
+  text-align: left;
+  display: flex;
 `;
 
 const CommentRating = styled.div`
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
 `;
 
 const CommentSeparator = styled.hr`
   margin-top: 10px;
 `;
 
-const CommentTimeAgo = styled.span`
-  margin-left: 10px;
-  font-size: 0.7em;
-  color: var(--main-color-200);
-`;

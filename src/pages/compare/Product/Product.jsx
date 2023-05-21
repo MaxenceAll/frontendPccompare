@@ -271,7 +271,7 @@ export default function Product() {
       <Product_Comments_Container>
         <StyledHeader>Commentaires :</StyledHeader>
         <STYLEDhr />
-        <ProductComments comments={commentsData.data} />
+        <ProductComments comments={commentsData.data} Id_article={Id_article_to_find}/>
       </Product_Comments_Container>
       
     </STYLEDProductDetailsContainer>

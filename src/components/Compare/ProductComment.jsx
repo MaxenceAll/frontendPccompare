@@ -7,12 +7,33 @@ import { RatingStars } from "../Notes/RatingStars";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { STYLEDButton } from "../styles/genericButton";
 import { FcEditImage, FcDeleteRow } from "react-icons/fc";
+import { useRemoveCommentMutation } from "../../features/pccompareSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ProductComment({ comment }) {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
   // console.log(auth?.data?.customer.Id_customer);
-  // console.log(comment);
+  console.log(comment);
+
+  const [removeComment, { isLoading: removeCommentIsLoading }] =
+    useRemoveCommentMutation();
+  const handleRemoveComment = async () => {
+    console.log(comment?.Id_comment)
+    try {
+    if (removeCommentIsLoading) { return }
+    const resp = await removeComment({  Id_comment_to_find: comment?.Id_comment  })
+    if (resp?.data?.result){
+      toast.success("Commentaire supprimé avec succès!"); 
+    }else {
+      toast.error("Erreur lors de la suppression de votre commentaire, ressayez !");
+    }
+  } catch (error) {
+    console.error("Erreur lors de la suppression du commentaire :", error);
+    toast.error("Erreur lors de la suppression de votre commentaire, ressayez !");
+  }
+  }
 
   return (
     <CommentContainer>
@@ -20,7 +41,7 @@ function ProductComment({ comment }) {
       {auth?.data?.customer?.Id_customer === comment?.Id_customer && (
         <CommentOptions>
           <STYLEDButton><FcEditImage/>Editer</STYLEDButton>
-          <STYLEDButton><FcDeleteRow/>Supprimer</STYLEDButton>
+          <STYLEDButton onClick={handleRemoveComment}><FcDeleteRow/>Supprimer</STYLEDButton>
         </CommentOptions>
       )}
 
@@ -54,10 +75,6 @@ function ProductComment({ comment }) {
           )
         </CommentTimeAgo>
       </CommentDate>
-
-
-
-
 
     </CommentContainer>
   );

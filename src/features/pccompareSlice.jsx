@@ -169,6 +169,25 @@ export const pccompareApi = createApi({
       providesTags: ["Customer"],
     }),
 
+
+    // Comments CRUDS LOGIC :
+    addComment: builder.mutation({
+      query: ({Id_article , Id_customer, content , note}) => ({
+        url: `comments/add`,
+        method: "PUT",
+        body: { Id_article , Id_customer, content , note },
+      }),
+      invalidatesTags: ["Comments", "Product"],
+    }),
+    removeComment: builder.mutation({
+      query: ({Id_comment_to_find}) => ({
+        url: `comments/remove/${Id_comment_to_find}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Comments", "Product"],
+    }),
+
+
     
   }),
 });
@@ -199,5 +218,8 @@ export const {
   useRemoveFavoriteMutation,
   useAddFavoriteMutation,
 
+  //
+  useAddCommentMutation,
+  useRemoveCommentMutation,
 
 } = pccompareApi;

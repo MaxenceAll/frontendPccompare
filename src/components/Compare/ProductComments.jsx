@@ -11,15 +11,16 @@ import {
 } from "../styles/genericContainer";
 import ProductAddComment from "./ProductAddComment";
 
-const ProductComments = ({ comments }) => {
+const ProductComments = ({ comments , Id_article}) => {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
   // console.log(auth);
-  // console.log(comments);
+  // console.log(comments)
+  // console.log(comments[0]?.Id_article);
 
   // A déjà commenté ou pas ?
   const [hasComment, setHasComment] = useState(false);
-  console.log(hasComment);
+  // console.log(hasComment);
   useEffect(() => {
     setHasComment(
       comments.some(
@@ -41,7 +42,11 @@ const ProductComments = ({ comments }) => {
         isOpen={isModalOpenComment}
         onClose={() => setIsModalOpenComment(false)}
       >
-        <ProductAddComment customer={auth.data?.customer}/>
+        <ProductAddComment
+          customer={auth.data?.customer}
+          Id_article={Id_article}
+          setIsModalOpenComment={setIsModalOpenComment}
+        />
       </GenericModal>
 
       {comments.length > 0 ? (
@@ -64,7 +69,13 @@ const ProductComments = ({ comments }) => {
         </CommentsContainer>
       ) : (
         <CommentsContainer>
-          <NoDataFound />
+          <Comments_new_container>
+            Voulez-vous commenter ce produit ?
+            <STYLEDButton width={"40%"} onClick={openCommentModal}>
+              Ajouter
+            </STYLEDButton>
+            <NoDataFound />
+          </Comments_new_container>
         </CommentsContainer>
       )}
     </>
