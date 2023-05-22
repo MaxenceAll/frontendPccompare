@@ -13,7 +13,6 @@ import { STYLEDButton } from "../styles/genericButton";
 function UserFavorite({ currentUser }) {
 //   console.log(currentUser);
 
-  useGetAllFavoriteByIdCustomerQuery;
   const { data, isLoading, isError, error } =
     useGetAllFavoriteByIdCustomerQuery(currentUser);
 //   console.log(data);
@@ -56,7 +55,7 @@ function UserFavorite({ currentUser }) {
                 <TableCell>{fav.designation}</TableCell>
                 <TableCell>{fav.marque}</TableCell>
                 <TableCell>
-                  <Image src={fav.img_src} alt={fav.img_alt} />
+                  <Image src={fav.img_src} alt={""} />
                 </TableCell>
                 <TableCell>
                     <NavLink to={`/compare/product/${fav.code}/${fav.Id_article}`} >

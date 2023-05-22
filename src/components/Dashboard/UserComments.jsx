@@ -61,7 +61,7 @@ function UserComments() {
               {data?.data?.map((com) => (
                 <TableRow key={com.Id_article}>
                   <TableCell>
-                    <Image src={com.img_src} alt={"XXX"} />
+                    <Image src={com.img_src} alt={""} />
                   </TableCell>
                   <TableCell>{com.designation}</TableCell>
                   <TableCell>{com.content}</TableCell>

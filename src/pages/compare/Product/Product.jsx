@@ -248,6 +248,11 @@ export default function Product() {
               historique_prix={historiqueData.data}
               seller_historique_article={SHAData.data}
             />
+            <Test 
+            seller={sellerData.data}
+            historique_prix={historiqueData.data}
+            seller_historique_article={SHAData.data}
+            />
           </>
         ) : (
           <>

@@ -200,6 +200,12 @@ export const pccompareApi = createApi({
       providesTags: ["Comments"],
     }),
 
+
+    //TEST FOR CHART
+    getAllPriceByIdArticle: builder.query({
+      query: (id) => `test/${id}`,
+    }),
+
     
   }),
 });
@@ -235,5 +241,9 @@ export const {
   useRemoveCommentMutation,
   useModifyCommentMutation,
   useGetAllCommentsByIdCustomerQuery,
+
+
+  //TEST :
+  useGetAllPriceByIdArticleQuery,
 
 } = pccompareApi;
