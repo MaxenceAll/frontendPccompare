@@ -6,21 +6,22 @@ import fetcher from "../../helper/fetcher";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Avatar from "./Avatar";
+import { STYLEDErrorMessage } from "../styles/genericParagraphError";
 
 function AvatarUpload({ Id_customer }) {
   // console.log(Id_customer);
 
   //UPLOAD Logic :
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isError , setIsError] = useState(false);
   function handleFileInputChange(event) {
+    setIsError(false)
     setSelectedFile(event.target.files[0]);
   }
   async function handleSubmit(event) {
-    // event.preventDefault();
+    event.preventDefault();
     if (!selectedFile) {
-      setTimeout(() => {
-        toast.error("Aucun fichier selectionné.");
-      }, 2000);
+      setIsError(true)
       return;
     }
     const formData = new FormData();
@@ -53,6 +54,7 @@ function AvatarUpload({ Id_customer }) {
           alt="Image à envoyer"
         />
       )}
+      {isError && <STYLEDErrorMessage>Il faut choisir un fichier voyons !</STYLEDErrorMessage>}
     </>
   );
 }

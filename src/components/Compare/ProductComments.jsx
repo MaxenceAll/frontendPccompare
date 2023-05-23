@@ -45,7 +45,7 @@ const ProductComments = ({ comments, Id_article }) => {
         onClose={() => setIsModalOpenComment(false)}
       >
         <ProductAddComment
-          customer={auth.data?.customer}
+          customer={auth?.data?.customer}
           Id_article={Id_article}
           setIsModalOpenComment={setIsModalOpenComment}
         />

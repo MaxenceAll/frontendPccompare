@@ -14,7 +14,7 @@ export const STYLEDContainer = styled.div`
     padding-inline-start: 0px;
   padding: 2%;
 
-  
+
 `;
 
 
@@ -41,5 +41,6 @@ export const STYLEDContainerBox = styled.div`
 
   animation: ${appearAnimation} 0.5s linear;
 
-
+  box-shadow: inset 9.91px 9.91px 15px var(--background-color-200), inset -9.91px -9.91px 15px var(--background-color-100);
+  box-shadow: 18px 18px 24px var(--background-color-200), -18px -18px 24px var(--background-color-100);
 `;

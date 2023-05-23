@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 09, 2023 at 05:55 AM
+-- Generation Time: May 23, 2023 at 11:43 AM
 -- Server version: 8.0.31
 -- PHP Version: 8.0.26
 
@@ -40,20 +40,21 @@ CREATE TABLE IF NOT EXISTS `account` (
   `modifiedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`Id_account`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `account`
 --
 
 INSERT INTO `account` (`Id_account`, `email`, `password`, `createdBy`, `createdAt`, `deletedBy`, `deletedAt`, `modifiedBy`, `modifiedAt`) VALUES
-(6, 'maxoa59@gmail.com', '/HMEW4OGrF4KThrKnj9lfuWkWLVzKiOeRIxZU08GfcofVjozJXlr.', 'site', '2023-05-02 22:22:08', NULL, NULL, NULL, NULL),
+(6, 'maxoa59@gmail.com', '9heb0dBHj.Ap7bnlnbJeguCP/4hXKxfvXGTlznhPFXZlOwjjemXqi', 'site', '2023-05-02 22:22:08', NULL, NULL, 'site', '2023-05-17 16:05:17'),
 (7, 'test_email_1@test.com', '/HMEW4OGrF4KThrKnj9lfuWkWLVzKiOeRIxZU08GfcofVjozJXlr.', 'site', '2023-05-02 22:22:08', NULL, NULL, NULL, NULL),
 (8, 'test_email_2@test.com', '/HMEW4OGrF4KThrKnj9lfuWkWLVzKiOeRIxZU08GfcofVjozJXlr.', 'site', '2023-05-02 22:22:08', NULL, NULL, NULL, NULL),
 (9, 'test_email_3@test.com', '/HMEW4OGrF4KThrKnj9lfuWkWLVzKiOeRIxZU08GfcofVjozJXlr.', 'site', '2023-05-02 22:22:08', NULL, NULL, NULL, NULL),
 (10, 'test_email_4@test.com', '/HMEW4OGrF4KThrKnj9lfuWkWLVzKiOeRIxZU08GfcofVjozJXlr.', 'site', '2023-05-02 22:22:08', NULL, NULL, NULL, NULL),
 (11, 'test_email_5@test.com', '/HMEW4OGrF4KThrKnj9lfuWkWLVzKiOeRIxZU08GfcofVjozJXlr.', 'site', '2023-05-02 22:22:08', NULL, NULL, NULL, NULL),
-(12, 'test_email_6@test.com', '/HMEW4OGrF4KThrKnj9lfuWkWLVzKiOeRIxZU08GfcofVjozJXlr.', 'site', '2023-05-02 22:22:08', NULL, NULL, NULL, NULL);
+(12, 'test_email_6@test.com', '/HMEW4OGrF4KThrKnj9lfuWkWLVzKiOeRIxZU08GfcofVjozJXlr.', 'site', '2023-05-02 22:22:08', NULL, NULL, NULL, NULL),
+(18, 'maxence.allart@gmail.com', 'CxWhZCBYzrCsfZ8qEpVz3OAAmg53OiVHayQUOzRd4JYxoU71l4fou', 'site', '2023-05-23 11:04:16', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -72,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `article` (
   `Id_model` int DEFAULT NULL,
   PRIMARY KEY (`Id_article`),
   KEY `Id_model` (`Id_model`)
-) ENGINE=MyISAM AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=200 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `article`
@@ -254,12 +255,30 @@ INSERT INTO `article` (`Id_article`, `product_number`, `designation`, `marque`, 
 (173, '100-100000144BOX', 'AMD Ryzen 3 4300G Wraith Stealth', 'AMD', 'https://media.ldlc.com/r1600/ld/products/00/06/02/27/LD0006022798.jpg', 'AMD Ryzen 3 4300G Wraith Stealth', 7),
 (174, 'BX8071513900K', 'Intel Core i9-13900K', 'Intel', 'https://media.ldlc.com/r1600/ld/products/00/05/98/23/LD0005982300.jpg', 'Intel Core i9-13900K', 8),
 (175, 'BX8071512900KF', 'Intel Core i9-12900KF', 'Intel', 'https://media.ldlc.com/r1600/ld/products/00/05/90/02/LD0005900238_1.jpg', 'Intel Core i9-12900KF', 8),
-(176, 'BX8071513700K', 'Intel Core i7-13700K', 'Intel', 'https://www.ldlc.com/fiche/PB00519277.html', 'Intel Core i7-13700K', 9),
-(177, 'BX8071512700KF', 'Intel Core i7-12700KF', 'Intel', 'https://www.ldlc.com/fiche/PB00464924.html', 'Intel Core i7-12700KF', 9),
+(176, 'BX8071513700K', 'Intel Core i7-13700K', 'Intel', 'https://media.ldlc.com/r374/ld/products/00/05/98/22/LD0005982253.jpg', 'Intel Core i7-13700K', 9),
+(177, 'BX8071512700KF', 'Intel Core i7-12700KF', 'Intel', 'https://media.ldlc.com/r374/ld/products/00/05/90/02/LD0005900213_1.jpg', 'Intel Core i7-12700KF', 9),
 (178, 'BX8071513600KF', 'Intel Core i5-13600KF', 'Intel', 'https://media.ldlc.com/r1600/ld/products/00/05/98/20/LD0005982085.jpg', 'Intel Core i5-13600KF', 10),
-(179, 'BX8071512500', 'Intel Core i5-12500', 'Intel', 'https://www.ldlc.com/fiche/PB00472401.html', 'Intel Core i5-12500', 10),
+(179, 'BX8071512500', 'Intel Core i5-12500', 'Intel', 'https://media.ldlc.com/r374/ld/products/00/05/91/49/LD0005914922_1.jpg', 'Intel Core i5-12500', 10),
 (180, 'BX8071513100', 'Intel Core i3-13100', 'Intel', 'https://media.ldlc.com/r1600/ld/products/00/06/00/26/LD0006002655.jpg', 'Intel Core i3-13100', 11),
-(181, 'BX8071512100F', 'Intel Core i3-12100F', 'Intel', 'https://media.ldlc.com/r1600/ld/products/00/05/91/49/LD0005914916_1.jpg', 'Intel Core i3-12100F', 11);
+(181, 'BX8071512100F', 'Intel Core i3-12100F', 'Intel', 'https://media.ldlc.com/r1600/ld/products/00/05/91/49/LD0005914916_1.jpg', 'Intel Core i3-12100F', 11),
+(182, 'KF548C38BB-8', 'Kingston FURY Beast 8 Go DDR5 4800 MHz CL38', 'Kingston', 'https://media.ldlc.com/r1600/ld/products/00/05/90/13/LD0005901304_1_0005946806.jpg', 'Kingston FURY Beast 8 Go DDR5 4800 MHz CL38', 16),
+(183, 'KF556C40BBK2-32', 'Kingston FURY Beast 32 Go (2 x 16 Go) DDR5 5600 MHz CL40', 'Kingston', 'https://media.ldlc.com/r374/ld/products/00/05/90/13/LD0005901337_1_0005914674.jpg', 'Kingston FURY Beast 32 Go (2 x 16 Go) DDR5 5600 MHz CL40', 16),
+(184, 'CT2K32G48C40S5', 'Crucial SO-DIMM DDR5 64 Go (2 x 32 Go) 4800 MHz CL40 2Rx8', 'Crucial', 'https://media.ldlc.com/r374/ld/products/00/05/96/23/LD0005962309_0005962320.jpg', 'Crucial SO-DIMM DDR5 64 Go (2 x 32 Go) 4800 MHz CL40 2Rx8', 16),
+(185, 'CMT32GX5M2B5600C36W', 'Corsair Dominator Platinum DDR5 RGB 32 Go (2 x 16 Go) 5600 MHz CL36 - Blanc', 'Corsair', 'https://media.ldlc.com/r1600/ld/products/00/05/92/30/LD0005923033_1.jpg', 'Corsair Dominator Platinum DDR5 RGB 32 Go (2 x 16 Go) 5600 MHz CL36 - Blanc', 16),
+(186, 'CMSA16GX4M2A2666C18', 'Corsair Mac Memory SO-DIMM 16 Go (2x 8 Go) DDR4 2666 MHz CL18', 'Corsair', 'https://media.ldlc.com/r374/ld/products/00/05/41/58/LD0005415835_2.jpg', 'Corsair Mac Memory SO-DIMM 16 Go (2x 8 Go) DDR4 2666 MHz CL18', 15),
+(187, 'FXU8G1M3600C18X2', 'Fox Spirit Akura RGB 16 Go (2x 8 Go) DDR4 3600 MHz CL18', 'Fox Spirit', 'https://media.ldlc.com/r1600/ld/products/00/05/93/47/LD0005934790_1.jpg', 'Fox Spirit Akura RGB 16 Go (2x 8 Go) DDR4 3600 MHz CL18', 15),
+(188, 'F4-2133C15S-16GIS', ' G.Skill Aegis 16 Go (1 x 16 Go) DDR4 2133 MHz CL15', 'G.Skill', 'https://media.ldlc.com/r1600/ld/products/00/03/46/50/LD0003465032_2_0003465087_0003465132.jpg', ' G.Skill Aegis 16 Go (1 x 16 Go) DDR4 2133 MHz CL15', 15),
+(189, 'KF436C17BWAK2/16', 'Kingston FURY Beast White RGB SE 16 Go (2 x 8 Go) DDR4 3600 MHz CL17', 'Kingston', 'https://media.ldlc.com/r374/ld/products/00/05/98/18/LD0005981842_0005981845.jpg', 'Kingston FURY Beast White RGB SE 16 Go (2 x 8 Go) DDR4 3600 MHz CL17', 15),
+(190, 'B650 PRO RS', 'ASRock B650 Pro RS', 'ASRock', 'https://media.ldlc.com/r1600/ld/products/00/05/98/56/LD0005985698.jpg', 'ASRock B650 Pro RS', 12),
+(191, '90MB1BV0-M0EAY0', 'ASUS PRIME X670-P WIFI', 'ASUS', 'https://media.ldlc.com/r1600/ld/products/00/05/98/15/LD0005981521.jpg', 'ASUS PRIME X670-P WIFI', 12),
+(192, 'X670E AORUS MASTER', 'Gigabyte X670E AORUS MASTER', 'GIGABYTE', 'https://media.ldlc.com/r1600/ld/products/00/05/98/02/LD0005980203.jpg', 'Gigabyte X670E AORUS MASTER', 12),
+(193, 'B550M PHANTOM GAMING 4', 'ASRock B550M Phantom Gaming 4', 'ASRock', 'https://media.ldlc.com/r1600/ld/products/00/05/73/47/LD0005734708_1.jpg', 'ASRock B550M Phantom Gaming 4', 13),
+(194, '90MB19V0-M0EAY0', 'ASUS ROG STRIX B550-F GAMING (WI-FI) II', 'ASUS', 'https://media.ldlc.com/r1600/ld/products/00/05/91/26/LD0005912640_1.jpg', 'ASUS ROG STRIX B550-F GAMING (WI-FI) II', 13),
+(195, 'MPG X570S CARBON MAX WIFI', 'MSI MPG X570S CARBON MAX WIFI', 'MSI', 'https://media.ldlc.com/r374/ld/products/00/06/00/68/LD0006006835.jpg', 'MSI MPG X570S CARBON MAX WIFI', 13),
+(196, '90MB18X0-M0EAY0', 'ASUS PRIME B660-PLUS D4', 'ASUS', 'https://media.ldlc.com/r1600/ld/products/00/05/92/29/LD0005922969_1.jpg', 'ASUS PRIME B660-PLUS D4', 14),
+(197, 'H610M H DDR4', 'Gigabyte H610M H DDR4', 'GIGABYTE', 'https://media.ldlc.com/r1600/ld/products/00/06/00/57/LD0006005743.jpg', 'Gigabyte H610M H DDR4', 14),
+(198, 'MPG Z790 CARBON WIFI', 'MSI MPG Z790 CARBON WIFI', 'MSI', 'https://media.ldlc.com/r1600/ld/products/00/05/98/28/LD0005982811.jpg', 'MSI MPG Z790 CARBON WIFI', 14),
+(199, 'MEG Z790 GODLIKE', 'MSI MEG Z790 GODLIKE', 'MSI', 'https://media.ldlc.com/r1600/ld/products/00/05/98/69/LD0005986920.jpg', 'MSI MEG Z790 GODLIKE', 14);
 
 -- --------------------------------------------------------
 
@@ -306,8 +325,8 @@ CREATE TABLE IF NOT EXISTS `category` (
   `Id_category` int NOT NULL AUTO_INCREMENT,
   `category_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `code` varchar(50) DEFAULT NULL,
-  `img_src` varchar(255) DEFAULT NULL,
-  `img_alt` varchar(255) DEFAULT NULL,
+  `img_src_category` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `img_alt_category` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   PRIMARY KEY (`Id_category`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
@@ -315,7 +334,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`Id_category`, `category_name`, `code`, `img_src`, `img_alt`) VALUES
+INSERT INTO `category` (`Id_category`, `category_name`, `code`, `img_src_category`, `img_alt_category`) VALUES
 (1, 'Cartes Graphique', 'gpu', NULL, 'Cartes Graphique'),
 (2, 'Processeurs', 'cpu', NULL, 'Processeurs'),
 (3, 'Cartes mères', 'mb', NULL, 'Cartes mères'),
@@ -335,15 +354,35 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `createdBy` varchar(255) DEFAULT NULL,
   `deletedBy` varchar(255) DEFAULT NULL,
   `modifiedBy` varchar(255) DEFAULT NULL,
-  `createdAt` date DEFAULT NULL,
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `deletedAt` date DEFAULT NULL,
-  `modifiedAt` date DEFAULT NULL,
+  `modifiedAt` timestamp NULL DEFAULT NULL,
   `Id_customer` int DEFAULT NULL,
   `Id_article` int DEFAULT NULL,
   PRIMARY KEY (`Id_comment`),
   KEY `Id_customer` (`Id_customer`),
   KEY `Id_article` (`Id_article`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `comment`
+--
+
+INSERT INTO `comment` (`Id_comment`, `content`, `note`, `createdBy`, `deletedBy`, `modifiedBy`, `createdAt`, `deletedAt`, `modifiedAt`, `Id_customer`, `Id_article`) VALUES
+(22, 'This GPU is amazing! I was able to play all my favorite games at max settings with no issues. GREAT ! Really! Reallyyyy !!!!!!!!!!!!!', 5, 'Secutorz', NULL, 'Secu', '2023-05-21 16:27:01', NULL, '2023-05-23 08:07:34', 6, 1),
+(2, 'I\'m disappointed with this GPU. It\'s not as powerful as I expected and I\'ve had some stability issues.', 2, 'TestPseudo_100', NULL, NULL, '2023-04-02 22:00:00', NULL, NULL, 7, 1),
+(3, 'Good GPU for the price. I\'ve had no issues so far.', 4, 'TestPseudo_2', NULL, NULL, '2023-04-04 22:00:00', NULL, NULL, 8, 1),
+(5, 'Not bad for the price. Does the job.', 2, 'TestPseudo_510', NULL, NULL, '2023-05-15 22:00:00', NULL, NULL, 960, 2),
+(6, 'I would not recommend this product. Had a lot of issues.', 2, 'TestPseudo_656', NULL, NULL, '2023-05-14 22:00:00', NULL, NULL, 816, 2),
+(7, 'Excellent product. Does exactly what it says.', 1, 'TestPseudo_639', NULL, NULL, '2023-05-15 22:00:00', NULL, NULL, 740, 3),
+(23, 'The worst !!!!!!!!!!!!', 1, 'Secutorz', NULL, NULL, '2023-05-21 16:53:29', NULL, NULL, 6, 2),
+(20, 'The best :)!', 5, 'Secutorz', NULL, NULL, '2023-05-21 16:10:28', NULL, NULL, 6, 6),
+(26, 'ca va', 3, 'Secutorz', NULL, 'Secu', '2023-05-21 18:22:28', NULL, '2023-05-21 18:28:00', 6, 8),
+(27, 'Trop cher !', 5, 'Secu', NULL, NULL, '2023-05-21 18:45:07', NULL, NULL, 6, 7),
+(29, 'Ceci est un test !', 5, 'Secu', NULL, 'Secu', '2023-05-21 18:59:40', NULL, '2023-05-21 20:55:43', 6, 192),
+(32, 'zzzzzzzz', 5, 'Secu', NULL, 'Secu', '2023-05-21 19:32:21', NULL, '2023-05-21 19:32:34', 6, 187),
+(33, 'Elle est bien !', 3, 'Secu', NULL, NULL, '2023-05-23 08:08:38', NULL, NULL, 6, 190),
+(34, 'totoaaaaaaa', 5, 'Secu', NULL, 'Secu', '2023-05-23 08:16:59', NULL, '2023-05-23 08:17:15', 6, 112);
 
 -- --------------------------------------------------------
 
@@ -409,7 +448,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `lastname` varchar(255) DEFAULT NULL,
   `last_connection` datetime DEFAULT NULL,
   `createdBy` varchar(255) DEFAULT NULL,
-  `createdAt` date DEFAULT NULL,
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `deletedBy` varchar(255) DEFAULT NULL,
   `deletedAt` date DEFAULT NULL,
   `modifiedBy` varchar(255) DEFAULT NULL,
@@ -421,34 +460,47 @@ CREATE TABLE IF NOT EXISTS `customer` (
   UNIQUE KEY `Id_account` (`Id_account`),
   UNIQUE KEY `pseudo` (`pseudo`),
   KEY `Id_role` (`Id_role`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `customer`
 --
 
 INSERT INTO `customer` (`Id_customer`, `pseudo`, `firstname`, `lastname`, `last_connection`, `createdBy`, `createdAt`, `deletedBy`, `deletedAt`, `modifiedBy`, `modifiedAt`, `Id_account`, `Id_role`, `img_src`) VALUES
-(6, 'Secutore', 'Maxence', 'ALLART', '2023-05-08 22:49:42', 'site', '2023-04-27', NULL, NULL, 'Secutor', '2023-05-07', 6, 3, '1683332486541-IMG_20211210_160121.jpg'),
-(7, 'TestPseudo_100', 'TestNom_100', 'TestPrenom_100', '2023-04-29 23:55:15', 'site', '2023-04-01', NULL, NULL, 'Secutor', '2023-05-04', 7, 1, NULL),
-(8, 'TestPseudo_2', 'TestNom_2', 'TestPrenom_2', '2023-04-29 23:55:15', 'site', '2023-04-01', NULL, NULL, 'Secutor', '2023-04-29', 8, 1, NULL),
-(9, 'TestPseudo_3', 'TestNom_3', 'TestPrenom_3', '2023-04-29 23:55:15', 'site', '2023-04-01', NULL, NULL, 'site', '2023-04-29', 9, 2, NULL),
-(10, 'TestPseudo_4', 'TestNom_4', 'TestPrenom_4', '2023-04-29 23:55:15', 'site', '2023-04-01', NULL, NULL, 'site', '2023-04-29', 10, 2, NULL),
-(11, 'TestPseudo_5', 'TestNom_5', 'TestPrenom_5', '2023-04-29 23:55:15', 'site', '2023-04-01', NULL, NULL, 'Secutor', '2023-04-29', 11, 3, NULL),
-(12, 'TestPseudo_12', 'TestNom_12', 'TestPrenom_12', '2023-04-29 23:55:15', 'site', '2023-04-01', NULL, NULL, 'site', '2023-04-29', 12, 4, NULL);
+(6, 'Secu', 'Maxence', 'ALLART', '2023-05-23 13:29:12', 'site', '2023-04-26 22:00:00', NULL, NULL, 'Secutorz', '2023-05-21', 6, 3, '2023-05-22T09-38-45.180Z-IMG_20211210_160121.jpg'),
+(7, 'TestPseudo_100', 'TestNom_100', 'TestPrenom_100', '2023-04-29 23:55:15', 'site', '2023-03-31 22:00:00', NULL, NULL, 'Secutore', '2023-05-18', 7, 1, NULL),
+(8, 'TestPseudo_2', 'TestNom_2', 'TestPrenom_2', '2023-04-29 23:55:15', 'site', '2023-03-31 22:00:00', NULL, NULL, 'Secutor', '2023-04-29', 8, 1, NULL),
+(9, 'TestPseudo_3', 'TestNom_3', 'TestPrenom_3', '2023-04-29 23:55:15', 'site', '2023-03-31 22:00:00', NULL, NULL, 'site', '2023-04-29', 9, 2, NULL),
+(10, 'TestPseudo_4', 'TestNom_4', 'TestPrenom_4', '2023-04-29 23:55:15', 'site', '2023-03-31 22:00:00', NULL, NULL, 'site', '2023-04-29', 10, 2, NULL),
+(11, 'TestPseudo_5', 'TestNom_5', 'TestPrenom_5', '2023-04-29 23:55:15', 'site', '2023-03-31 22:00:00', NULL, NULL, 'Secutor', '2023-04-29', 11, 3, NULL),
+(12, 'TestPseudo_12', 'TestNom_12', 'TestPrenom_12', '2023-04-29 23:55:15', 'site', '2023-03-31 22:00:00', NULL, NULL, 'site', '2023-04-29', 12, 4, NULL),
+(16, 'Bobby', 'Maxence', 'ALLART', '2023-05-23 11:26:39', 'site', '2023-05-23 09:04:16', NULL, NULL, NULL, NULL, 18, 1, '2023-05-23T10-25-08.395Z-69179150_1935164683252878_5979716025136971776_n.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer_product`
+-- Table structure for table `customer_article`
 --
 
-DROP TABLE IF EXISTS `customer_product`;
-CREATE TABLE IF NOT EXISTS `customer_product` (
+DROP TABLE IF EXISTS `customer_article`;
+CREATE TABLE IF NOT EXISTS `customer_article` (
   `Id_customer` int NOT NULL,
   `Id_article` int NOT NULL,
   PRIMARY KEY (`Id_customer`,`Id_article`),
   KEY `Id_article` (`Id_article`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `customer_article`
+--
+
+INSERT INTO `customer_article` (`Id_customer`, `Id_article`) VALUES
+(6, 1),
+(6, 2),
+(6, 4),
+(6, 8),
+(6, 182),
+(6, 190);
 
 -- --------------------------------------------------------
 
@@ -675,36 +727,196 @@ INSERT INTO `gpu` (`Id_gpu`, `ean`, `upc`, `chipset`, `color`, `gpu_clock`, `boo
 DROP TABLE IF EXISTS `historique_prix`;
 CREATE TABLE IF NOT EXISTS `historique_prix` (
   `Id_historique_prix` int NOT NULL AUTO_INCREMENT,
-  `price` int DEFAULT NULL,
+  `price` double DEFAULT NULL,
   `_date` date DEFAULT NULL,
   PRIMARY KEY (`Id_historique_prix`)
-) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=181 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `historique_prix`
 --
 
 INSERT INTO `historique_prix` (`Id_historique_prix`, `price`, `_date`) VALUES
-(1, 450, '2023-05-02'),
-(2, 550, '2023-05-04'),
-(3, 430, '2023-05-05'),
-(4, 480, '2023-05-01'),
-(5, 520, '2023-05-03'),
-(6, 850, '2023-04-01'),
-(7, 740, '2023-04-02'),
-(8, 820, '2023-04-03'),
-(9, 480, '2023-04-04'),
-(10, 810, '2023-04-05'),
-(11, 810, '2023-02-01'),
-(12, 735, '2023-02-02'),
-(13, 725, '2023-02-03'),
-(14, 638, '2023-02-04'),
-(15, 520, '2023-02-08'),
-(50, 520, '2023-03-05'),
-(51, 520, '2023-05-01'),
-(52, 520, '2023-01-22'),
-(53, 520, '2023-03-11'),
-(54, 42, '2023-02-08');
+(1, 1657.46, '2023-04-28'),
+(2, 1561.22, '2023-03-22'),
+(3, 1786.22, '2023-04-22'),
+(4, 1855.32, '2023-03-22'),
+(5, 1703.6, '2023-03-29'),
+(6, 1614.34, '2023-04-10'),
+(7, 1496.93, '2023-05-17'),
+(8, 1887.97, '2023-05-14'),
+(9, 1433.08, '2023-04-29'),
+(10, 1859.06, '2023-04-11'),
+(11, 1612.87, '2023-05-08'),
+(12, 1546.15, '2023-03-31'),
+(13, 1424.65, '2023-05-15'),
+(14, 1447.51, '2023-03-26'),
+(15, 1465.14, '2023-04-05'),
+(16, 1823.86, '2023-03-29'),
+(17, 1525.82, '2023-05-04'),
+(18, 1832.79, '2023-05-05'),
+(19, 1802.13, '2023-03-21'),
+(20, 1546.91, '2023-04-23'),
+(21, 1682.9, '2023-03-26'),
+(22, 1770.27, '2023-03-27'),
+(23, 1721.77, '2023-05-17'),
+(24, 1891.81, '2023-04-07'),
+(25, 1698.53, '2023-03-25'),
+(26, 1572.77, '2023-05-08'),
+(27, 1888.86, '2023-04-15'),
+(28, 1708.19, '2023-05-13'),
+(29, 1509.96, '2023-03-30'),
+(30, 1578.34, '2023-05-19'),
+(31, 1795.49, '2023-04-16'),
+(32, 1735.33, '2023-04-02'),
+(33, 1871.23, '2023-04-02'),
+(34, 1818.47, '2023-05-15'),
+(35, 1632.88, '2023-03-27'),
+(36, 1727.35, '2023-04-23'),
+(37, 1450.86, '2023-03-21'),
+(38, 1699.45, '2023-05-12'),
+(39, 1692.81, '2023-04-14'),
+(40, 1775.51, '2023-04-12'),
+(41, 1552.72, '2023-04-23'),
+(42, 1773.16, '2023-04-25'),
+(43, 1847.77, '2023-04-24'),
+(44, 1714.6, '2023-05-07'),
+(45, 1628.92, '2023-04-21'),
+(46, 1606.27, '2023-05-15'),
+(47, 1868.28, '2023-04-04'),
+(48, 1859.47, '2023-04-13'),
+(49, 1505.6, '2023-05-13'),
+(50, 1502.15, '2023-03-25'),
+(51, 1652.03, '2023-04-29'),
+(52, 1691.63, '2023-05-16'),
+(53, 1523.8, '2023-03-24'),
+(54, 1474.01, '2023-03-27'),
+(55, 1728.05, '2023-04-25'),
+(56, 1741.86, '2023-04-17'),
+(57, 1726.02, '2023-05-06'),
+(58, 1808.23, '2023-04-25'),
+(59, 1884.3, '2023-04-12'),
+(60, 1457.98, '2023-05-17'),
+(61, 1403.71, '2023-03-26'),
+(62, 1872.93, '2023-05-06'),
+(63, 1878.41, '2023-05-21'),
+(64, 1432.27, '2023-04-09'),
+(65, 1467.64, '2023-04-29'),
+(66, 1889.45, '2023-05-02'),
+(67, 1804.45, '2023-04-06'),
+(68, 1681.44, '2023-05-14'),
+(69, 1799.34, '2023-04-15'),
+(70, 1753.07, '2023-03-30'),
+(71, 1600.68, '2023-04-20'),
+(72, 1744.52, '2023-04-17'),
+(73, 1799.09, '2023-05-18'),
+(74, 1701.93, '2023-04-30'),
+(75, 1791.77, '2023-05-04'),
+(76, 1709.29, '2023-04-27'),
+(77, 1782.5, '2023-04-27'),
+(78, 1564.55, '2023-04-16'),
+(79, 1623.79, '2023-03-26'),
+(80, 1424.05, '2023-04-25'),
+(81, 1607.15, '2023-05-03'),
+(82, 1845.39, '2023-04-14'),
+(83, 1403.45, '2023-03-30'),
+(84, 1753.99, '2023-05-11'),
+(85, 1414.9, '2023-05-18'),
+(86, 1465.06, '2023-04-13'),
+(87, 1557.77, '2023-03-29'),
+(88, 1566.37, '2023-05-11'),
+(89, 1802.9, '2023-03-21'),
+(90, 1405.41, '2023-05-02'),
+(91, 1897.77, '2023-05-21'),
+(92, 1597.39, '2023-05-19'),
+(93, 1880.19, '2023-04-28'),
+(94, 1671.18, '2023-03-30'),
+(95, 1587.17, '2023-05-01'),
+(96, 1439.8, '2023-05-01'),
+(97, 1762.61, '2023-05-05'),
+(98, 1890.52, '2023-04-26'),
+(99, 1850.56, '2023-05-01'),
+(100, 1775.55, '2023-05-16'),
+(101, 1591.91, '2023-04-07'),
+(102, 1622.7, '2023-05-13'),
+(103, 1425.7, '2023-04-12'),
+(104, 1782.35, '2023-05-04'),
+(105, 1817.29, '2023-05-11'),
+(106, 1460.79, '2023-04-08'),
+(107, 1810.91, '2023-04-09'),
+(108, 1833.37, '2023-03-22'),
+(109, 1732.02, '2023-04-02'),
+(110, 1699.85, '2023-04-24'),
+(111, 1815.92, '2023-04-01'),
+(112, 1426.61, '2023-03-29'),
+(113, 1595.28, '2023-05-05'),
+(114, 1828.22, '2023-05-14'),
+(115, 1676.83, '2023-03-28'),
+(116, 1832.99, '2023-04-07'),
+(117, 1836.69, '2023-04-15'),
+(118, 1431.15, '2023-05-01'),
+(119, 1790, '2023-04-22'),
+(120, 1839.14, '2023-04-10'),
+(121, 1558.3, '2023-04-10'),
+(122, 1858.97, '2023-04-28'),
+(123, 1873.9, '2023-04-17'),
+(124, 1532.89, '2023-04-06'),
+(125, 1652.85, '2023-05-15'),
+(126, 1841.99, '2023-05-07'),
+(127, 1780.78, '2023-04-19'),
+(128, 1785.35, '2023-05-01'),
+(129, 1765.49, '2023-03-23'),
+(130, 1531.84, '2023-05-04'),
+(131, 1817.92, '2023-04-02'),
+(132, 1842.08, '2023-04-04'),
+(133, 1404.24, '2023-04-21'),
+(134, 1556.33, '2023-03-25'),
+(135, 1508.16, '2023-05-08'),
+(136, 1751.32, '2023-04-08'),
+(137, 1741.92, '2023-04-29'),
+(138, 1869.64, '2023-03-22'),
+(139, 1891.93, '2023-04-01'),
+(140, 1819.55, '2023-04-04'),
+(141, 1784.59, '2023-04-18'),
+(142, 1768.29, '2023-04-22'),
+(143, 1536.38, '2023-04-05'),
+(144, 1511.99, '2023-04-23'),
+(145, 1877.35, '2023-04-20'),
+(146, 1526.65, '2023-05-20'),
+(147, 1639.11, '2023-04-12'),
+(148, 1672.29, '2023-05-07'),
+(149, 1426.27, '2023-03-23'),
+(150, 1881.34, '2023-04-20'),
+(151, 1429.9, '2023-04-20'),
+(152, 1408.75, '2023-03-22'),
+(153, 1649.12, '2023-04-24'),
+(154, 1745.64, '2023-05-05'),
+(155, 1773.73, '2023-05-16'),
+(156, 1720.97, '2023-04-09'),
+(157, 1485.51, '2023-04-06'),
+(158, 1571.48, '2023-05-03'),
+(159, 1467.62, '2023-04-17'),
+(160, 1833.9, '2023-04-10'),
+(161, 1671.61, '2023-04-25'),
+(162, 1575.22, '2023-04-03'),
+(163, 1553.75, '2023-03-24'),
+(164, 1884.52, '2023-03-31'),
+(165, 1684.35, '2023-04-19'),
+(166, 1497.72, '2023-05-19'),
+(167, 1456.45, '2023-04-29'),
+(168, 1889.19, '2023-04-07'),
+(169, 1459.3, '2023-05-05'),
+(170, 1883.32, '2023-05-21'),
+(171, 1410.05, '2023-05-17'),
+(172, 1496.1, '2023-04-10'),
+(173, 1527.06, '2023-04-06'),
+(174, 1544.8, '2023-04-04'),
+(175, 1739.72, '2023-05-19'),
+(176, 1800.45, '2023-04-06'),
+(177, 1855.62, '2023-05-14'),
+(178, 1719.06, '2023-05-02'),
+(179, 1490.71, '2023-05-20'),
+(180, 1405.72, '2023-04-21');
 
 -- --------------------------------------------------------
 
@@ -749,10 +961,59 @@ CREATE TABLE IF NOT EXISTS `image_comment` (
 DROP TABLE IF EXISTS `mb`;
 CREATE TABLE IF NOT EXISTS `mb` (
   `Id_mb` int NOT NULL AUTO_INCREMENT,
+  `chipset` varchar(255) DEFAULT NULL,
+  `memory_slots` int DEFAULT NULL,
+  `memory_max_supported` int DEFAULT NULL,
+  `memory_type` varchar(255) DEFAULT NULL,
+  `channel` varchar(255) DEFAULT NULL,
+  `max_capacity_per_slot` int DEFAULT NULL,
+  `max_capacity` int DEFAULT NULL,
+  `pci16_slot3_0` int DEFAULT NULL,
+  `pci16_slot4_0` int DEFAULT NULL,
+  `pci16_slot5_0` int DEFAULT NULL,
+  `pci1_slot3_0` int DEFAULT NULL,
+  `pci1_slot4_0` int DEFAULT NULL,
+  `pci1_slot5_0` int DEFAULT NULL,
+  `audio_chipset` varchar(255) DEFAULT NULL,
+  `audio_channel` int DEFAULT NULL,
+  `lan_controller` varchar(255) DEFAULT NULL,
+  `bluetooth` varchar(255) DEFAULT NULL,
+  `wireless` varchar(255) DEFAULT NULL,
+  `m2_slot3_0` int DEFAULT NULL,
+  `m2_slot4_0` int DEFAULT NULL,
+  `m2_slot5_0` int DEFAULT NULL,
+  `sata_slot` int DEFAULT NULL,
+  `fan_connector` int DEFAULT NULL,
+  `hdmi` int DEFAULT NULL,
+  `displayport` int DEFAULT NULL,
+  `usb3_2c` int DEFAULT NULL,
+  `usb3_1c` int DEFAULT NULL,
+  `usb3_1` int DEFAULT NULL,
+  `usb3_0` int DEFAULT NULL,
+  `usb2_0` int DEFAULT NULL,
+  `form` varchar(255) DEFAULT NULL,
+  `length` int DEFAULT NULL,
+  `width` int DEFAULT NULL,
   `Id_article` int DEFAULT NULL,
   PRIMARY KEY (`Id_mb`),
   KEY `Id_article` (`Id_article`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `mb`
+--
+
+INSERT INTO `mb` (`Id_mb`, `chipset`, `memory_slots`, `memory_max_supported`, `memory_type`, `channel`, `max_capacity_per_slot`, `max_capacity`, `pci16_slot3_0`, `pci16_slot4_0`, `pci16_slot5_0`, `pci1_slot3_0`, `pci1_slot4_0`, `pci1_slot5_0`, `audio_chipset`, `audio_channel`, `lan_controller`, `bluetooth`, `wireless`, `m2_slot3_0`, `m2_slot4_0`, `m2_slot5_0`, `sata_slot`, `fan_connector`, `hdmi`, `displayport`, `usb3_2c`, `usb3_1c`, `usb3_1`, `usb3_0`, `usb2_0`, `form`, `length`, `width`, `Id_article`) VALUES
+(1, 'B650', 4, 6200, 'DDR5', 'Dual Channel', 32, 128, 1, 1, 0, 0, 1, 0, 'ALC897', 8, '1 x 2,5Gbps', 'Sans', 'Sans', 1, 1, 1, 4, 4, 1, 1, 0, 1, 1, 2, 6, 'ATX', 305, 244, 190),
+(2, 'X670', 4, 6400, 'DDR5', 'Dual Channel', 32, 128, 0, 3, 0, 1, 0, 0, 'Intégré', 8, '1 x 2,5Gbps', '5.2', 'Wifi 6E', 0, 2, 1, 6, 3, 1, 1, 1, 0, 3, 4, 2, 'ATX', 305, 244, 191),
+(3, 'X670E', 4, 6400, 'DDR5', 'Dual Channel', 32, 128, 1, 1, 1, 0, 0, 0, 'ALC1220', 8, '1 x 2,5Gbps', '5.3', 'Wifi 6E', 0, 2, 2, 6, 8, 1, 1, 1, 1, 4, 4, 2, 'ATX', 305, 244, 192),
+(4, 'B550', 4, 4733, 'DDR4', 'Dual Channel', 32, 128, 2, 0, 0, 1, 0, 0, 'ALC887', 8, '1 x 1Gbps', 'Sans', 'Sans', 1, 1, 0, 0, 3, 1, 1, 0, 0, 0, 4, 2, 'MicroATX', 244, 244, 193),
+(5, 'B550', 4, 5100, 'DDR4', 'Dual Channel', 32, 128, 1, 1, 0, 3, 0, 0, 'ROG Supreme FX', 8, '1 x 2,5Gbps', '5.2', 'Wifi 6E', 1, 1, 0, 0, 3, 1, 1, 0, 1, 1, 4, 2, 'ATX', 305, 244, 194),
+(6, 'X570', 4, 5100, 'DDR4', 'Dual Channel', 32, 128, 0, 2, 0, 2, 0, 0, 'ALC4080', 8, '1 x 2,5Gbps', '5.2', 'Wifi 6AX', 0, 4, 0, 8, 6, 1, 0, 0, 1, 1, 4, 2, 'ATX', 305, 244, 195),
+(7, 'B660', 4, 5066, 'DDR4', 'Dual Channel', 32, 128, 1, 1, 0, 2, 0, 0, 'Intégré', 8, '1 x 2,5Gbps', 'Sans', 'Sans', 0, 3, 0, 4, 3, 1, 1, 1, 0, 2, 1, 2, 'ATX', 305, 244, 196),
+(8, 'H610', 2, 3200, 'DDR4', 'Dual Channel', 32, 64, 0, 1, 0, 1, 0, 0, 'Intégré', 8, '1 x 1Gbps', 'Sans', 'Sans', 1, 0, 0, 4, 2, 1, 0, 0, 0, 0, 2, 4, 'MicroATX', 230, 215, 197),
+(9, 'Z790', 4, 7600, 'DDR5', 'Dual Channel', 32, 128, 0, 1, 1, 1, 0, 0, 'ALC4080', 8, '1 x 1Gbps', '5.2', 'Wifi 6E', 0, 4, 1, 6, 5, 1, 0, 1, 1, 6, 2, 0, 'ATX', 305, 244, 198),
+(10, 'Z790', 4, 7600, 'DDR5', 'Dual Channel', 32, 128, 0, 0, 2, 0, 0, 0, 'Intégré', 8, '1 x 2,5Gbps + 1 x 10Gbps', '5.2', 'Wifi 6E', 1, 5, 1, 6, 8, 0, 0, 0, 1, 7, 0, 0, 'E-ATX', 305, 272, 199);
 
 -- --------------------------------------------------------
 
@@ -767,7 +1028,7 @@ CREATE TABLE IF NOT EXISTS `model` (
   `Id_category` int DEFAULT NULL,
   PRIMARY KEY (`Id_model`),
   KEY `Id_category` (`Id_category`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `model`
@@ -784,7 +1045,12 @@ INSERT INTO `model` (`Id_model`, `model_name`, `Id_category`) VALUES
 (8, 'Intel Core i9', 2),
 (9, 'Intel Core i7', 2),
 (10, 'Intel Core i5', 2),
-(11, 'Intel Core i3', 2);
+(11, 'Intel Core i3', 2),
+(12, 'Plateforme AM5', 3),
+(13, 'Plateforme AM4', 3),
+(14, 'Plateforme LGA1700', 3),
+(15, 'Memoire DDR4', 4),
+(16, 'Memoire DDR5', 4);
 
 -- --------------------------------------------------------
 
@@ -795,10 +1061,36 @@ INSERT INTO `model` (`Id_model`, `model_name`, `Id_category`) VALUES
 DROP TABLE IF EXISTS `ram`;
 CREATE TABLE IF NOT EXISTS `ram` (
   `Id_ram` int NOT NULL AUTO_INCREMENT,
+  `form_factor` varchar(255) DEFAULT NULL,
+  `capacity` int DEFAULT NULL,
+  `frequency` int DEFAULT NULL,
+  `modules_number` int DEFAULT NULL,
+  `module_capacity` int DEFAULT NULL,
+  `rgb` varchar(255) DEFAULT NULL,
+  `color` varchar(255) DEFAULT NULL,
+  `cl` int DEFAULT NULL,
+  `trcd` int DEFAULT NULL,
+  `trp` int DEFAULT NULL,
+  `tras` int DEFAULT NULL,
+  `voltage` int DEFAULT NULL,
   `Id_article` int DEFAULT NULL,
   PRIMARY KEY (`Id_ram`),
   KEY `Id_article` (`Id_article`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `ram`
+--
+
+INSERT INTO `ram` (`Id_ram`, `form_factor`, `capacity`, `frequency`, `modules_number`, `module_capacity`, `rgb`, `color`, `cl`, `trcd`, `trp`, `tras`, `voltage`, `Id_article`) VALUES
+(1, 'DIMM 288 pins (DDR5)', 8, 4800, 1, 8, 'Sans', 'Noir', 38, 38, 38, NULL, 1250, 182),
+(2, 'DIMM 288 pins (DDR5)', 32, 5600, 2, 16, 'Sans', 'Noir', 40, 40, 40, NULL, 1250, 183),
+(3, 'SO-DIMM 262 pins (DDR5)', 64, 4800, 2, 32, 'Sans', 'Noir', 40, 39, 39, NULL, 1100, 184),
+(4, 'DIMM 288 pins (DDR5)', 32, 5600, 2, 16, 'Avec', 'Blanc', 36, 36, 36, 76, 1250, 185),
+(5, 'SO-DIMM 260 pins (DDR4)', 16, 2666, 2, 8, 'Sans', 'Noir', 18, 18, 18, 43, 1200, 186),
+(6, 'DIMM 288 pins (DDR4)', 16, 3600, 2, 8, 'Avec', 'Noir', 18, 22, 22, 42, 1350, 187),
+(7, 'DIMM 288 pins (DDR4)', 16, 2133, 1, 16, 'Sans', 'Rouge', 15, 15, 15, 36, 1200, 188),
+(8, 'DIMM 288 pins (DDR4)', 16, 3600, 2, 8, 'Avec', 'Blanc', 17, 21, 21, NULL, 1350, 189);
 
 -- --------------------------------------------------------
 
@@ -833,19 +1125,22 @@ DROP TABLE IF EXISTS `seller`;
 CREATE TABLE IF NOT EXISTS `seller` (
   `Id_seller` int NOT NULL AUTO_INCREMENT,
   `seller_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
-  `img_src` varchar(255) DEFAULT NULL,
-  `img_alt` varchar(255) DEFAULT NULL,
+  `img_src_seller` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `img_alt_seller` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   PRIMARY KEY (`Id_seller`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `seller`
 --
 
-INSERT INTO `seller` (`Id_seller`, `seller_name`, `img_src`, `img_alt`) VALUES
+INSERT INTO `seller` (`Id_seller`, `seller_name`, `img_src_seller`, `img_alt_seller`) VALUES
 (1, 'LDLC', 'https://upload.wikimedia.org/wikipedia/fr/c/c7/LDLC_logo.jpg', 'LDLC logo'),
 (2, 'Amazon', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/langfr-1920px-Amazon_logo.svg.png', 'Amazon logo'),
-(3, 'TopAchat', 'https://upload.wikimedia.org/wikipedia/fr/1/14/Logo-topachat_200.jpg', 'TopAchat logo');
+(3, 'TopAchat', 'https://upload.wikimedia.org/wikipedia/fr/1/14/Logo-topachat_200.jpg', 'TopAchat logo'),
+(4, 'CDiscount', 'https://upload.wikimedia.org/wikipedia/fr/thumb/7/74/Logo-Cdiscount-baseline.png/280px-Logo-Cdiscount-baseline.png', 'CDiscount logo'),
+(5, 'Materiel.Net', 'https://media.materiel.net/cms/2023-04/site-logo-white.svg', 'Materiel.Net logo'),
+(6, 'Rue du commerce', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/RDC-Logo-Principal.png/280px-RDC-Logo-Principal.png', 'Rue du commerce logo');
 
 -- --------------------------------------------------------
 
@@ -868,25 +1163,186 @@ CREATE TABLE IF NOT EXISTS `seller_historique_article` (
 --
 
 INSERT INTO `seller_historique_article` (`Id_article`, `Id_seller`, `Id_historique_prix`) VALUES
-(1, 1, 1),
 (1, 1, 2),
-(1, 1, 3),
-(1, 1, 4),
-(1, 1, 5),
-(1, 1, 51),
-(1, 2, 6),
+(1, 1, 16),
+(1, 1, 18),
+(1, 1, 29),
+(1, 1, 30),
+(1, 1, 37),
+(1, 1, 46),
+(1, 1, 48),
+(1, 1, 54),
+(1, 1, 58),
+(1, 1, 59),
+(1, 1, 60),
+(1, 1, 70),
+(1, 1, 71),
+(1, 1, 73),
+(1, 1, 74),
+(1, 1, 80),
+(1, 1, 83),
+(1, 1, 88),
+(1, 1, 90),
+(1, 1, 109),
+(1, 1, 113),
+(1, 1, 114),
+(1, 1, 124),
+(1, 1, 134),
+(1, 1, 139),
+(1, 1, 153),
+(1, 1, 155),
+(1, 1, 158),
+(1, 1, 159),
+(1, 1, 165),
+(1, 1, 177),
+(1, 1, 178),
+(1, 2, 4),
 (1, 2, 7),
-(1, 2, 8),
-(1, 2, 9),
-(1, 2, 10),
+(1, 2, 14),
+(1, 2, 15),
+(1, 2, 25),
+(1, 2, 35),
+(1, 2, 43),
+(1, 2, 49),
 (1, 2, 50),
-(1, 2, 53),
+(1, 2, 52),
+(1, 2, 55),
+(1, 2, 66),
+(1, 2, 75),
+(1, 2, 79),
+(1, 2, 92),
+(1, 2, 95),
+(1, 2, 98),
+(1, 2, 106),
+(1, 2, 112),
+(1, 2, 119),
+(1, 2, 123),
+(1, 2, 125),
+(1, 2, 128),
+(1, 2, 131),
+(1, 2, 138),
+(1, 2, 144),
+(1, 2, 149),
+(1, 2, 156),
+(1, 2, 160),
+(1, 2, 164),
+(1, 2, 174),
+(1, 3, 6),
+(1, 3, 10),
 (1, 3, 11),
-(1, 3, 12),
-(1, 3, 13),
-(1, 3, 14),
-(1, 3, 15),
-(1, 3, 54);
+(1, 3, 22),
+(1, 3, 23),
+(1, 3, 28),
+(1, 3, 33),
+(1, 3, 47),
+(1, 3, 53),
+(1, 3, 56),
+(1, 3, 57),
+(1, 3, 62),
+(1, 3, 63),
+(1, 3, 72),
+(1, 3, 81),
+(1, 3, 91),
+(1, 3, 94),
+(1, 3, 103),
+(1, 3, 105),
+(1, 3, 129),
+(1, 3, 132),
+(1, 3, 145),
+(1, 3, 150),
+(1, 3, 151),
+(1, 3, 161),
+(1, 3, 162),
+(1, 3, 171),
+(1, 3, 172),
+(1, 3, 175),
+(1, 4, 8),
+(1, 4, 13),
+(1, 4, 17),
+(1, 4, 20),
+(1, 4, 27),
+(1, 4, 39),
+(1, 4, 82),
+(1, 4, 84),
+(1, 4, 85),
+(1, 4, 87),
+(1, 4, 89),
+(1, 4, 100),
+(1, 4, 102),
+(1, 4, 117),
+(1, 4, 135),
+(1, 4, 136),
+(1, 4, 137),
+(1, 4, 147),
+(1, 4, 148),
+(1, 4, 170),
+(1, 5, 1),
+(1, 5, 5),
+(1, 5, 9),
+(1, 5, 24),
+(1, 5, 36),
+(1, 5, 40),
+(1, 5, 45),
+(1, 5, 51),
+(1, 5, 61),
+(1, 5, 64),
+(1, 5, 76),
+(1, 5, 77),
+(1, 5, 93),
+(1, 5, 96),
+(1, 5, 101),
+(1, 5, 108),
+(1, 5, 110),
+(1, 5, 115),
+(1, 5, 122),
+(1, 5, 126),
+(1, 5, 140),
+(1, 5, 154),
+(1, 5, 167),
+(1, 5, 173),
+(1, 5, 180),
+(1, 6, 3),
+(1, 6, 12),
+(1, 6, 19),
+(1, 6, 21),
+(1, 6, 26),
+(1, 6, 31),
+(1, 6, 32),
+(1, 6, 34),
+(1, 6, 38),
+(1, 6, 41),
+(1, 6, 42),
+(1, 6, 44),
+(1, 6, 65),
+(1, 6, 67),
+(1, 6, 68),
+(1, 6, 69),
+(1, 6, 78),
+(1, 6, 86),
+(1, 6, 97),
+(1, 6, 99),
+(1, 6, 104),
+(1, 6, 107),
+(1, 6, 111),
+(1, 6, 116),
+(1, 6, 118),
+(1, 6, 120),
+(1, 6, 121),
+(1, 6, 127),
+(1, 6, 130),
+(1, 6, 133),
+(1, 6, 141),
+(1, 6, 142),
+(1, 6, 143),
+(1, 6, 146),
+(1, 6, 152),
+(1, 6, 157),
+(1, 6, 163),
+(1, 6, 166),
+(1, 6, 168),
+(1, 6, 169),
+(1, 6, 176),
+(1, 6, 179);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -7,16 +7,13 @@ import { STYLEDButton } from "../components/styles/genericButton";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeContext } from "../Contexts/ThemeContext";
+import usePageTitle from "../Hooks/usePageTitle";
 
 function Themes() {
   const { setTheme } = useContext(ThemeContext);
 
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page principale | Themes`;
-  }, []);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Themes`)
 
   function handleClick(color) {
     setTheme(color);

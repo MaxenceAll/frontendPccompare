@@ -19,9 +19,6 @@ import styled from "styled-components";
 import ProductHeader from "../../../components/Compare/ProductHeader";
 import ProductImage from "../../../components/Compare/ProductImage";
 import ProductSpec from "../../../components/Compare/ProductSpec";
-import ProductPrices from "../../../components/Compare/ProductPrices";
-import ProductTest from "../../../components/Compare/ProductTest";
-import ProductTest2 from "../../../components/Compare/ProductTest2";
 import NoDataFound from "../../../components/NoDataFound";
 import ProductComments from "../../../components/Compare/ProductComments";
 import { STYLEDhr } from "../../../components/styles/genericHR";
@@ -33,6 +30,7 @@ import { useContext } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProductAlerts from "../../../components/Compare/ProductAlerts";
+import ProductPrice from "../../../components/Compare/ProductPrice";
 
 export default function Product() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -243,16 +241,26 @@ export default function Product() {
           <>
             <StyledHeader>Les meilleurs prix :</StyledHeader>
             <STYLEDhr />
-            <ProductTest
+            {/* <ProductTest
               seller={sellerData.data}
               historique_prix={historiqueData.data}
               seller_historique_article={SHAData.data}
-            />
-            <Test 
+            /> */}
+            {/* <ProductTest2
+              seller={sellerData.data}
+              historique_prix={historiqueData.data}
+              seller_historique_article={SHAData.data}
+              /> */}
+            <ProductPrice            
             seller={sellerData.data}
             historique_prix={historiqueData.data}
             seller_historique_article={SHAData.data}
             />
+            {/* <Test 
+            seller={sellerData.data}
+            historique_prix={historiqueData.data}
+            seller_historique_article={SHAData.data}
+            /> */}
           </>
         ) : (
           <>

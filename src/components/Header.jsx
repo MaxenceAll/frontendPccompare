@@ -26,6 +26,7 @@ import LOGO from "../assets/generics/LOGO.svg"
 function Header() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
+  // console.log(auth)
   const [authCookie, setAuthCookie] = useCookie("accessToken");
 
   //Theme logic:

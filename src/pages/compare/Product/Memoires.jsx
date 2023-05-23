@@ -18,6 +18,7 @@ import DataTable, { createTheme } from "react-data-table-component";
 import NoDataFound from "../../../components/NoDataFound";
 import MultiRangeSlider from "../../../components/Product/MultiRangeSlider";
 import ExpandableRows from "../../../components/Product/expandableRows";
+import usePageTitle from "../../../Hooks/usePageTitle";
 
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllRamDataQuery("ram");
@@ -43,11 +44,7 @@ function CartesGraphique() {
   console.log(data);
 
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page de recherche | Mémoires Ram`;
-  }, []);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page de recherche | Mémoires Ram`)
 
   // Table logic:
   const columns = [

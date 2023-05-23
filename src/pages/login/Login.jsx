@@ -1,10 +1,8 @@
 import { useContext, useState } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import GenericModal from "../../components/Tools/GenericModal";
 import { STYLEDButton } from "../../components/styles/genericButton";
-import useCookie from "../../Hooks/useCookie";
 import { AuthContext } from "../../Contexts/AuthContext";
 import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
 import LoginForm from "../../components/Login/LoginForm";
@@ -15,7 +13,6 @@ import { useDisconnect } from "../../Hooks/useDisconnect";
 function Login() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-  const [authCookie, setAuthCookie] = useCookie("accessToken");
 
   // Login or Register logic :
   const [display, setDisplay] = useState("login");

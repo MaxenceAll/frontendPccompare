@@ -1,30 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { STYLEDInput } from "../styles/genericInput";
 import { STYLEDhr } from "../styles/genericHR";
 import { STYLEDButton } from "../styles/genericButton";
 import { STYLEDErrorMessage } from "../styles/genericParagraphError";
 import { HiBan, HiCheck } from "react-icons/hi";
-import useCookie from "../../Hooks/useCookie";
 import { STYLEDForm } from "../styles/genericForm";
-import { AuthContext } from "../../Contexts/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import fetcher from "../../helper/fetcher";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { HiOutlineUserAdd } from "react-icons/hi";
+import usePageTitle from "../../Hooks/usePageTitle";
 
 function RegisterForm() {
-  // Context Logic :
-  const { auth, setAuth } = useContext(AuthContext);
-  const [authCookie, setAuthCookie] = useCookie("accessToken");
 
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page principale | Formulaire d'inscription`;
-  }, []);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Formulaire d'inscription`);
+
 
   // Reveal Password logic:
   const [showPassword, setShowPassword] = useState(false);
@@ -47,15 +40,25 @@ function RegisterForm() {
       toast.error(`Oooooops les mots de passe ne correspondent pas !`);
       return;
     } else {
-      const resp = await fetcher.post(`/register/pseudo`, data);
+      const resp = await toast.promise(fetcher.post(`/register/pseudo`, data), {
+        pending: "Vérification de la disponibilité du pseudo ! 🟠",
+        success: "Ce pseudo est disponible. 🟢",
+        error: "Oops erreur pendant la vérification du pseudo ! 🔴",
+      });
+      console.log(resp);
+      let response;
       if (resp.result) {
-        const response = await fetcher.post("/register", data);
+        response = await toast.promise(fetcher.post("/register", data), {
+          pending: "Préparation du mail de vérification ✍️",
+          success: `Mail de vérification prêt !`,
+          error: `Oops erreur pendant la préparation du mail de confirmation ! 🔴`,
+        });
         if (response.result === true) {
           toast.success(`${response.message}`);
           reset();
         }
       } else {
-        toast.error(`Ce pseudo est déjà utilisé ! Changez`);
+        toast.error(`Erreur: ${resp.message}`);
         reset();
         return;
       }

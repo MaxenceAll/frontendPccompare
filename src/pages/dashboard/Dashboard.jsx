@@ -1,22 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { STYLEDContainer } from "../../components/styles/genericContainer";
 import { STYLEDButton } from "../../components/styles/genericButton";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
-import fetcher from "../../helper/fetcher";
 import Loader from "../../components/Tools/Loader";
 import GenericModal from "../../components/Tools/GenericModal";
 import UserBrowser from "../../components/Dashboard/UserBrowser";
 import UserInformations from "../../components/Dashboard/UserInformations";
 import { useGetCurrentCustomerQuery } from "../../features/pccompareSlice";
 import CarouselBrowser2 from "../../components/Dashboard/CarouselBrowser2";
-
 import useCookie from "../../Hooks/useCookie";
 import UserFavorite from "../../components/Dashboard/UserFavorite";
 import { useDisconnect } from "../../Hooks/useDisconnect";
-import { useNavigate } from "react-router-dom";
 import UserComments from "../../components/Dashboard/UserComments";
 
 function Dashboard() {
@@ -48,7 +44,11 @@ function Dashboard() {
   const [display, setDisplay] = useState("Vos informations");
 
   if (currentUserIsLoading) {
-    return (<STYLEDContainer><Loader /></STYLEDContainer>);
+    return (
+      <STYLEDContainer>
+        <Loader />
+      </STYLEDContainer>
+    );
   }
 
   return (
@@ -135,11 +135,8 @@ function Dashboard() {
       ) : null}
       {display === "Mes favoris" ? (
         <UserFavorite currentUser={currentUser?.data?.customer?.Id_customer} />
-      ) : null}      
-      {display === "Mes commentaires" ? (
-        <UserComments/>
       ) : null}
-
+      {display === "Mes commentaires" ? <UserComments /> : null}
     </>
   );
 }

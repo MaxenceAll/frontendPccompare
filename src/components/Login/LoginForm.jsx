@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
+import usePageTitle from "../../Hooks/usePageTitle";
 
 function LoginForm() {
   // Context Logic :
@@ -22,11 +23,7 @@ function LoginForm() {
   const [authCookie, setAuthCookie] = useCookie("accessToken");
 
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page principale | Formulaire de login`;
-  }, []);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Formulaire de login`)
 
   // Reveal Password logic:
   const [showPassword, setShowPassword] = useState(false);

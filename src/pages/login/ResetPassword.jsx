@@ -6,29 +6,23 @@ import {
 } from "../../components/styles/genericContainer";
 import { STYLEDForm } from "../../components/styles/genericForm";
 import { STYLEDInput } from "../../components/styles/genericInput";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { HiCheck, HiBan } from "react-icons/hi";
 import { STYLEDhr } from "../../components/styles/genericHR";
 import { STYLEDErrorMessage } from "../../components/styles/genericParagraphError";
 import { STYLEDButton } from "../../components/styles/genericButton";
-import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
 import fetcher from "../../helper/fetcher";
-import { useEffect } from "react";
+import usePageTitle from "../../Hooks/usePageTitle";
 
 function ResetPassword() {
 
   const navigate = useNavigate();
-  
-  
+
   let [searchParams] = useSearchParams();
   
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page principale | Modification de mot de passe`;
-  }, []);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Modification de mot de passe`);
   
   const {
     register,

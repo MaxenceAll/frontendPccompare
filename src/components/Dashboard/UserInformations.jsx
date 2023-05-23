@@ -21,6 +21,7 @@ import useCookie from "../../Hooks/useCookie";
 import Avatar from "../Avatars/Avatar";
 import GenericModal from "../Tools/GenericModal";
 import AvatarUpload from "../Avatars/AvatarUpload";
+import usePageTitle from "../../Hooks/usePageTitle";
 
 function UserInformations() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -29,11 +30,7 @@ function UserInformations() {
   // console.log(authCookie);
 
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page de gestion | Vos informations`;
-  }, []);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page de gestion | Vos informations`);
 
   // get current customer info (based on auth token):
   let currentUserQuery = useGetCurrentCustomerQuery(
@@ -63,7 +60,7 @@ function UserInformations() {
   const handleDeleteAvatar = async (Id_customer) => {
     try {
       const response = await fetcher.delete(`avatar/delete/${Id_customer}`);
-      console.log(response)
+      console.log(response);
       toast.success(`Suppression de votre avatar avec succès !`);
       setTimeout(() => {
         window.location.reload();
@@ -149,15 +146,16 @@ function UserInformations() {
     data.Id_customer = auth?.data?.customer?.Id_customer;
     try {
       const resp = await updateCustomer(data);
+      // console.log(resp)
       if (resp?.data?.result) {
-        setAuthCookie(null, { expires: new Date(0) , path: "/"});
+        setAuthCookie(null, { expires: new Date(0), path: "/" });
         toast.success(`Changement de pseudo avec succes !`);
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       } else {
         toast.error(
-          `Oops une erreur lors de la modification: ${resp?.message}`
+          `Oops une erreur lors de la modification: ${resp?.data?.message}`
         );
       }
     } catch (error) {

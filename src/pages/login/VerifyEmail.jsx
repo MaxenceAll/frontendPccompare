@@ -7,18 +7,14 @@ import {
   STYLEDContainerBox,
 } from "../../components/styles/genericContainer";
 import { STYLEDButton } from "../../components/styles/genericButton";
-import ButtonReturnToProps from "../../components/Tools/ButtonReturnToProps";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import usePageTitle from "../../Hooks/usePageTitle";
 
 function VerifyEmail() {
 
   const navigate = useNavigate();
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page principale | Vérification d'e-mail`;
-  }, []);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Vérification d'e-mail`)
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -32,7 +28,7 @@ function VerifyEmail() {
       const resp = await fetcher.get(`register/verify?${token}`, {});
       // console.log(resp);
       setRespResult(resp.result);
-      if (resp.result === "success") {
+      if (resp.result) {
         toast.success("Validation de votre compte avec succès !"
         );
         navigate("/login");
@@ -53,7 +49,7 @@ function VerifyEmail() {
         <STYLEDButton
           width={"100%"}
           onClick={handleClick}
-          disabled={respResult === "success"}
+          disabled={respResult}
         >
           Valider en cliquant ici
         </STYLEDButton>

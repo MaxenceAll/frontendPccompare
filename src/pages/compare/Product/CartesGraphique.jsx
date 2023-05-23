@@ -16,6 +16,7 @@ import NoDataFound from "../../../components/NoDataFound";
 import MultiRangeSlider from "../../../components/Product/MultiRangeSlider";
 import ExpandableRows from "../../../components/Product/expandableRows";
 import { RatingStars } from "../../../components/Notes/RatingStars";
+import usePageTitle from "../../../Hooks/usePageTitle";
 
 function CartesGraphique() {
   const { data, isLoading, isError } = useGetAllGpuDataQuery("gpu");
@@ -40,27 +41,21 @@ function CartesGraphique() {
     ? searchParams.get("couleurs").split(",")
     : [];
 
-
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page de recherche | Cartes graphique`;
-  }, []);
-
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page de recherche | Cartes graphique`);
 
   // Table logic:
   const columns = [
     {
       cell: (row) => (
         <>
-            <img
-              style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
-              height="auto"
-              width="56px"
-              alt={row.img_alt}
-              src={row.img_src}
-            />
+          <img
+            style={{ whiteSpace: "nowrap", textOverflow: "ellipsis" }}
+            height="auto"
+            width="56px"
+            alt={row.img_alt}
+            src={row.img_src}
+          />
         </>
       ),
       width: "60px",
@@ -158,12 +153,9 @@ function CartesGraphique() {
     {
       name: "Prix",
       cell: (row) => (
-        <>
-        {row.latest_price != null ? row.latest_price + "€" : ""}
-        </>
+        <>{row.latest_price != null ? row.latest_price + "€" : ""}</>
       ),
-      selector: (row) =>
-        row.latest_price,
+      selector: (row) => row.latest_price,
       sortable: true,
       width: "95px",
       right: true,
@@ -171,7 +163,20 @@ function CartesGraphique() {
     },
     {
       cell: (row) => (
-        <RatingStars rating={(row.nb_note_1 + row.nb_note_2*2 + row.nb_note_3*3 + row.nb_note_4*4 + row.nb_note_5*5) / (row.nb_note_1 + row.nb_note_2 + row.nb_note_3 + row.nb_note_4 + row.nb_note_5)} />
+        <RatingStars
+          rating={
+            (row.nb_note_1 +
+              row.nb_note_2 * 2 +
+              row.nb_note_3 * 3 +
+              row.nb_note_4 * 4 +
+              row.nb_note_5 * 5) /
+            (row.nb_note_1 +
+              row.nb_note_2 +
+              row.nb_note_3 +
+              row.nb_note_4 +
+              row.nb_note_5)
+          }
+        />
       ),
       name: "Note",
       sortable: true,
@@ -338,12 +343,14 @@ function CartesGraphique() {
       setMaxPrice(Math.max(...prices));
     }
   }, [data]);
-  const handlePriceChange = useCallback(({ min, max }) => {
-    if (min !== priceRange[0] || max !== priceRange[1]) {
-      setPriceRange([min, max]);
-    }
-  }, [priceRange]);
-
+  const handlePriceChange = useCallback(
+    ({ min, max }) => {
+      if (min !== priceRange[0] || max !== priceRange[1]) {
+        setPriceRange([min, max]);
+      }
+    },
+    [priceRange]
+  );
 
   // On maj les url params en fonction des filtres
   useEffect(() => {
@@ -394,12 +401,11 @@ function CartesGraphique() {
       setFilteredData(data?.data);
     }
   }, [selectedMarques, selectedChipsets, selectedCouleurs, data, priceRange]);
-  
 
   if (isLoading) {
     return (
       <STYLEDContainer>
-          <Loader />
+        <Loader />
       </STYLEDContainer>
     );
   }

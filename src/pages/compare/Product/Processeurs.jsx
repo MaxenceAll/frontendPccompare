@@ -18,6 +18,7 @@ import DataTable, { createTheme } from "react-data-table-component";
 import NoDataFound from "../../../components/NoDataFound";
 import MultiRangeSlider from "../../../components/Product/MultiRangeSlider";
 import ExpandableRows from "../../../components/Product/expandableRows";
+import usePageTitle from "../../../Hooks/usePageTitle";
 
 function Processeurs() {
   const { data, isLoading, isError } = useGetAllCpuDataQuery("cpu");
@@ -41,11 +42,7 @@ function Processeurs() {
     : [];
 
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page de recherche | Processeurs`;
-  }, []);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page de recherche | Processeurs`);
 
   // Table logic:
   const columns = [

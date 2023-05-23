@@ -1,17 +1,15 @@
 import { format, subDays } from "date-fns";
 import { fr } from "date-fns/locale";
 import Chart from "react-google-charts";
+import styled from "styled-components";
+import { STYLEDButton } from "../styles/genericButton";
 import {
   STYLEDContainer,
   STYLEDContainerBox,
-} from "../components/styles/genericContainer";
-import styled from "styled-components";
-import { STYLEDButton } from "../components/styles/genericButton";
+} from "../styles/genericContainer";
 
-
-function Test({ seller, historique_prix, seller_historique_article }) {
-
-  // tab logic :
+function ProductPrice({ seller, historique_prix, seller_historique_article }) {
+  //Tab logic :
   let optionsTab = {
     weekday: "long",
     year: "numeric",
@@ -19,7 +17,7 @@ function Test({ seller, historique_prix, seller_historique_article }) {
     day: "numeric",
   };
 
-  //Chart logic:
+  //Chat logic
   const uniqueSellers = [...new Set(seller.map((item) => item.seller_name))];
 
   const formattedData = seller_historique_article.reduce((acc, entry) => {
@@ -113,55 +111,61 @@ function Test({ seller, historique_prix, seller_historique_article }) {
 
   return (
     <STYLEDContainer>
+      <StyledTable>
+        <thead>
+          <tr>
+            <StyledTh>Vendeur :</StyledTh>
+            {/* <StyledTh>Vendeur:</StyledTh> */}
+            <StyledTh>Date(dernière mise à jour) :</StyledTh>
+            <StyledTh>Prix:</StyledTh>
+            <StyledTh>Lien:</StyledTh>
+          </tr>
+        </thead>
+        <tbody>
+          {seller.map((seller) => {
+            // Get the most recent historical price ID for this seller
+            const sellerhistorique_prixIds = seller_historique_article
+              .filter((sha) => sha.Id_seller === seller.Id_seller)
+              .map((sha) => sha.Id_historique_prix);
+            const mostRecenthistorique_prixId =
+              sellerhistorique_prixIds[sellerhistorique_prixIds.length - 1];
 
-<StyledTable>
-      <thead>
-        <tr>
-          <StyledTh>Vendeur :</StyledTh>
-          {/* <StyledTh>Vendeur:</StyledTh> */}
-          <StyledTh>Date(dernière mise à jour) :</StyledTh>
-          <StyledTh>Prix:</StyledTh>
-          <StyledTh>Lien:</StyledTh>
-        </tr>
-      </thead>
-      <tbody>
-        {seller.map((seller) => {
-          // Get the most recent historical price ID for this seller
-          const sellerhistorique_prixIds = seller_historique_article
-            .filter((sha) => sha.Id_seller === seller.Id_seller)
-            .map((sha) => sha.Id_historique_prix);
-          const mostRecenthistorique_prixId =
-            sellerhistorique_prixIds[sellerhistorique_prixIds.length - 1];
+            // Get the most recent historical price object for this seller
+            const mostRecenthistorique_prix = historique_prix.find(
+              (hp) => hp.Id_historique_prix === mostRecenthistorique_prixId
+            );
 
-          // Get the most recent historical price object for this seller
-          const mostRecenthistorique_prix = historique_prix.find(
-            (hp) => hp.Id_historique_prix === mostRecenthistorique_prixId
-          );
-
-          // Render the seller's row
-          return (
-            <StyledTr key={seller.Id_seller}>
-              <StyledTd>
-                <StyledImg src={seller.img_src_seller} alt={seller.img_alt_seller} />
-              </StyledTd>
-              {/* <StyledTd>{seller.name}</StyledTd> */}
-              <StyledTd>
-                {new Date(mostRecenthistorique_prix._date).toLocaleString(
-                  "fr-FR",
-                  optionsTab
-                )}
-              </StyledTd>
-              <StyledTd>{mostRecenthistorique_prix.price} €</StyledTd>
-              <StyledTd>
-                <STYLEDButton
-                onClick={()=> alert("Ici il y aura le lien vers la site tiers")}
-                >Acheter!</STYLEDButton>
-              </StyledTd>
-            </StyledTr>
-          );
-        })}
-      </tbody>
-    </StyledTable>
+            // Render the seller's row
+            return (
+              <StyledTr key={seller.Id_seller}>
+                <StyledTd>
+                  <StyledImg
+                    src={seller.img_src_seller}
+                    alt={seller.img_alt_seller}
+                  />
+                </StyledTd>
+                {/* <StyledTd>{seller.name}</StyledTd> */}
+                <StyledTd>
+                  {new Date(mostRecenthistorique_prix._date).toLocaleString(
+                    "fr-FR",
+                    optionsTab
+                  )}
+                </StyledTd>
+                <StyledTd>{mostRecenthistorique_prix.price} €</StyledTd>
+                <StyledTd>
+                  <STYLEDButton
+                    onClick={() =>
+                      alert("Ici il y aura le lien vers la site tiers")
+                    }
+                  >
+                    Acheter!
+                  </STYLEDButton>
+                </StyledTd>
+              </StyledTr>
+            );
+          })}
+        </tbody>
+      </StyledTable>
 
       <STYLEDContainerBox>
         <Chart
@@ -177,28 +181,7 @@ function Test({ seller, historique_prix, seller_historique_article }) {
   );
 }
 
-export default Test;
-
-
-const StyledBigContainer_div = styled.div`
-display: flex;
-justify-content:center;
-align-items:center;
-flex-direction: row;
-flex-wrap: wrap;
-`
-
-const StyledToolTip_div = styled.div`
-background-color: var(--background-color-200);
-color:var(--main-color-100);
-font-size: 1rem;
-border: 1px solid var(--background-color-400)
-`
-
-
-const StyledHeader = styled.h1`
-  text-align: center;
-`;
+export default ProductPrice;
 
 const StyledTable = styled.table`
   border-collapse: collapse;

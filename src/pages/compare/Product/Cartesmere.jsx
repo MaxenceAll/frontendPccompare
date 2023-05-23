@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
-import { useGetAllGpuDataQuery, useGetAllMbDataQuery } from "../../../features/pccompareSlice";
+import {
+  useGetAllGpuDataQuery,
+  useGetAllMbDataQuery,
+} from "../../../features/pccompareSlice";
 import Loader from "../../../components/Tools/Loader";
 import {
   STYLEDContainer,
@@ -15,10 +18,11 @@ import DataTable, { createTheme } from "react-data-table-component";
 import NoDataFound from "../../../components/NoDataFound";
 import MultiRangeSlider from "../../../components/Product/MultiRangeSlider";
 import ExpandableRows from "../../../components/Product/expandableRows";
+import usePageTitle from "../../../Hooks/usePageTitle";
 
 function Cartesmere() {
   const { data, isLoading, isError } = useGetAllMbDataQuery("mb");
-  console.log(data)
+  console.log(data);
   // trouver les filtres en fonction des url params :
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,15 +41,8 @@ function Cartesmere() {
     ? searchParams.get("formats").split(",")
     : [];
 
-
-  console.log(data);
-
   // set title logic:
-  useEffect(() => {
-    document.title = `${
-      import.meta.env.VITE_APP_NAME
-    } | Page de recherche | Cartes Mère`;
-  }, []);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page de recherche | Cartes Mère`);
 
   // Table logic:
   const columns = [
@@ -88,16 +85,8 @@ function Cartesmere() {
       reorder: true,
     },
     {
-      name: (
-        <>
-          Socket
-        </>
-      ),
-      cell: (row) => (
-        <>
-          {row.model_name}
-        </>
-      ),
+      name: <>Socket</>,
+      cell: (row) => <>{row.model_name}</>,
       selector: (row) => row.model_name,
       sortable: true,
       width: "100px",
@@ -105,16 +94,8 @@ function Cartesmere() {
       hide: "sm",
     },
     {
-      name: (
-        <>
-          Format
-        </>
-      ),
-      cell: (row) => (
-        <>
-          {row.form}
-        </>
-      ),
+      name: <>Format</>,
+      cell: (row) => <>{row.form}</>,
       selector: (row) => row.form,
       sortable: true,
       width: "95px",
@@ -181,11 +162,7 @@ function Cartesmere() {
     },
     {
       name: <>Wifi</>,
-      cell: (row) => (
-        <>
-          {row.wireless}
-        </>
-      ),
+      cell: (row) => <>{row.wireless}</>,
       selector: (row) => row.wireless,
       sortable: true,
       width: "70px",
@@ -329,15 +306,12 @@ function Cartesmere() {
     }
   }
 
-
   // filter formats logic:
   const [selectedFormats, setSelectedFormats] = useState(initialFormats);
   const [formats, setFormats] = useState([]);
   // Trouver tous les chipsets uniques :
   useEffect(() => {
-    const uniqueFormats = [
-      ...new Set(data?.data?.map((item) => item.form)),
-    ];
+    const uniqueFormats = [...new Set(data?.data?.map((item) => item.form))];
     setFormats(uniqueFormats);
   }, [data]);
   function handleButtonClickFormat(form) {
@@ -353,7 +327,6 @@ function Cartesmere() {
     }
   }
 
-
   // filter price logic :
   const [priceRange, setPriceRange] = useState([]);
   const [minPrice, setMinPrice] = useState();
@@ -365,13 +338,15 @@ function Cartesmere() {
       setMaxPrice(Math.max(...prices));
     }
   }, [data]);
-  const handlePriceChange = useCallback(({ min, max }) => {
-    if (min !== priceRange[0] || max !== priceRange[1]) {
-      setPriceRange([min, max]);
-    }
-  }, [priceRange]);
+  const handlePriceChange = useCallback(
+    ({ min, max }) => {
+      if (min !== priceRange[0] || max !== priceRange[1]) {
+        setPriceRange([min, max]);
+      }
+    },
+    [priceRange]
+  );
   // console.log(priceRange)
-
 
   // On maj les url params en fonction des filtres
   useEffect(() => {
@@ -422,12 +397,11 @@ function Cartesmere() {
       setFilteredData(data?.data);
     }
   }, [selectedMarques, selectedChipsets, selectedFormats, data, priceRange]);
-  
 
   if (isLoading) {
     return (
       <STYLEDContainer>
-          <Loader />
+        <Loader />
       </STYLEDContainer>
     );
   }
