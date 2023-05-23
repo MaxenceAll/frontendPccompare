@@ -76,6 +76,7 @@ function CarouselBrowser2() {
           <thead>
             
           </thead>
+          <tbody>
           <tr>
             <td>id:</td>
             <td>{carouselData[selectedId - 1]?.id}</td>
@@ -128,6 +129,7 @@ function CarouselBrowser2() {
             <td>long_description:</td>
             <td>{carouselData[selectedId - 1]?.long_description}</td>
           </tr>
+          </tbody>
         </table>
       )}
     </div>

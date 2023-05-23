@@ -14,10 +14,9 @@ import { HiOutlineUserAdd } from "react-icons/hi";
 import usePageTitle from "../../Hooks/usePageTitle";
 
 function RegisterForm() {
-
+  
   // set title logic:
-  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Formulaire d'inscription`);
-
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Formulaire d'inscription`);
 
   // Reveal Password logic:
   const [showPassword, setShowPassword] = useState(false);

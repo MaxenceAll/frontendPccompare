@@ -23,7 +23,7 @@ function LoginForm() {
   const [authCookie, setAuthCookie] = useCookie("accessToken");
 
   // set title logic:
-  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Formulaire de login`)
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Formulaire de login`)
 
   // Reveal Password logic:
   const [showPassword, setShowPassword] = useState(false);
@@ -69,6 +69,9 @@ function LoginForm() {
   const openForgottenPasswordModal = (e) => {
     setIsModalOpenForgottenPassword(true);
   };
+  const closeForgottenPasswordModal = (e) => {
+    setIsModalOpenForgottenPassword(false);
+  };
 
   return (
     <>
@@ -77,7 +80,7 @@ function LoginForm() {
         isOpen={isModalOpenForgottenPassword}
         onClose={() => setIsModalOpenForgottenPassword(false)}
       >
-        <ForgottenPasswordModal />
+        <ForgottenPasswordModal closeForgottenPasswordModal={closeForgottenPasswordModal}/>
       </GenericModal>
 
       <STYLEDForm onSubmit={handleSubmit(onSubmitLogin)}>

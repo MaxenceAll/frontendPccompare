@@ -42,7 +42,7 @@ function Processeurs() {
     : [];
 
   // set title logic:
-  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page de recherche | Processeurs`);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Recherche | Processeurs`);
 
   // Table logic:
   const columns = [

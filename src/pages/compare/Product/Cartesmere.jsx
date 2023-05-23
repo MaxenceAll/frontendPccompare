@@ -42,7 +42,7 @@ function Cartesmere() {
     : [];
 
   // set title logic:
-  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page de recherche | Cartes Mère`);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Recherche | Cartes Mère`);
 
   // Table logic:
   const columns = [

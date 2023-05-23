@@ -104,7 +104,7 @@ function UserBrowser() {
               <option value="10">10</option>
               <option value="15">15</option>
               <option value={allUserData?.data?.length}>
-                All({allUserData?.data?.length})
+                Tous({allUserData?.data?.length})
               </option>
             </STYLEDSelect>
           </div>
@@ -138,7 +138,7 @@ function UserBrowser() {
   }
 
   if (allUserDataIsError) {
-    content = <>Oops error spotted, {allUserDataError}</>;
+    content = <>Oops error detectée, {allUserDataError}</>;
   }
   if (allUserDataIsLoading) {
     content = (
@@ -152,7 +152,9 @@ function UserBrowser() {
     <DIV_UserBrowserForAdmins>
       <STYLEDContainer>
         <STYLEDContainerBox>
-          Vous êtes admin, <br /> vous pouvez modifier les utilisateurs:
+          <DIV_UserBrowser_Content>
+            Vous êtes admin, <br /> vous pouvez modifier les utilisateurs:
+          </DIV_UserBrowser_Content>
           {content}
         </STYLEDContainerBox>
       </STYLEDContainer>
@@ -161,6 +163,16 @@ function UserBrowser() {
 }
 
 export default UserBrowser;
+
+const DIV_UserBrowser_Content = styled.div`
+  padding: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  font-style:italic;
+`
 
 const DIV_UserBrowserForAdmins = styled.div`
   display: flex;

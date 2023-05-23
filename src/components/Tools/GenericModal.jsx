@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { STYLEDContainer, STYLEDContainerBox } from "../styles/genericContainer";
 
-const GenericModal = ({ children, isOpen, onClose , props}) => {
+const GenericModal = ({ children, isOpen, onClose, props }) => {
   const [isClosing, setIsClosing] = useState(false);
   const modalRef = useRef(null);
 
@@ -16,6 +16,7 @@ const GenericModal = ({ children, isOpen, onClose , props}) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const handleClickOutside = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       handleClose();
@@ -28,18 +29,13 @@ const GenericModal = ({ children, isOpen, onClose , props}) => {
   };
 
   return (
-    <ModalWrapper
-      isOpen={isOpen}
-      aria-label={props?.ariaLabelMessage}
-    >
+    <ModalWrapper isOpen={isOpen} aria-label={props?.ariaLabelMessage}>
       <ModalContent isClosing={isClosing} ref={modalRef}>
+        {/* Close button */}
+        <CloseButton onClick={handleClose}>X</CloseButton>
 
         <STYLEDContainer>
-          <STYLEDContainerBox>
-            
-              {children}
-
-          </STYLEDContainerBox>
+          <STYLEDContainerBox>{children}</STYLEDContainerBox>
         </STYLEDContainer>
       </ModalContent>
     </ModalWrapper>
@@ -65,7 +61,7 @@ const ModalWrapper = styled.div`
   left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.85);
-  animation: ${fadeIn} 0.8s ease-in-out;
+  animation: ${fadeIn} 1s ease-in-out;
   z-index: 99999999;
 `;
 
@@ -78,10 +74,24 @@ const ModalContent = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* TODO ajouter width and height en props pour pour de .. */
-  /* width: 80%;
-  max-height: 25%; */
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-color-200);
+  background: none;
+  border: none;
+  cursor: pointer;
+   &:hover{
+    color: red;
+   }
+   border: 1px solid var(--main-color-100);
+`;
+

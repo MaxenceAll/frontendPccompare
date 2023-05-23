@@ -57,7 +57,7 @@ function UserDetails(props) {
 
   // Find the role object that corresponds to the account's Id_role.
   const role = allRoleData?.data.find((r) => r.Id_role === user?.Id_role);
-  console.log(role);
+  // console.log(role);
 
   let content = "";
   if (!editMode) {

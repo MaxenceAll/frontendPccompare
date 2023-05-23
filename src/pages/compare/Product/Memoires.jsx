@@ -44,7 +44,7 @@ function CartesGraphique() {
   console.log(data);
 
   // set title logic:
-  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page de recherche | Mémoires Ram`)
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Recherche | Mémoires Ram`)
 
   // Table logic:
   const columns = [

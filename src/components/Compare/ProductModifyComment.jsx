@@ -82,7 +82,7 @@ function ProductAddComment({ setIsModalOpenModifyComment, comment, customer }) {
         ></textarea>
       </CommentContent>
       <STYLEDButton width={"100%"} onClick={handleModify}>
-        Publier
+        Modifier
       </STYLEDButton>
       <CommentSeparator />
 

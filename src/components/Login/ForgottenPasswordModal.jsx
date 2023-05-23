@@ -7,37 +7,36 @@ import fetcher from "../../helper/fetcher";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function ForgottenPasswordModal() {
+import { BiMailSend } from "react-icons/bi";
+
+function ForgottenPasswordModal({ closeForgottenPasswordModal }) {
   // Mot de passe oublié logic:
   const passwordForgottenEmailInputRef = useRef(null);
   const [email, setEmail] = useState(null);
-  const [isModalOpenForgottenPassword, setIsModalOpenForgottenPassword] =
-    useState(false);
-  const openForgottenPasswordModal = (e) => {
-    setIsModalOpenForgottenPassword(true);
-  };
+
   const handleRenewPassword = async (e) => {
     e.preventDefault();
     const emailObject = { email };
-    // console.log(emailObject);
-    const resp = await fetcher.post("reset", emailObject);
-    // console.log(resp);
-    setIsModalOpenForgottenPassword(false);
+    closeForgottenPasswordModal();
+    const resp = await toast.promise(fetcher.post("reset", emailObject), {
+      pending: "Préparation du mail de récupération de mot de passe ! 🟠",
+      success: "Mail de récupération prêt ! 🟢",
+      error: "Oops erreur pendant l'écriture du mail ! 🔴",
+    });
     if (resp.result) {
-      toast.success(
-        `Envoi d'un e-mail à votre adresse : ${resp.data.accepted} ; vérifiez votre boite mail ! Vous avez 10 minutes pour ré-initialiser votre mot de passe.`
-      );
-      setIsModalOpenForgottenPassword(true)
+      toast.success(`Envoi d'un e-mail de récupération de mot passe à votre adresse : ${resp.data.data.accepted} ; vérifiez votre boite mail ! Vous avez 10 minutes pour ré-initialiser votre mot de passe.`);
     } else {
       if (resp.message)
         toast.error(`Ooops erreur, retour de l'api : ${resp.data.message}`);
-        setIsModalOpenForgottenPassword(true)
     }
   };
 
   return (
     <>
       <STYLEDForm onSubmit={(e) => handleRenewPassword(e)}>
+        <div style={{ fontSize: "10rem" }}>
+          <BiMailSend />
+        </div>
         <label htmlFor="renewPasswordEmail">
           Envoyer les instructions sur l'adresse mail suivante ?
         </label>
@@ -56,13 +55,6 @@ function ForgottenPasswordModal() {
         <STYLEDButton width="40%" type="submit">
           Envoyer
         </STYLEDButton>
-        {/* <STYLEDButton
-          width="40%"
-          type="button"
-          onClick={() => setIsModalOpenForgottenPassword(false)}
-        >
-          Non
-        </STYLEDButton> */}
       </STYLEDForm>
     </>
   );

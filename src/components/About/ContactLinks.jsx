@@ -1,15 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { FaLinkedin, FaGithub, FaGlobe, FaFolderOpen } from "react-icons/fa";
+import { STYLEDContainerBox } from "../styles/genericContainer";
 
 const ContactLinks = () => {
   return (
-    <div>
-      <div>
-        <h1>Bienvenue sur {import.meta.env.VITE_APP_NAME}</h1>
-        <p>A quoi sert ce site ? Il permet de trouver les meilleurs prix pour faire votre setup fixe de rêve !</p>
-        <p>toto</p>
-
+    <STYLEDContainerBox>
         <CardContainer>
           <CardLink href="https://github.com/MaxenceAll?tab=repositories">
             <CardIcon>
@@ -45,8 +41,8 @@ const ContactLinks = () => {
             <p>Lien vers mon CV</p>
           </CardLink>
         </CardContainer>
-      </div>
-    </div>
+
+    </STYLEDContainerBox>
   );
 };
 

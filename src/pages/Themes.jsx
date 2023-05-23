@@ -13,7 +13,7 @@ function Themes() {
   const { setTheme } = useContext(ThemeContext);
 
   // set title logic:
-  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Themes`)
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Themes`)
 
   function handleClick(color) {
     setTheme(color);

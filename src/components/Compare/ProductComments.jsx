@@ -31,8 +31,6 @@ const ProductComments = ({ comments, Id_article }) => {
           (comment) => comment.Id_customer === auth?.data?.customer?.Id_customer
         )
       );
-    } else {
-      setNeedConnect(true);
     }
   }, [auth, comments]);
 

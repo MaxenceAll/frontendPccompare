@@ -14,6 +14,7 @@ import { STYLEDErrorMessage } from "../../components/styles/genericParagraphErro
 import { STYLEDButton } from "../../components/styles/genericButton";
 import fetcher from "../../helper/fetcher";
 import usePageTitle from "../../Hooks/usePageTitle";
+import { SiKeepassxc } from "react-icons/si";
 
 function ResetPassword() {
 
@@ -22,7 +23,7 @@ function ResetPassword() {
   let [searchParams] = useSearchParams();
   
   // set title logic:
-  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Modification de mot de passe`);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Modification de mot de passe`);
   
   const {
     register,
@@ -54,6 +55,9 @@ function ResetPassword() {
     <STYLEDContainer>
       <STYLEDContainerBox>
         <STYLEDForm onSubmit={handleSubmit(onSubmit)}>
+          <div style={{fontSize:"10rem"}}><SiKeepassxc /></div>
+          <h2>Re-initialisation de mot de passe.</h2>
+          <STYLEDhr />
           <div>
             <label htmlFor="password1">Nouveau mot de passe :</label>
             <STYLEDInput

@@ -9,11 +9,11 @@ import LoginForm from "../../components/Login/LoginForm";
 import RegisterForm from "../../components/Login/RegisterForm";
 import { useDisconnect } from "../../Hooks/useDisconnect";
 
+import { BiLogOut } from "react-icons/bi";
 
 function Login() {
   // Context Logic :
   const { auth, setAuth } = useContext(AuthContext);
-
   // Login or Register logic :
   const [display, setDisplay] = useState("login");
 
@@ -30,28 +30,32 @@ function Login() {
 
   return (
     <STYLEDLoginContainer>
-
       <GenericModal
         ariaLabelMessage="Modal de confirmation déconnexion"
         isOpen={isModalOpenDisconnect}
         onClose={() => setIsModalOpenDisconnect(false)}
       >
-        <label>Voulez-vous vraiment vous déconnecter ?</label>
-        <STYLEDButton
-          onClick={(e) => handleDisconnect(e)}
-          width="40%"
-          type="button"
-          disabled={isDisconnecting}
-        >
-          {isDisconnecting ? 'Déconnexion en cours...' : 'Oui'}
-        </STYLEDButton>
-        <STYLEDButton
-          width="40%"
-          type="button"
-          onClick={() => setIsModalOpenDisconnect(false)}
-        >
-          Non
-        </STYLEDButton>
+        <STYLEDModalDisconnect>
+          <h1>
+            <BiLogOut />
+          </h1>
+          <label>Voulez-vous vraiment vous déconnecter ?</label>
+          <STYLEDButton
+            onClick={(e) => handleDisconnect(e)}
+            width="40%"
+            type="button"
+            disabled={isDisconnecting}
+          >
+            {isDisconnecting ? "Déconnexion en cours..." : "Oui"}
+          </STYLEDButton>
+          <STYLEDButton
+            width="40%"
+            type="button"
+            onClick={() => setIsModalOpenDisconnect(false)}
+          >
+            Non
+          </STYLEDButton>
+        </STYLEDModalDisconnect>
       </GenericModal>
 
       <STYLEDLoginContainerBox>
@@ -131,7 +135,6 @@ const STYLEDLoginContainerBox = styled.div`
   border-radius: 15px;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.05) 0 6px 245px, rgba(0, 0, 0, 0.08) 0 0 0 5px;
-  
 `;
 
 const STYLEDLoginOptionsButtons = styled.button`
@@ -147,5 +150,19 @@ const STYLEDLoginOptionsButtons = styled.button`
     background-color: var(--background-color-400) !important;
     transform: translateY(-1px) !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2) !important;
+  }
+`;
+
+const STYLEDModalDisconnect = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  h1 {
+    font-size: 5rem;
+  }
+  label {
+    padding-bottom: 2rem;
   }
 `;

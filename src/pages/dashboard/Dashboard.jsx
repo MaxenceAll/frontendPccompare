@@ -14,12 +14,11 @@ import useCookie from "../../Hooks/useCookie";
 import UserFavorite from "../../components/Dashboard/UserFavorite";
 import { useDisconnect } from "../../Hooks/useDisconnect";
 import UserComments from "../../components/Dashboard/UserComments";
+import { BiLogOut } from "react-icons/bi";
 
 function Dashboard() {
   const { auth, setAuth } = useContext(AuthContext);
   // console.log(auth);
-  const [authCookie, setAuthCookie] = useCookie("accessToken");
-  // console.log("authCookie:", authCookie);
 
   // get current customer info (based on auth token):
   let currentUserQuery = useGetCurrentCustomerQuery(
@@ -58,17 +57,20 @@ function Dashboard() {
         isOpen={isModalOpenDisconnect}
         onClose={() => setIsModalOpenDisconnect(false)}
       >
-        <label>Voulez-vous vraiment vous déconnecter ?</label>
-        <STYLEDButton onClick={() => disconnect()} width="40%" type="button">
-          Oui
-        </STYLEDButton>
-        <STYLEDButton
-          width="40%"
-          type="button"
-          onClick={() => setIsModalOpenDisconnect(false)}
-        >
-          Non
-        </STYLEDButton>
+        <STYLEDModalDisconnect>
+          <h1><BiLogOut /></h1>
+          <label>Voulez-vous vraiment vous déconnecter ?</label>
+          <STYLEDButton onClick={() => disconnect()} width="40%" type="button">
+            Oui
+          </STYLEDButton>
+          <STYLEDButton
+            width="40%"
+            type="button"
+            onClick={() => setIsModalOpenDisconnect(false)}
+          >
+            Non
+          </STYLEDButton>
+        </STYLEDModalDisconnect>
       </GenericModal>
       <STYLEDContainer>
         <div>
@@ -131,6 +133,7 @@ function Dashboard() {
       {display === "Gérer le carousel" ? (
         auth?.data?.role === "Administrateur" ? (
           <CarouselBrowser2 />
+          // <CarouselDetails />
         ) : null
       ) : null}
       {display === "Mes favoris" ? (
@@ -157,3 +160,17 @@ const STYLEDOptionsButtons = styled.div`
     box-shadow: 0 6px 4px rgba(0, 0, 0, 0.2);
   }
 `;
+
+const STYLEDModalDisconnect = styled.div`
+display: flex;
+justify-content: center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+  h1{
+    font-size: 5rem;
+  }
+  label{
+    padding-bottom: 2rem;
+  }
+`

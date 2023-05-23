@@ -42,7 +42,7 @@ function CartesGraphique() {
     : [];
 
   // set title logic:
-  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page de recherche | Cartes graphique`);
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Recherche | Cartes graphique`);
 
   // Table logic:
   const columns = [

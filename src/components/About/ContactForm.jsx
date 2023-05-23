@@ -9,6 +9,7 @@ import { STYLEDButton } from "../styles/genericButton";
 import { STYLEDForm } from "../styles/genericForm";
 import { STYLEDhr } from "../styles/genericHR";
 import { STYLEDErrorMessage } from "../styles/genericParagraphError";
+import fetcher from "../../helper/fetcher";
 
 const ContactForm = () => {
   const {
@@ -19,13 +20,16 @@ const ContactForm = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const { name, email, subject, message } = data;
-    //TODO envoyer le mail en prenant ces données.
-    console.log("Nom: ", name);
-    console.log("Mail: ", email);
-    console.log("Sujet: ", subject);
-    console.log("Message: ", message);
-    alert("pas encore fonctionnel !");
+    const resp = await toast.promise(fetcher.post("about/contactme", data), {
+      pending: "Préparation du mail ! 🟠",
+      success: "Mail prêt ! 🟢",
+      error: "Oops erreur pendant l'écriture du mail ! 🔴",
+    });
+    if (resp.result) {
+      toast.success("Mail envoyé avec succès !");
+    } else {
+      toast.error(`Mail non envoyé :( retour du server : ${resp.message}`);
+    }
     reset();
   };
 
@@ -90,12 +94,10 @@ const ContactForm = () => {
           </STYLEDButton>
           <div>
             {errors.name && (
-              <STYLEDErrorMessage >
-                {errors.name.message}
-              </STYLEDErrorMessage>
+              <STYLEDErrorMessage>{errors.name.message}</STYLEDErrorMessage>
             )}
             {errors.email && (
-              <STYLEDErrorMessage >
+              <STYLEDErrorMessage>
                 Merci de saisir une adresse mail valide.
               </STYLEDErrorMessage>
             )}

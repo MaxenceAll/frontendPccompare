@@ -10,11 +10,16 @@ import { STYLEDButton } from "../../components/styles/genericButton";
 import { useState } from "react";
 import usePageTitle from "../../Hooks/usePageTitle";
 
-function VerifyEmail() {
+import { VscVerified } from "react-icons/vsc";
+import styled from "styled-components";
+import { STYLEDhr } from "../../components/styles/genericHR";
 
+function VerifyEmail() {
   const navigate = useNavigate();
   // set title logic:
-  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Page principale | Vérification d'e-mail`)
+  usePageTitle(
+    `${import.meta.env.VITE_APP_NAME} | Vérification d'e-mail`
+  );
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -29,8 +34,7 @@ function VerifyEmail() {
       // console.log(resp);
       setRespResult(resp.result);
       if (resp.result) {
-        toast.success("Validation de votre compte avec succès !"
-        );
+        toast.success("Validation de votre compte avec succès !");
         navigate("/login");
       } else {
         toast.error(`Oops erreur, retour de l'api : ${resp.message}`);
@@ -44,18 +48,30 @@ function VerifyEmail() {
   return (
     <STYLEDContainer>
       <STYLEDContainerBox>
-        <div>Cliquez sur ce bouton pour valider votre compte.</div>
-
-        <STYLEDButton
-          width={"100%"}
-          onClick={handleClick}
-          disabled={respResult}
-        >
-          Valider en cliquant ici
-        </STYLEDButton>
+        <STYLEDVerifyEmail>
+          <div style={{fontSize:"10rem"}}>
+            <VscVerified />
+          </div>
+          <div>Cliquez sur ce bouton pour valider votre compte.</div>
+          <STYLEDhr />
+          <STYLEDButton
+            width={"100%"}
+            onClick={handleClick}
+            disabled={respResult}
+          >
+            Valider en cliquant ici
+          </STYLEDButton>
+        </STYLEDVerifyEmail>
       </STYLEDContainerBox>
     </STYLEDContainer>
   );
 }
 
 export default VerifyEmail;
+
+const STYLEDVerifyEmail = styled.div`
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+`
