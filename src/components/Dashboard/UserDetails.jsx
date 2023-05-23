@@ -16,6 +16,8 @@ function UserDetails(props) {
   const [editMode, setEditMode] = useState(false);
   const { user } = props;
 
+  // console.log(user)
+
   let allRoleDataQuery = useGetAllRoleDataQuery();
   const {
     data: allRoleData,
@@ -34,7 +36,7 @@ function UserDetails(props) {
   // Edit form logic :
   const onSubmit = async (data) => {
     data.Id_customer = user?.Id_customer;
-    // console.log(data);
+    console.log(data);
     try {
       const response = await updateCustomer(data);
       // console.log(response);
@@ -55,7 +57,7 @@ function UserDetails(props) {
 
   // Find the role object that corresponds to the account's Id_role.
   const role = allRoleData?.data.find((r) => r.Id_role === user?.Id_role);
-  // console.log(role?.title);
+  console.log(role);
 
   let content = "";
   if (!editMode) {
@@ -99,7 +101,7 @@ function UserDetails(props) {
                 defaultValue={user?.lastname}
                 {...register("lastname", { required: true })}
               />
-              {errors.lastname && <span>This field is required</span>}
+              {errors.lastname && <STYLEDErrorMessage>Champ requis !</STYLEDErrorMessage>}
             </StyledDetail>
             <StyledDetail>
               <StyledLabel>Prénom:</StyledLabel>
@@ -108,7 +110,7 @@ function UserDetails(props) {
                 {...register("firstname", { required: true })}
               />
               {errors.firstname && (
-                <STYLEDErrorMessage>This field is required</STYLEDErrorMessage>
+                <STYLEDErrorMessage>Champ requis !</STYLEDErrorMessage>
               )}
             </StyledDetail>
             <StyledDetail>
@@ -118,7 +120,7 @@ function UserDetails(props) {
                 {...register("pseudo", { required: true })}
               />
               {errors.pseudo && (
-                <STYLEDErrorMessage>This field is required</STYLEDErrorMessage>
+                <STYLEDErrorMessage>Champ requis !</STYLEDErrorMessage>
               )}
             </StyledDetail>
             <StyledDetail>
@@ -134,7 +136,7 @@ function UserDetails(props) {
                 ))}
               </STYLEDSelect>
               {errors.Id_role && (
-                <STYLEDErrorMessage>This field is required</STYLEDErrorMessage>
+                <STYLEDErrorMessage>Champ requis !</STYLEDErrorMessage>
               )}
             </StyledDetail>
           </StyledCardBody>

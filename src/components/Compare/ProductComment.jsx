@@ -19,6 +19,10 @@ function ProductComment({ comment }) {
   // console.log(auth?.data?.customer.Id_customer);
   // console.log(comment);
 
+  // if (!comment){
+  //   return null
+  // }
+
   const [removeComment, { isLoading: removeCommentIsLoading }] =
     useRemoveCommentMutation();
   const handleRemoveComment = async () => {

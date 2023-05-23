@@ -50,6 +50,7 @@ export const pccompareApi = createApi({
         createdBy,
         createdAt,
         img_src,
+        Id_role,
       }) => ({
         url: `customer/${Id_customer}`,
         method: "PUT",
@@ -63,6 +64,7 @@ export const pccompareApi = createApi({
           createdBy,
           createdAt,
           img_src,
+          Id_role,
         },
       }),
       invalidatesTags: ["Users"],

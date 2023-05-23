@@ -7,10 +7,34 @@ import RatingSelector from "./ProductRatingSelector";
 import { useAddCommentMutation } from "../../features/pccompareSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { NavLink } from "react-router-dom";
+import { STYLEDErrorMessage } from "../styles/genericParagraphError";
+import Loader from "../Tools/Loader";
 
-function ProductAddComment({ customer, Id_article , setIsModalOpenComment }) {
-
-  // console.log(Id_article)
+function ProductAddComment({
+  customer,
+  Id_article,
+  setIsModalOpenComment,
+  role,
+}) {
+  // console.log(role);
+  if (!customer) {
+    return (
+      <CommentNeedConnect>
+        Il faut s'identifier pour commenter !
+        <NavLink to={"../../login"}>
+          <STYLEDButton>Se connecter</STYLEDButton>
+        </NavLink>
+      </CommentNeedConnect>
+    );
+  }
+  if (role === "Banni") {
+    <CommentBanned>
+      <STYLEDErrorMessage>
+        Vous n'avez plus le droit de faire de commentaire !
+      </STYLEDErrorMessage>
+    </CommentBanned>;
+  }
 
   const [addComment, { isLoading: addCommentIsLoading }] =
     useAddCommentMutation();
@@ -19,7 +43,9 @@ function ProductAddComment({ customer, Id_article , setIsModalOpenComment }) {
 
   const handlePublish = async () => {
     try {
-      if (addCommentIsLoading) { return }  
+      if (addCommentIsLoading) {
+        return <Loader />;
+      }
       if (!content) {
         toast.error("Contenu vide, ajoutez votre commentaire !");
         return;
@@ -29,18 +55,22 @@ function ProductAddComment({ customer, Id_article , setIsModalOpenComment }) {
         Id_article,
         note,
         content,
-      })
+      });
       if (resp?.data?.result) {
         toast.success("Commentaire ajouté avec succès!");
       } else if (resp?.error?.data?.isBanned) {
         toast.error("Vous n'avez plus le droit d'ajouter des commentaires !");
       } else {
-        toast.error("Erreur lors de l'ajout' de votre commentaire, réessayez !");
-      }   
+        toast.error(
+          "Erreur lors de l'ajout' de votre commentaire, réessayez !"
+        );
+      }
       setIsModalOpenComment(false);
     } catch (error) {
       console.error("Erreur lors de l'ajout du commentaire :", error);
-      toast.error("Erreur lors de la publication de votre commentaire, ressayez !");
+      toast.error(
+        "Erreur lors de la publication de votre commentaire, ressayez !"
+      );
     }
   };
 
@@ -81,7 +111,6 @@ function ProductAddComment({ customer, Id_article , setIsModalOpenComment }) {
         Posté le : &nbsp;
         <DateDuJour />
       </CommentDate>
-
     </CommentContainer>
   );
 }
@@ -141,3 +170,16 @@ const CommentSeparator = styled.hr`
   margin-top: 10px;
 `;
 
+const CommentNeedConnect = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const CommentBanned = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
