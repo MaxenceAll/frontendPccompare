@@ -52,13 +52,13 @@ function RegisterForm() {
         });
         if (response.result) {
           toast.success(`${response.message}`);
-          reset();
+          // reset();
         } else{
           toast.error(`Oops une erreur lors de l'envoi du mail de vérification, retour de l'api : ${response.message}`)
         }
       } else {
         toast.error(`Erreur: ${resp.message}`);
-        reset();
+        // reset();
         return;
       }
     }

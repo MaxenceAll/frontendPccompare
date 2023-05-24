@@ -28,7 +28,7 @@ const ContactForm = () => {
     if (resp.result) {
       toast.success("Mail envoyé avec succès !");
     } else {
-      toast.error(`Mail non envoyé :( retour du server : ${resp.message}`);
+      toast.error(`Mail non envoyé :( retour du server : ${resp.error}`);
     }
     reset();
   };
