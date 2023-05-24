@@ -41,20 +41,20 @@ function RegisterForm() {
     } else {
       const resp = await toast.promise(fetcher.post(`/register/pseudo`, data), {
         pending: "Vérification de la disponibilité du pseudo ! 🟠",
-        success: "Ce pseudo est disponible. 🟢",
+        success: "Vérification terminée ! 🟢",
         error: "Oops erreur pendant la vérification du pseudo ! 🔴",
       });
-      console.log(resp);
-      let response;
       if (resp.result) {
-        response = await toast.promise(fetcher.post("/register", data), {
-          pending: "Préparation du mail de vérification ✍️",
-          success: `Mail de vérification prêt !`,
+        var response = await toast.promise(fetcher.post("/register", data), {
+          pending: "✍️ Préparation du mail de vérification ! 🟠",
+          success: `Mail de vérification prêt ! 🟢`,
           error: `Oops erreur pendant la préparation du mail de confirmation ! 🔴`,
         });
-        if (response.result === true) {
+        if (response.result) {
           toast.success(`${response.message}`);
           reset();
+        } else{
+          toast.error(`Oops une erreur lors de l'envoi du mail de vérification, retour de l'api : ${response.message}`)
         }
       } else {
         toast.error(`Erreur: ${resp.message}`);

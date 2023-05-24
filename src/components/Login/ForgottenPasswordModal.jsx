@@ -23,12 +23,8 @@ function ForgottenPasswordModal({ closeForgottenPasswordModal }) {
       success: "Mail de récupération prêt ! 🟢",
       error: "Oops erreur pendant l'écriture du mail ! 🔴",
     });
-    if (resp.result) {
-      toast.success(`Envoi d'un e-mail de récupération de mot passe à votre adresse : ${resp.data.data.accepted} ; vérifiez votre boite mail ! Vous avez 10 minutes pour ré-initialiser votre mot de passe.`);
-    } else {
-      if (resp.message)
-        toast.error(`Ooops erreur, retour de l'api : ${resp.data.message}`);
-    }
+    // retour au client neutre (éviter qu'un puisse savoir si une personne a un compte ou pas)
+    toast.success(`${resp.message}`);
   };
 
   return (

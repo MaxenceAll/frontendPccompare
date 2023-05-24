@@ -32,6 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             toastStyle={{
               backgroundColor: "var(--background-color-100)",
               color: "var(--main-color-100)",
+              border: "1px solid var(--main-color-400)",
             }}
           />
           <App />

@@ -15,27 +15,25 @@ import styled from "styled-components";
 import { STYLEDhr } from "../../components/styles/genericHR";
 
 function VerifyEmail() {
+
   const navigate = useNavigate();
   // set title logic:
-  usePageTitle(
-    `${import.meta.env.VITE_APP_NAME} | Vérification d'e-mail`
-  );
+  usePageTitle(`${import.meta.env.VITE_APP_NAME} | Vérification d'e-mail`);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("t");
-
   const [respResult, setRespResult] = useState(null);
-  // console.log(token)
 
   const handleClick = async () => {
     try {
-      const resp = await fetcher.get(`register/verify?${token}`, {});
-      // console.log(resp);
+      var resp = await fetcher.get(`register/verify?${token}`);
       setRespResult(resp.result);
       if (resp.result) {
         toast.success("Validation de votre compte avec succès !");
-        navigate("/login");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       } else {
         toast.error(`Oops erreur, retour de l'api : ${resp.message}`);
       }
@@ -50,7 +48,9 @@ function VerifyEmail() {
       <STYLEDContainerBox>
         <STYLEDVerifyEmail>
           <div style={{fontSize:"10rem"}}>
-            <VscVerified />
+            {respResult===null && <VscVerified />}
+            {respResult && <div style={{color: "green"}}><VscVerified /></div>}
+            {!respResult && respResult !==null && <div style={{color: "red"}}><VscVerified /></div>}
           </div>
           <div>Cliquez sur ce bouton pour valider votre compte.</div>
           <STYLEDhr />

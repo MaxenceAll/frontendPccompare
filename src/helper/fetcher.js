@@ -49,7 +49,7 @@ fetcher.get = async (endpoint, params = {}) => {
     return response.data;
   } catch (error) {
     console.error(error);
-    return { data: null, result: false, message: error.message };
+    return { data: null, result: false, message: error.response.data.message , error: error.message};
   }
 };
 
@@ -68,7 +68,7 @@ fetcher.post = async (endpoint, body = {}, params = {}) => {
     return response.data;
   } catch (error) {
     console.error(error);
-    return { data: null, result: false, message: error.message };
+    return { data: null, result: false, message: error.response.data.message , error: error.message};
   }
 };
 
@@ -86,7 +86,7 @@ fetcher.put = async (endpoint, body = {}, params = {}) => {
     return response.data;
   } catch (error) {
     console.error(error);
-    return { data: null, result: false, message: error.message };
+    return { data: null, result: false, message: error.response.data.message , error: error.message};
   }
 };
 
@@ -104,7 +104,7 @@ fetcher.patch = async (endpoint, body = {}, params = {}) => {
     return response.data;
   } catch (error) {
     console.error(error);
-    return { data: null, result: false, message: error.message };
+    return { data: null, result: false, message: error.response.data.message , error: error.message};
   }
 };
 
@@ -123,7 +123,7 @@ fetcher.delete = async (endpoint, body = {}, params = {}) => {
     return response.data;
   } catch (error) {
     console.error(error);
-    return { data: null, result: false, message: error.message };
+    return { data: null, result: false, message: error.response.data.message , error: error.message};
   }
 };
 

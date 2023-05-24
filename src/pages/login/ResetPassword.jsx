@@ -19,9 +19,7 @@ import { SiKeepassxc } from "react-icons/si";
 function ResetPassword() {
 
   const navigate = useNavigate();
-
-  let [searchParams] = useSearchParams();
-  
+  let [searchParams] = useSearchParams();  
   // set title logic:
   usePageTitle(`${import.meta.env.VITE_APP_NAME} | Modification de mot de passe`);
   
