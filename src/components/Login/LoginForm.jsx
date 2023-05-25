@@ -128,10 +128,10 @@ function LoginForm() {
               validate: {
                 checkLength: (value) => value.length >= 4,
                 // TODO : réactiver cela pour la prod
-                // matchPattern: (value) =>
-                //   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
-                //     value
-                //   ),
+                matchPattern: (value) =>
+                  /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                    value
+                  ),
               },
             })}
           />
@@ -184,7 +184,7 @@ function LoginForm() {
         )}
         {errors.password?.type === "checkLength" && (
           <STYLEDErrorMessage>
-            Le mot de passe doit être de 4 signes minimum, bah wé.
+            Le mot de passe doit être de 4 signes minimum.
           </STYLEDErrorMessage>
         )}
       </STYLEDForm>

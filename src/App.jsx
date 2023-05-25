@@ -44,7 +44,10 @@ const router = createBrowserRouter(
       <Route path="compare/ram" element={<Memoires />} />
       <Route path="compare/mb" element={<Cartesmere />} />
 
-      <Route path="compare/product/:Category_to_find/:Id_article_to_find" element={<Product />} />
+      <Route
+        path="compare/product/:Category_to_find/:Id_article_to_find"
+        element={<Product />}
+      />
 
       {/*  TEST COMPONENT */}
       <Route path="test" element={<Test />} />
@@ -95,7 +98,7 @@ function App() {
   return (
     <div>
       <RouterProvider router={router} auth={auth} setAuth={setAuth} />
-      {(!acceptedCookies || refusedCookies) && !refusedCookies && (
+      {!acceptedCookies && !refusedCookies && (
         <CookieBanner acceptedCookies={acceptedCookies}>
           <CookieText>
             Nous utilisons les cookies pour améliorer votre expérience. Notez
@@ -111,7 +114,7 @@ function App() {
 export default App;
 
 const CookieBanner = styled.div`
-display: none;
+  display: none;
   display: ${(props) => (props.acceptedCookies ? "none" : "flex")};
   position: fixed;
   bottom: 0;
