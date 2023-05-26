@@ -7,9 +7,7 @@ import fallbackImage  from '../../assets/generics/ACCOUNT.png'
 
 function Avatar({ Id_customer }) {
     
-  if (!Id_customer) {
-    return null;
-  }
+
 
   //DOWNLOAD Logic :
   const [avatarURL, setAvatarURL] = useState(null);
@@ -50,6 +48,9 @@ function Avatar({ Id_customer }) {
   // if (!avatarURL) {
   //   return null;
   // }
+  if (!Id_customer) {
+    return null;
+  }
 
   return (
     <ImageContainer>

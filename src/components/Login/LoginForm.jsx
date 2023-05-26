@@ -128,10 +128,10 @@ function LoginForm() {
               validate: {
                 checkLength: (value) => value.length >= 4,
                 // TODO : réactiver cela pour la prod
-                matchPattern: (value) =>
-                  /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
-                    value
-                  ),
+                // matchPattern: (value) =>
+                //   /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                //     value
+                //   ),
               },
             })}
           />
