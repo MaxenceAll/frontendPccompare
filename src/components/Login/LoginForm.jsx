@@ -48,15 +48,12 @@ function LoginForm() {
       if (response.data && response.result === true) {
         setAuth(response);
         setAuthCookie(response.accessToken ?? null, {
-          "max-age": `${60 * 60 * 24 * 10}`,
+          "max-age": `${60 * 10}`,
           "path": "/"
         });
         toast.info(`Connection avec succes.`);
-      }
-      if (response.result === false) {
-        toast.error(
-          `Erreur lors de la connexion, retour du server: ${response.message}`
-        );
+      } else {
+        toast.error(`Erreur lors de la connexion, retour du server: ${response.message}`);
       }
     } catch (err) {
       console.error("Oops une erreur apparait :", err);

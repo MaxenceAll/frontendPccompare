@@ -61,7 +61,8 @@ export default function Product() {
     isError: productIsError,
     error: productError,
   } = useGetProductDetailsQuery({ Category_to_find, Id_article_to_find });
-  // console.log(productData)
+  // console.log(useGetProductDetailsQuery)
+  console.log(productData)
   const {
     data: SHAData,
     isLoading: SHAIsLoading,
