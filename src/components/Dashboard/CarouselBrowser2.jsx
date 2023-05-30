@@ -28,10 +28,7 @@ function CarouselBrowser2() {
         setIsLoading(false);
       }
     };
-    // const timeout = setTimeout(() => {
-      getData();
-    // }, 2000); // delay the execution by 2 seconds
-
+    getData();
     return () => {
       isMounted = false;
       controller.abort();

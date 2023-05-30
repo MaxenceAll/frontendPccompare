@@ -17,11 +17,11 @@ const appearAnimation = keyframes`
 `;
 
 
-export const STYLEDErrorMessage = styled.p`
+export const STYLEDErrorMessage = styled.p` 
     font-size: 0.8rem;
     font-style: italic;
-  color: red;
-  background-color: lightcoral;
+  color: white;
+  background-color: #B30000;
 
   animation: ${appearAnimation} 0.1s linear 5;
 `;

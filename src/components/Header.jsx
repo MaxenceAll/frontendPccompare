@@ -61,7 +61,6 @@ function Header() {
             <div>
               <NavLink to="/">
                 <img src={LOGO} width={"20px"}></img>
-                {/* <GiComputerFan /> */}
                 <SPAN_HiddenMobile>
                 {import.meta.env.VITE_APP_NAME}</SPAN_HiddenMobile>
               </NavLink>

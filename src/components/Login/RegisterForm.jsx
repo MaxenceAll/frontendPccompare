@@ -37,7 +37,6 @@ function RegisterForm() {
     data.email = data.email.toLowerCase();
     if (data.password !== data.password2) {
       toast.error(`Oooooops les mots de passe ne correspondent pas !`);
-      return;
     } else {
       const resp = await toast.promise(fetcher.post(`/register/pseudo`, data), {
         pending: "Vérification de la disponibilité du pseudo ! 🟠",
@@ -52,13 +51,13 @@ function RegisterForm() {
         });
         if (response.result) {
           toast.success(`${response.message}`);
-          // reset();
+          reset();
         } else{
           toast.error(`Oops une erreur lors de l'envoi du mail de vérification, retour de l'api : ${response.message}`)
         }
       } else {
         toast.error(`Erreur: ${resp.message}`);
-        // reset();
+        reset();
         return;
       }
     }

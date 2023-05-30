@@ -12,9 +12,7 @@ import Login from "./pages/login/Login";
 import VerifyEmail from "./pages/login/VerifyEmail";
 import About from "./pages/About";
 import Themes from "./pages/Themes";
-import Error from "./components/Error";
 import ResetPassword from "./pages/login/ResetPassword";
-// import Dashboard from "./pages/dashboard/Dashboard";
 import Compare from "./pages/compare/Compare";
 import { AuthContext } from "./Contexts/AuthContext";
 import { useContext, useEffect, useState } from "react";
@@ -27,11 +25,11 @@ import Memoires from "./pages/compare/Product/Memoires";
 import Processeurs from "./pages/compare/Product/Processeurs";
 import CartesGraphiques from "./pages/compare/Product/CartesGraphique";
 import styled from "styled-components";
-import { STYLEDButton } from "./components/styles/genericButton";
+import ErrorHandler from "./components/ErrorHandler";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />} errorElement={<Error />}>
+    <Route path="/" element={<Layout />} errorElement={<ErrorHandler />}>
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="verify" element={<VerifyEmail />} />
@@ -43,14 +41,7 @@ const router = createBrowserRouter(
       <Route path="compare/cpu" element={<Processeurs />} />
       <Route path="compare/ram" element={<Memoires />} />
       <Route path="compare/mb" element={<Cartesmere />} />
-
-      <Route
-        path="compare/product/:Category_to_find/:Id_article_to_find"
-        element={<Product />}
-      />
-
-      {/*  TEST COMPONENT */}
-      <Route path="test" element={<Test />} />
+      <Route path="compare/product/:Category_to_find/:Id_article_to_find" element={<Product />}/>
 
       <Route element={<PrivateRoutes />}>
         <Route path="dashboard" element={<Dashboard />} />
